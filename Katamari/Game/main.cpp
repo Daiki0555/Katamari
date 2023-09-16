@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "system/system.h"
-
+#include "Debug.h"
 
 // K2EngineLowのグローバルアクセスポイント。
 K2EngineLow* g_k2EngineLow = nullptr;
@@ -11,7 +11,7 @@ K2EngineLow* g_k2EngineLow = nullptr;
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	// ゲームの初期化。
-	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Game"));
+	InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, TEXT("Katamari"));
 	
 	// k2EngineLowの初期化。
 	g_k2EngineLow = new K2EngineLow();
@@ -20,9 +20,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	g_camera3D->SetTarget({ 0.0f, 50.0f, 0.0f });
 
 
+	RenderingEngine::GetInstance()->Init();
+
+	NewGO<Debug>(0, "debug");
+
 	// ここからゲームループ。
 	while (DispatchWindowMessage())
 	{
+		auto& renderContext = g_graphicsEngine->GetRenderContext();
+
 		// フレームの開始時に呼び出す必要がある処理を実行
 		g_k2EngineLow->BeginFrame();
 
@@ -34,6 +40,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 		// デバッグ描画処理を実行する。
 		g_k2EngineLow->DebubDrawWorld();
+
+		RenderingEngine::GetInstance()->Execute(renderContext);
 
 		// フレームの終了時に呼び出す必要がある処理を実行。
 		g_k2EngineLow->EndFrame();

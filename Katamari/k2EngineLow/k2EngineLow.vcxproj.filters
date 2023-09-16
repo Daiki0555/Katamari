@@ -227,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="RenderingEngine.cpp" />
+    <ClCompile Include="LevelRender.cpp" />
+    <ClCompile Include="SpriteRender.cpp" />
+    <ClCompile Include="FontRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -503,6 +506,11 @@
     </ClInclude>
     <ClInclude Include="ModelRender.h" />
     <ClInclude Include="RenderingEngine.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="LevelRender.h" />
+    <ClInclude Include="SpriteRender.h" />
+    <ClInclude Include="FontRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
@@ -562,5 +570,8 @@
     <Filter Include="AI\PathFinding">
       <UniqueIdentifier>{72d94fe6-e599-4523-8e54-81df808c96fd}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="k2EngineLow.rc" />
   </ItemGroup>
 </Project>
