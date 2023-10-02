@@ -41,14 +41,13 @@ struct SPSOut
     float4 albedo : SV_Target0; //アルベド
     float4 normal : SV_Target1; //法線
     float4 worldPos :SV_Target2; //ワールド座標
-    //float4 metalSmooth : SV_Target3;
-    //float4 ShadowPaw : SV_Target4; //シャドウマップ
+    float4 metaricShadowSmooth : SV_Target3;  // メタリック、影パラメータ、スムース。rにメタリック、gに影パラメータ、aにスムース。
 };
 
 //モデルのテクスチャ
 Texture2D<float4>g_texture : register(t0);
 Texture2D<float4> g_normal : register(t1);      //法線マップ
-
+Texture2D<float4> g_metalSmooth : register(t2);     //金属度と滑らかさマップ
 StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
 
 //サンプラーステート
@@ -140,14 +139,14 @@ SPSOut PSMainCore(SPSIn psIn,int isShadowReciever)
     // 符号なしバッファに描きこむので、法線の範囲を-1～1を0～1に変換する。
     psOut.normal = ( psOut.normal * 0.5f ) + 0.5f;
 
-    //金属度と滑らかさを出力
-    //psOut.metalSmooth=g_metalSmooth.Sample(g_sampler,psIn.uv);
+    
     //ワールド座標を出力
     psOut.worldPos=float4(psIn.worldPos,1.0f);
 
-    //影パラメータ
-    //psOut.ShadowPaw=155.0f*isShadowReciever;
-
+   // メタリックスムースを出力。
+    psOut.metaricShadowSmooth = g_metalSmooth.Sample(g_sampler, psIn.uv);
+    // 影パラメータ。
+    psOut.metaricShadowSmooth.g = 255.0f * isShadowReciever;
     return psOut;
 }
 

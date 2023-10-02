@@ -14,15 +14,20 @@ namespace nsK2EngineLow
 
 	void RenderingEngine::Init()
 	{
+		
 		InitMainRenderTarget();
 
 		InitGBuffer();
 
 		InitCopyMainRenderTargetToFrameBufferSprite();
 
+		InitShadowMapRenderTarget();
+
 		InitDeferredLighting();
 
 		Init2DRenderTarget();
+
+		m_postEffect.Init(m_mainRenderTarget);
 	}
 
 	void RenderingEngine::InitMainRenderTarget()
@@ -76,7 +81,15 @@ namespace nsK2EngineLow
 			DXGI_FORMAT_UNKNOWN
 		);
 
-		
+		// 金属度と滑らかさマップ出力用のレンダリングターゲットを初期化する
+		m_gBuffer[enGBuffer_MetaricShadowSmooth].Create(
+			frameBuffer_w,
+			frameBuffer_h,
+			1,
+			1,
+			DXGI_FORMAT_R8G8B8A8_UNORM, //メモリ使用量メモリ書き込み速度優先で、8bitの符号なし整数バッファを使用する。。
+			DXGI_FORMAT_UNKNOWN
+		);
 	}
 
 	void RenderingEngine::InitCopyMainRenderTargetToFrameBufferSprite()
@@ -98,19 +111,43 @@ namespace nsK2EngineLow
 		m_copyMainRtToFrameBufferSprite.Init(spriteInitData);
 	}
 
+	void RenderingEngine::InitShadowMapRenderTarget()
+	{
+		m_shadowMapRenders.Init();
+	}
+
 	void RenderingEngine::InitDeferredLighting()
 	{
+		// シーンライトを初期化する。
+		m_sceneLight.Init();
+
+		// シーンライトのデータをコピー。
+		m_lightingCB.m_light = m_sceneLight.GetSceneLight();
+
+		// ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
+		SpriteInitData m_deferredSpriteInitData;
+
 		// ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
 		// 画面全体にレンダリングするので幅と高さはフレームバッファーの幅と高さと同じ
 		m_deferredSpriteInitData.m_width = FRAME_BUFFER_W;
 		m_deferredSpriteInitData.m_height = FRAME_BUFFER_H;
 
 		// ディファードライティングで使用するテクスチャを設定
-		m_deferredSpriteInitData.m_textures[0] = &m_gBuffer[enGBuffer_Albedo].GetRenderTargetTexture();
-		m_deferredSpriteInitData.m_textures[1] = &m_gBuffer[enGBuffer_Normal].GetRenderTargetTexture();
-		m_deferredSpriteInitData.m_textures[2] = &m_gBuffer[enGBuffer_WorldPos].GetRenderTargetTexture();
+		int texNo = 0;
+		for (auto& gBuffer : m_gBuffer)
+		{
+			m_deferredSpriteInitData.m_textures[texNo++] = &gBuffer.GetRenderTargetTexture();
+		}
 		m_deferredSpriteInitData.m_fxFilePath= "Assets/shader/deferredLighting.fx";
-		
+		m_deferredSpriteInitData.m_expandConstantBuffer = &GetLightingCB();
+		m_deferredSpriteInitData.m_expandConstantBufferSize = sizeof(GetLightingCB());
+		for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
+		{
+			m_deferredSpriteInitData.m_textures[texNo++] = &m_shadowMapRenders.GetShadowMap(areaNo);
+		}
+
+		m_deferredSpriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
 		// 初期化データを使ってスプライトを作成
 		m_deferredLightInSpr.Init(m_deferredSpriteInitData);
 	}
@@ -162,20 +199,51 @@ namespace nsK2EngineLow
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
+		//ライティングに必要なライト情報を更新する
+		m_lightingCB.m_light = m_sceneLight.GetSceneLight();
+		for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
+		{
+			m_lightingCB.mlvp[areaNo] = m_shadowMapRenders.GetLVPMatrix(areaNo);
+		}
+
+		RenderToShadowMap(rc);
+
 		RenderToGBuffer(rc);
+
 		DeferredLighting(rc);
+
+		ForwardRendering(rc);
+
+		m_postEffect.OnRender(rc, m_mainRenderTarget);
+
 		Render2D(rc);
+		
+
+
 		CopyMainRenderTargetToFrameBuffer(rc);
 		// 登録されている描画オブジェクトをクリア
 		m_renderObjects.clear();
 	}
 
+	void RenderingEngine::RenderToShadowMap(RenderContext& rc)
+	{
+		BeginGPUEvent("RenderToShadowMap");
+		m_shadowMapRenders.Render(
+			rc,
+			m_lightingCB.m_light.directionLight.ligDirection,
+			m_renderObjects
+		);
+		EndGPUEvent();
+	}
+
 	void RenderingEngine::RenderToGBuffer(RenderContext& rc)
 	{
+		BeginGPUEvent("RenderToGBuffer");
 		RenderTarget* rts[] = {
 			&m_gBuffer[enGBuffer_Albedo],
 			&m_gBuffer[enGBuffer_Normal],
-			&m_gBuffer[enGBuffer_WorldPos]
+			&m_gBuffer[enGBuffer_WorldPos],
+			&m_gBuffer[enGBuffer_MetaricShadowSmooth]
 		};
 		rc.WaitUntilToPossibleSetRenderTargets(ARRAYSIZE(rts), rts);
 		rc.SetRenderTargetsAndViewport(ARRAYSIZE(rts), rts);
@@ -186,10 +254,14 @@ namespace nsK2EngineLow
 		}
 
 		rc.WaitUntilFinishDrawingToRenderTargets(ARRAYSIZE(rts), rts);
+
+		EndGPUEvent();
 	}
 
 	void RenderingEngine::DeferredLighting(RenderContext& rc)
 	{
+		BeginGPUEvent("DeferredLighting");
+
 		// レンダリング先をメインレンダリングターゲットにする
 	    // メインレンダリングターゲットを設定
 		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
@@ -201,11 +273,39 @@ namespace nsK2EngineLow
 		// メインレンダリングターゲットへの書き込み終了待ち
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 
+		EndGPUEvent();
 	}
+
+	void RenderingEngine::ForwardRendering(RenderContext& rc)
+	{
+		BeginGPUEvent("ForwardRendering");
+		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
+		rc.SetRenderTarget(
+			m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
+			m_gBuffer[enGBuffer_Albedo].GetDSVCpuDescriptorHandle()
+		);
+
+		
+		for (auto& forwardObj : m_renderObjects) {
+			forwardObj->OnForwardRender(rc);
+		}
+
+		//トゥーンシェーダーのモデルを描画
+		for (auto& toonObj : m_renderObjects) {
+			toonObj->OnToonRender(rc);
+		}
+
+		// メインレンダリングターゲットへの書き込み終了待ち
+		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
+		
+		EndGPUEvent();
+	}
+
 
 	void RenderingEngine::Render2D(RenderContext& rc)
 	{
-		
+		BeginGPUEvent("Render2D");
+
 		//PRESENTからRENDERTARGETへ。
 		rc.WaitUntilToPossibleSetRenderTarget(m_2DRenderTarget);
 
@@ -231,15 +331,18 @@ namespace nsK2EngineLow
 		//RENDERTARGETからPRESENTへ。
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 	
-		
+		EndGPUEvent();
 	}
 
 	void RenderingEngine::CopyMainRenderTargetToFrameBuffer(RenderContext& rc)
 	{
+		BeginGPUEvent("CopyMainRenderTargetToFrameBuffer");
 		rc.SetRenderTarget(
 			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),
 			g_graphicsEngine->GetCurrentFrameBuffuerDSV()
 		);
 		m_copyMainRtToFrameBufferSprite.Draw(rc);
+
+		EndGPUEvent();
 	}
 }

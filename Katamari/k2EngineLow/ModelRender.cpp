@@ -10,7 +10,7 @@ namespace nsK2EngineLow {
 	{
 
 	}
-	void ModelRender::Init(
+	void ModelRender::InitDeferredRendering(
 		const char* filePath,
 		AnimationClip* animationClips,
 		int numAnimationClips,
@@ -26,11 +26,44 @@ namespace nsK2EngineLow {
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
 
 		//モデルの初期化
-		InitModel(filePath, enModelUpAxis, isShadow, isShadowReceiver);
+		InitDeferredModel(filePath, enModelUpAxis, isShadow, isShadowReceiver);
 
 		//各種ワールド行列を更新する
 		UpdateWorldMatrixInModes();
 	}
+
+	void ModelRender::InitToonModel(
+		const char* filePath,
+		AnimationClip* animationClips,
+		int numAnimationClips,
+		EnModelUpAxis enModelUpAxis,
+		const bool isShadow,
+		const bool isShadowReceiver
+	)
+	{
+		//スケルトンの初期化
+		InitSkeleton(filePath);
+
+		//アニメーションの初期化
+		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
+
+		//モデルの初期化
+		InitModelOnToon(filePath, enModelUpAxis, isShadow, isShadowReceiver);
+
+		//各種ワールド行列を更新する
+		UpdateWorldMatrixInModes();
+	}
+
+
+	void ModelRender::InitForwardRendering(ModelInitData& initData)
+	{
+		InitSkeleton(initData.m_tkmFilePath);
+
+		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		//作成した初期化データをもとにモデルを初期化する。
+		m_forwardRenderModel.Init(initData);
+	}
+
 
 	void ModelRender::InitSkeleton(const char* filePath)
 	{
@@ -40,8 +73,13 @@ namespace nsK2EngineLow {
 		skeletonFilePath.replace(pos, 4, ".tks");
 		m_skeleton.Init(skeletonFilePath.c_str());
 	}
+	
 
-	void ModelRender::InitAnimation(AnimationClip* animationClips, int numAnimationClips, EnModelUpAxis enModelUpAxis)
+	void ModelRender::InitAnimation(
+		AnimationClip* animationClips, 
+		int numAnimationClips, 
+		EnModelUpAxis enModelUpAxis
+	)
 	{
 		m_animationClips = animationClips;
 		m_numAnimationClips = numAnimationClips;
@@ -54,13 +92,61 @@ namespace nsK2EngineLow {
 		}
 	}
 
-	void ModelRender::InitModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis, const bool isShadow, const bool isShadowReceiver)
+	void ModelRender::InitDeferredModel(
+		const char* tkmFilePath, 
+		EnModelUpAxis modelUpAxis, 
+		const bool isShadow, 
+		const bool isShadowReceiver
+	)
 	{
 		//通常モデルの初期化
 		ModelInitData modelInitData;
 		modelInitData.m_tkmFilePath = tkmFilePath;
 		modelInitData.m_modelUpAxis = modelUpAxis;
 		modelInitData.m_fxFilePath = "Assets/shader/RenderToGBufferFor3DModel.fx";
+		
+
+		if (isShadowReceiver) {
+			modelInitData.m_psEntryPointFunc = "PSMainShadow";
+		}
+		else {
+			modelInitData.m_psEntryPointFunc = "PSMain";
+		}
+
+		//アニメーションがあるなら
+		if (m_skeleton.IsInited()) {
+			//スケルトンを指定する
+			modelInitData.m_skeleton = &m_skeleton;
+			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
+		}
+
+		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		modelInitData.m_colorBufferFormat[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		modelInitData.m_colorBufferFormat[2] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		modelInitData.m_colorBufferFormat[3] = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+		m_renderToGBufferModel.Init(modelInitData);
+		if (isShadow) {
+			//シャドウ用のモデルの初期化
+			InitShadowModel(tkmFilePath, modelUpAxis);
+		}
+	}
+
+	void ModelRender::InitModelOnToon(
+		const char* tkmFilePath,
+		EnModelUpAxis modelUpAxis,
+		const bool isShadow,
+		const bool isShadowReceiver
+	)
+	{
+		//通常モデルの初期化
+		ModelInitData modelInitData;
+		modelInitData.m_tkmFilePath = tkmFilePath;
+		modelInitData.m_modelUpAxis = modelUpAxis;
+		modelInitData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetLightingCB();
+		modelInitData.m_expandConstantBufferSize = sizeof(RenderingEngine::GetInstance()->GetLightingCB());
+		modelInitData.m_fxFilePath = "Assets/shader/model.fx";
+
 
 		if (isShadowReceiver) {
 			modelInitData.m_psEntryPointFunc = "PSMainShadow";
@@ -78,14 +164,18 @@ namespace nsK2EngineLow {
 
 		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
-		m_renderToGBufferModel.Init(modelInitData);
+		m_toonModel.Init(modelInitData);
 		if (isShadow) {
 			//シャドウ用のモデルの初期化
-			//InitShadowModel(tkmFilePath, modelUpAxis);
+			InitShadowModel(tkmFilePath, modelUpAxis);
 		}
 	}
 
-	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
+
+	void ModelRender::InitShadowModel(
+		const char* tkmFilePath, 
+		EnModelUpAxis modelUpAxis
+	)
 	{
 		ModelInitData shadowModelInitData;
 		shadowModelInitData.m_fxFilePath= "Assets/shader/shadowMap.fx";
@@ -97,8 +187,10 @@ namespace nsK2EngineLow {
 			shadowModelInitData.m_skeleton = &m_skeleton;
 			shadowModelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
 		}
-
-		m_shadowModel.Init(shadowModelInitData);
+		for (int shadowMapNo = 0; shadowMapNo < NUM_SHADOW_MAP; shadowMapNo++) {
+			m_shadowModels[shadowMapNo].Init(shadowModelInitData);
+		}
+		
 	}
 
 	void ModelRender::Update()
@@ -121,12 +213,23 @@ namespace nsK2EngineLow {
 		if (m_renderToGBufferModel.IsInited()) {
 			m_renderToGBufferModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		}
+
 		//フォワードレンダリング用のモデルの更新処理
-		if (m_fowardRenderModel.IsInited()) {
-			m_fowardRenderModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		if (m_forwardRenderModel.IsInited()) {
+			m_forwardRenderModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		}
-		if (m_shadowModel.IsInited()) {
-			m_shadowModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
+		//トゥーンシェーダー用のモデルの更新処理
+		if (m_toonModel.IsInited()) {
+			m_toonModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		}
+
+		for (auto& models : m_shadowModels) {
+			if (models.IsInited())
+			{
+				models.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+			}
+			
 		}
 	}
 
@@ -135,12 +238,19 @@ namespace nsK2EngineLow {
 		RenderingEngine::GetInstance()->AddRenderObject(this);
 	}
 
-	void ModelRender::OnRenderToGBuffer(RenderContext& rc)
+	void ModelRender::OnRenderShadowMap(
+		RenderContext& rc,
+		int shadowMapNo,
+		const Matrix& lvpMatrix)
 	{
-		if (m_renderToGBufferModel.IsInited()) {
-			m_renderToGBufferModel.Draw(rc);
+		if (m_shadowModels[shadowMapNo].IsInited()) {
+			m_shadowModels[shadowMapNo].Draw(
+				rc,
+				g_matIdentity,
+				lvpMatrix,
+				1
+			);
 		}
 	}
-
 }
 
