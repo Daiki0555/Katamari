@@ -1,6 +1,5 @@
 #pragma once
-namespace nsK2EngineLow
-{
+namespace nsK2EngineLow{
 	class ModelRender :IRenderer
 	{
 	public:
@@ -8,7 +7,7 @@ namespace nsK2EngineLow
 		~ModelRender();
 		
 		/// <summary>
-		/// 初期化
+		/// ディファードレンダリングの初期化
 		/// </summary>
 		/// <param name="filePath">ファイルパス</param>
 		/// <param name="animationClip">アニメーションクリップ</param>
@@ -16,7 +15,7 @@ namespace nsK2EngineLow
 		/// <param name="enModelUpAxis"></param>
 		/// <param name="isShadow"></param>
 		/// <param name="isShadowReceiver"></param>
-		void Init(
+		void InitDeferredRendering(
 			const char* filePath,
 			AnimationClip* animationClip = nullptr,
 			int numAnimationClips = 0,
@@ -26,10 +25,22 @@ namespace nsK2EngineLow
 			);
 
 		/// <summary>
-		/// 特殊なシェーディングを行いたい場合の初期化処理
+		/// トゥーンシェーダー用モデルの初期化処理
 		/// </summary>
 		/// <param name="initData"></param>
-		void InitFowardRendering(ModelInitData& initData);
+		void InitToonModel(const char* filePath,
+			AnimationClip* animationClip = nullptr,
+			int numAnimationClips = 0,
+			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
+			const bool isShadow = false,
+			const bool isShadowReceiver = false
+		);
+
+		/// <summary>
+		/// 特殊なシェーディングを行いたい場合の初期化処理。
+		/// </summary>
+		/// <param name="initData">モデルデータ。</param>
+		void InitForwardRendering(ModelInitData& initData);
 
 		/// <summary>
 		/// 更新処理
@@ -68,6 +79,22 @@ namespace nsK2EngineLow
 		Model& GetModel()
 		{
 			return m_model;
+		}
+
+		/// <summary>
+		/// 座標、回転、拡大を全て設定。
+		/// </summary>
+		/// <remark>
+		/// インスタンシング描画が有効の場合は、この設定は無視されます。
+		/// </remark>
+		/// <param name="pos">座標。</param>
+		/// <param name="rotation">回転。</param>
+		/// <param name="scale">拡大。</param>
+		void SetTRS(const Vector3& pos, const Quaternion& rotation, const Vector3& scale)
+		{
+			SetPosition(pos);
+			SetRotation(rotation);
+			SetScale(scale);
 		}
 
 		/// <summary>
@@ -137,18 +164,47 @@ namespace nsK2EngineLow
 		/// <summary>
 		/// G-Buffer描画パスから呼ばれる処理
 		/// </summary>
-		void OnRenderToGBuffer(RenderContext& rc) override;
+		void OnRenderToGBuffer(RenderContext& rc) override
+		{
+			if (m_renderToGBufferModel.IsInited()) {
+				m_renderToGBufferModel.Draw(rc);
+			}
+		}
 
 		/// <summary>
 		/// フォワードレンダーパスから呼ばれる処理
 		/// </summary>
 		void OnForwardRender(RenderContext& rc)override
 		{
-			if (m_fowardRenderModel.IsInited()) {
-				m_fowardRenderModel.Draw(rc);
+			if (m_forwardRenderModel.IsInited()) {
+				m_forwardRenderModel.Draw(rc);
 			}
 		}
 
+		/// <summary>
+		/// トゥーンレンダーパスから呼ばれる処理
+		/// </summary>
+		void OnToonRender(RenderContext& rc)override
+		{
+			if (m_toonModel.IsInited()){
+				m_toonModel.Draw(rc);
+			}
+		}
+
+		
+		/// <summary>
+		/// シャドウマップへの描画パスから呼ばれる処理。
+		/// </summary>
+		/// <param name="rc">レンダリングコンテキスト</param>
+		/// <param name="shadowMapNo">シャドウマップ番号</param>
+		/// <param name="lvpMatrix">ライトビュープロジェクション行列</param>
+		void OnRenderShadowMap(
+			RenderContext& rc,
+			int shadowMapNo,
+			const Matrix& lvpMatrix) override;
+		
+			
+		
 
 	private:
 		/// <summary>
@@ -168,18 +224,33 @@ namespace nsK2EngineLow
 			EnModelUpAxis enModelUpAxis);
 
 		/// <summary>
-		/// モデルの初期化
+		/// ディファードレンダリング用のモデルの初期化
 		/// </summary>
 		/// <param name="tkmFilePath">ファイルパス</param>
 		/// <param name="modelUpAxis">モデルの上方向</param>
 		///<param name = "isShadow">trueなら影を与える< / param>
 		/// <param name=isShadowReceiver">trueなら影を落とす</param>
-		void InitModel(
+		void InitDeferredModel(
 			const char* tkmFilePath,
 			EnModelUpAxis modelUpAxis,
 			const bool isShadow,
 			const bool isShadowReceiver
 		);
+
+		/// <summary>
+		/// フォワードレンダリング用のモデルの初期化
+		/// </summary>
+		/// <param name="tkmFilePath">ファイルパス</param>
+		/// <param name="modelUpAxis">モデルの上方向</param>
+		///<param name = "isShadow">trueなら影を与える< / param>
+		/// <param name=isShadowReceiver">trueなら影を落とす</param>
+		void InitModelOnToon(
+			const char* tkmFilePath,
+			EnModelUpAxis modelUpAxis,
+			const bool isShadow,
+			const bool isShadowReceiver
+		);
+
 
 		/// <summary>
 		/// シャドウ用のモデルの初期化
@@ -199,10 +270,13 @@ namespace nsK2EngineLow
 		/// </summary>
 		void UpdateWorldMatrixInModes();
 	private:
+
+
 		Model			m_model;
 		Model			m_renderToGBufferModel;
-		Model			m_fowardRenderModel;
-		Model			m_shadowModel;						//影があるモデル
+		Model			m_forwardRenderModel;
+		Model			m_toonModel;
+		Model			m_shadowModels[NUM_SHADOW_MAP];						//影があるモデル
 		
 		Skeleton		m_skeleton;							
 

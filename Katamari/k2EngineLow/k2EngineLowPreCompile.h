@@ -110,10 +110,19 @@ static const int MAX_BONE = 512;	// ボーンの最大数。
 #include "sound/SoundSource.h"
 #include "graphics/effect/EffectEmitter.h"
 
+ // シャドウマップの数
+const int NUM_SHADOW_MAP = 3;
+#include "SceneLight.h"
+#include "PointLight.h"
+#include "SpotLight.h"
 #include "IRenderer.h"
 #include "ModelRender.h"
-#include "RenderingEngine.h"
 #include "SpriteRender.h"
 #include "FontRender.h"
+#include "Bloom.h"
+#include "CascadeShadowMapMatrix.h"
+#include "ShadowMapRender.h"
+#include "SkyCube.h"
+#include "RenderingEngine.h"
 
 #include "LevelRender.h"

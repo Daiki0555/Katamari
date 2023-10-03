@@ -7,6 +7,11 @@ namespace nsK2EngineLow
 		RenderingEngine();
 		~RenderingEngine();
 		
+		struct SLightingCB
+		{
+			Light m_light;
+			Matrix mlvp[NUM_SHADOW_MAP];			// ライトビュープロジェクション行列。
+		};
 
 		/// <summary>
 		/// インスタンスの作成
@@ -62,6 +67,16 @@ namespace nsK2EngineLow
 		{
 			m_renderObjects.push_back(renderObject);
 		}
+
+		/// <summary>
+		/// ライトの構造体を取得
+		/// </summary>
+		/// <returns></returns>
+		SLightingCB& GetLightingCB()
+		{
+			return m_lightingCB;
+		}
+
 	public:
 	private:
 		/// <summary>
@@ -137,13 +152,21 @@ namespace nsK2EngineLow
 			enGBuffer_Albedo,				//アルベド
 			enGBuffer_Normal,				//法線
 			enGBuffer_WorldPos,				//ワールド座標
-			enGBuffer_MetalSmooth,			//金属度と滑らかさ
-			enGBuffer_ShadowParam,			//シャドウパラメータ	
+			enGBuffer_MetaricShadowSmooth,   // メタリック、影パラメータ、スムース。
+											// メタリックがr、影パラメータがg、スムースがa。gは未使用。	
 			enGBuffer_Num,
 		};
-
 		static RenderingEngine* m_instance;								// 唯一のインスタンスのアドレスを記録する変数。
-	
+		Light m_light;
+		SceneLight m_sceneLight;
+		SLightingCB m_lightingCB;                       // ディファードライティング用の定数バッファ
+		
+		ShadowMapRender m_shadowMapRenders;
+
+		Camera						m_lightCamera;
+
+		Bloom m_postEffect;
+		
 		RenderTarget m_mainRenderTarget;								//メインレンダーターゲット
 		RenderTarget m_gBuffer[enGBuffer_Num];							//G-Buffer
 
@@ -154,7 +177,7 @@ namespace nsK2EngineLow
 		Sprite m_mainSprite;
 		Sprite m_copyMainRtToFrameBufferSprite;						    // メインレンダリングターゲットをフレームバッファにコピーするためのスプライト
 
-		SpriteInitData m_deferredSpriteInitData;
+		
 
 		std::vector<IRenderer*> m_renderObjects;
 	};

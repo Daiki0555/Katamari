@@ -230,6 +230,13 @@
     <ClCompile Include="LevelRender.cpp" />
     <ClCompile Include="SpriteRender.cpp" />
     <ClCompile Include="FontRender.cpp" />
+    <ClCompile Include="SceneLight.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="Bloom.cpp" />
+    <ClCompile Include="ShadowMapRender.cpp" />
+    <ClCompile Include="CascadeShadowMapMatrix.cpp" />
+    <ClCompile Include="SkyCube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -511,6 +518,13 @@
     <ClInclude Include="LevelRender.h" />
     <ClInclude Include="SpriteRender.h" />
     <ClInclude Include="FontRender.h" />
+    <ClInclude Include="SceneLight.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="Bloom.h" />
+    <ClInclude Include="ShadowMapRender.h" />
+    <ClInclude Include="CascadeShadowMapMatrix.h" />
+    <ClInclude Include="SkyCube.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

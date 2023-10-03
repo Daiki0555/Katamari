@@ -9,7 +9,9 @@ public:
 public:
 private:
 private:
-	Vector3 m_position = Vector3::Zero;
+	Vector3 m_position = { 0.0f, 200.0f, 300.0f };
+	Vector3 pos = { 0.0f, 200.0f, 300.0f };
+
 	Quaternion m_rotaition = Quaternion::Identity;
 	Vector3 m_scale = Vector3(1.0f, 1.0f, 1.0f);
 	ModelRender m_modelRender;
@@ -23,6 +25,10 @@ private:
 		m_enAnimationClip_Num,				//アニメーションの数
 	};
 	AnimationClip m_animationClips[m_enAnimationClip_Num];
+
+	PointLight m_pointLight;
+	SpotLight m_spotLight;
+	SkyCube* m_skycube;
 	
 };
 
