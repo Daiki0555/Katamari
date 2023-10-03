@@ -195,8 +195,6 @@ namespace nsK2EngineLow {
 
 	void ModelRender::Update()
 	{
-		//モデルのアップデート
-		UpdateWorldMatrixInModes();
 
 		//アニメーションが再生されているなら
 		if (m_skeleton.IsInited()) {
@@ -204,6 +202,8 @@ namespace nsK2EngineLow {
 		}
 
 		m_animation.Progress(g_gameTime->GetFrameDeltaTime() * m_animationSpeed);
+		//モデルのアップデート
+		UpdateWorldMatrixInModes();
 	}
 
 	void ModelRender::UpdateWorldMatrixInModes()

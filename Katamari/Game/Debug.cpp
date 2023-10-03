@@ -3,22 +3,32 @@
 Debug::Debug()
 {
 	//アニメーションを読み込む
-	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/idle.tka");
+	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/player/idle.tka");
 	m_animationClips[m_enAnimationClip_Idle].SetLoopFlag(true);
-	m_modelRender.InitDeferredRendering("Assets/modelData/debug/testModel.tkm", 0, 0, enModelUpAxisZ, true, false);
-	m_modelRender.SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+	
+	m_modelRender.InitDeferredRendering("Assets/modelData/unityChan.tkm",
+		m_animationClips, 
+		m_enAnimationClip_Num, enModelUpAxisZ, true, false);
+	m_modelRender.SetPosition(m_position);
 	m_modelRender.SetScale(m_scale);
 	m_modelRender.SetRotation(m_rotaition);
-
+	m_modelRender.Update();
+	
 	m_fontRender.SetText(L"Aボタンでタイトルに戻る");
 	m_fontRender.SetPosition(Vector3{ -100.0f, 100.0f, 0.0f });
 	m_fontRender.SetColor(Vector4::White);
 	m_fontRender.SetScale(1.0f);
 
-	m_backRender.InitDeferredRendering("Assets/modelData/bg/bg.tkm", 0, 0, enModelUpAxisZ, false, true);
-	m_backRender.SetPosition(Vector3::Zero);
-	m_backRender.SetScale(Vector3::One);
-	m_backRender.Update();
+	//m_backRender.InitDeferredRendering("Assets/modelData/bg/bg.tkm", 0, 0, enModelUpAxisZ, false, true);
+	//m_backRender.SetPosition(Vector3::Zero);
+	//m_backRender.SetScale(Vector3::One);
+	//m_backRender.Update();
+
+	m_skycube = NewGO<SkyCube>(0, "skycube");
+	m_skycube->SetLuminance(1.0f);
+	m_skycube->SetType((EnSkyCubeType)enSkyCubeType_Day);
+	m_skycube->SetScale(500.0f);
+	m_skycube->Update();
 
 	//m_pointLight.SetPointLight(0, Vector3::Zero, Vector3{ 1.0f,0.0f,0.0f }, 500.0f);
 
@@ -28,6 +38,7 @@ Debug::Debug()
 
 	g_camera3D->SetPosition({ 0.0f, 200.0f, 300.0f });
 	g_camera3D->SetTarget({ 0.0f, 100.0f, 0.0f });
+	g_camera3D->SetFar(10000.0f);
 }
 
 Debug::~Debug()
@@ -41,12 +52,12 @@ void Debug::Update()
 
 	if (g_pad[0]->IsPress(enButtonDown))
 	{
-		pos.y -= 10.0f;
+		m_position.x -= 10.0f;
 	}
 
-	if (g_pad[0]->IsPress(enButtonUp))
+	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
-		pos.y += 10.0f;
+		m_position.x += 10.0f;
 	}
 
 

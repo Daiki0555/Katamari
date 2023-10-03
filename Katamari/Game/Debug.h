@@ -9,7 +9,7 @@ public:
 public:
 private:
 private:
-	Vector3 m_position = Vector3::Zero;
+	Vector3 m_position = { 0.0f, 200.0f, 300.0f };
 	Vector3 pos = { 0.0f, 200.0f, 300.0f };
 
 	Quaternion m_rotaition = Quaternion::Identity;
@@ -28,6 +28,7 @@ private:
 
 	PointLight m_pointLight;
 	SpotLight m_spotLight;
+	SkyCube* m_skycube;
 	
 };
 

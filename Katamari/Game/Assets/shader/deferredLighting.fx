@@ -489,7 +489,7 @@ float4 PSMain( SPSIn psIn) : SV_Target0
 	float3 normalMap=CalcNormal(psIn);
 
     //ワールド座標をサンプリング
-	float3 s_worldPos=g_worldPos.Sample(g_sampler,psIn.uv).xyz;
+	float3 worldPos=g_worldPos.Sample(g_sampler,psIn.uv).xyz;
 
 	//スペキュラカラーはアルベドカラーと同じにする
 	float3 specColor=albedo;
@@ -506,22 +506,43 @@ float4 PSMain( SPSIn psIn) : SV_Target0
 	float3 lig=0.0f;
 
 	//影の落ち具合を計算する
-	float shadow=CalcShadowMap(s_worldPos,psIn)*shadowParam;
+	float shadow=CalcShadowMap(worldPos,psIn)*shadowParam;
+
+	//視線に向かって伸びるベクトルを計算する
+	float3 toEye=normalize(dirLig.eyePos-worldPos);
+	
 	if(shadow<0.5)
 	{
-		//拡散反射光を計算する
-		float3 diffDirection=CalcLambertDiffuse(dirLig.ligDirection,dirLig.ligColor,normalMap);
-		// ディレクションライトによるPhong鏡面反射光を計算する
-		float3 specuDirection=CalcPhongSpecular(dirLig.ligDirection,dirLig.ligColor,s_worldPos,normalMap);
-		//スペキュラマップを計算する
-		specuDirection+=CalcSpecular(normalMap,psIn);
-		lig = diffDirection+specuDirection;
-			//ポイントライトによるライティングを計算する
-		float3 pointLight=CalcLigFromPointLight(psIn,normalMap,s_worldPos); 
+		// ディズニーベースの拡散反射を実装する
+        // フレネル反射を考慮した拡散反射を計算
+		float diffuseFromFresnel=CalcDiffuseFromFresnel(normalMap,-dirLig.ligDirection,toEye);
+
+		//正規化Lambert拡散反射を求める
+		float NdotL=saturate(dot(normalMap,-dirLig.ligDirection));
+		float3 lambertDiffuse=dirLig.ligColor*NdotL/PI;
+
+		//最終的な拡散反射光
+		float3 diffuse=albedo*diffuseFromFresnel*lambertDiffuse;
+
+		
+        // クックトランスモデルを利用した鏡面反射率を計算する
+        // クックトランスモデルの鏡面反射率を計算する
+		float3 spec=CookTorranceSpecular(-dirLig.ligDirection,toEye,normalMap,smooth)*dirLig.ligColor;
+
+		// 金属度が高ければ、鏡面反射はスペキュラカラー、低ければ白
+        // スペキュラカラーの強さを鏡面反射率として扱う
+		spec*=lerp(float3(1.0f,1.0f,1.0f),specColor,metallic);
+
+		// 滑らかさを使って、拡散反射光と鏡面反射光を合成する
+        // 滑らかさが高ければ、拡散反射は弱くなる
+		//lig+=diffuse*(1.0f-smooth)+spec*smooth;;
+		
+		//ポイントライトによるライティングを計算する
+		float3 pointLight=CalcLigFromPointLight(psIn,normalMap,worldPos); 
 		//スポットライトによるライティングを計算する
-		float3 spotLight=CalcLigFromSpotLight(psIn,normalMap,s_worldPos);
+		float3 spotLight=CalcLigFromSpotLight(psIn,normalMap,worldPos);
     	//リムライトによるライティングを計算する
-		float limLight=CalcLim(dirLig.ligDirection,normalMap,s_worldPos);
+		float limLight=CalcLim(dirLig.ligDirection,normalMap,worldPos);
 		//半球ライトによるライティングを計算する
 		float3 hemiSphereLight=CalcLigFromHemiSphereLight(normalMap,hemiLig.groundColor, hemiLig.skyColor, hemiLig.groundNormal);
 
@@ -537,12 +558,6 @@ float4 PSMain( SPSIn psIn) : SV_Target0
 		 ;
 
 	}
-
-	
-
-
-	
-	//lig*=(1.0f-shadow);
 	
 	lig=min(lig,10.0f);
 	

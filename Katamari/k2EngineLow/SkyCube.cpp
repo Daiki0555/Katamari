@@ -51,4 +51,19 @@ namespace nsK2EngineLow {
 		
 		return true;
 	}
+
+	void SkyCube::Update()
+	{
+		if (m_isDirty)
+		{
+			m_modelRender.SetTRS(m_position, g_quatIdentity, m_scale);
+			m_modelRender.Update();
+			m_isDirty = false;
+		}
+	}
+
+	void SkyCube::Render(RenderContext& rc)
+	{
+		m_modelRender.Draw(rc);
+	}
 }

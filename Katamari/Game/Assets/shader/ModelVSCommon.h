@@ -9,6 +9,13 @@ cbuffer ModelCb : register(b0)
     float4x4 mProj;
 };
 
+//スキニング用の頂点データをひとまとめ。
+struct SSkinVSIn{
+	int4  Indices  	: BLENDINDICES0;
+    float4 Weights  : BLENDWEIGHT0;
+};
+
+
 ////////////////////////////////////////////////
 // 構造体
 ////////////////////////////////////////////////
