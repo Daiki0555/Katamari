@@ -535,7 +535,7 @@ float4 PSMain( SPSIn psIn) : SV_Target0
 
 		// 滑らかさを使って、拡散反射光と鏡面反射光を合成する
         // 滑らかさが高ければ、拡散反射は弱くなる
-		//lig+=diffuse*(1.0f-smooth)+spec*smooth;;
+		lig+=diffuse*(1.0f-smooth)+spec*smooth;;
 		
 		//ポイントライトによるライティングを計算する
 		float3 pointLight=CalcLigFromPointLight(psIn,normalMap,worldPos); 

@@ -37,7 +37,9 @@ struct SVSIn
 Texture2D<float4> g_albedo : register(t0);				//アルベドマップ
 Texture2D<float4> g_normalMap : register(t1);			//法線
 Texture2D<float4> g_worldPos : register(t2);			//ワールド座標
-StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
+Texture2D<float4> g_shadowMap : register(t3);
+
+StructuredBuffer<float4x4> g_boneMatrix : register(t5);	//ボーン行列。
 
 ///////////////////////////////////////
 // サンプラーステート
