@@ -8,6 +8,6 @@ namespace nsK2EngineLow {
 
 	void SpotLight::Update()
 	{
-		m_sceneLight.SetSpotLight(GetNumber(), GetPosition(), GetColor(), GetRange(), GetDirection(), GetAngle());
+		SceneLight::GetSceneLightClass()->SetSpotLight(GetNumber(), GetPosition(), GetColor(), GetRange(), GetDirection(), GetAngle());
 	}
 }

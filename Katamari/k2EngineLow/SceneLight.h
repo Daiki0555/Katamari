@@ -26,7 +26,7 @@ namespace nsK2EngineLow {
 	struct SPointLight
 	{
 		Vector3 ptPosition = Vector3::Zero;			//座標
-		float pad0 = 0.0f;
+		float pad0=0.0f;
  		Vector3 ptColor = Vector3::Zero;			//カラー
 		float ptRange = 0.0f;						//影響範囲
 	};
@@ -35,7 +35,7 @@ namespace nsK2EngineLow {
 	struct SSpotLight
 	{
 		Vector3 spPosition = Vector3::Zero;			//座標
-		float pad0 = 0.0f;							
+		float pad0 = 0.0f;
 		Vector3 spColor = Vector3::Zero;			//カラー
 		float spRange = 0.0f;						//影響範囲
 		Vector3 spDirection = Vector3::Zero;		//方向	
@@ -50,7 +50,7 @@ namespace nsK2EngineLow {
 		Vector3 skyColor = Vector3::Zero;			//天球色
 		float pad1 = 0.0f;
 		Vector3 groundNormal = Vector3::Zero;		//地面の法線
-		float pad2 = 0.0f;
+		//float pad2 = 0.0f;
 	};
 
 	//ライトの構造体
@@ -60,9 +60,9 @@ namespace nsK2EngineLow {
 		SPointLight			pointLight[POINTLIGHT_NUM];		//ポイントライト
 		SSpotLight			spotLight[SPOTLIGHT_NUM];		//スポットライト
 		HemiSphereLight		hemiSphereLight;				//半球ライト
-		int ptNum=1;											//ポイントライトの数
-		int spNum=1;											//スポットライトの数
-		int pad[2];
+		int ptNum= POINTLIGHT_NUM;							//ポイントライトの数
+		int spNum= SPOTLIGHT_NUM;							//スポットライトの数
+		int pad[3];
 	};
 
 	//シーンライトクラス
@@ -83,8 +83,34 @@ namespace nsK2EngineLow {
 		/// <returns></returns>
 		Light& GetSceneLight()
 		{
-			return m_light;
+			return m_Sinstance->m_light;
 		}
+
+		/// <summary>
+		/// シーンライトのインスタンスの作成
+		/// </summary>
+		static void CreateSceneLightInstance()
+		{
+			if (m_Sinstance != nullptr)
+			{
+				std::abort();
+			}
+			m_Sinstance = new SceneLight;
+			m_Sinstance->Init();
+		}
+
+		/// <summary>
+		/// シーンライトのインスタンスを取得
+		/// </summary>
+		/// <returns></returns>
+		static SceneLight* GetSceneLightClass()
+		{
+			if (m_Sinstance == nullptr) {
+				CreateSceneLightInstance();
+			}
+			return m_Sinstance;
+		}
+
 
 		/// <summary>
 		/// ディレクションライトのパラメータの設定
@@ -157,8 +183,9 @@ namespace nsK2EngineLow {
 
 	private:
 		Light m_light;					//ライトの構造体
-		SPointLight m_pointLight;		//ポイントライトの構造体
-		SSpotLight m_spotLight;			//スポットライトの構造体
+		static SceneLight* m_Sinstance;
+		//SPointLight m_pointLight;		//ポイントライトの構造体
+		//SSpotLight m_spotLight;			//スポットライトの構造体
 	};
 
 	

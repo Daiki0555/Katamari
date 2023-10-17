@@ -149,9 +149,6 @@ namespace nsK2EngineLow
 
 		float m_range = 0.0f;
 		float m_angle = 0.0f;
-
-		SSpotLight m_spotLight;
-		SceneLight m_sceneLight;
 		int m_spNum=0;
 	};
 

@@ -8,7 +8,7 @@ namespace nsK2EngineLow {
 		Vector3 lightPos;
 		float distLig = g_camera3D->GetFar() * 0.1f;
 		lightPos = lightDirection * -distLig;		//ライトまでの距離は外から指定できるようにする
-		lightCamera.SetPosition(g_camera3D->GetTarget() + Vector3(200, 600, 300) * 1.0f);
+		lightCamera.SetPosition(g_camera3D->GetTarget() + Vector3(250, 600, 300) * 1.0f);
         lightCamera.SetTarget({ 0, 0, 0 });
 		//上方向を設定
 		if (fabsf(lightDirection.y) > 0.9999f) {
@@ -48,7 +48,7 @@ namespace nsK2EngineLow {
         float nearDepth = g_camera3D->GetNear();
         for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
         {
-            // step-7 エリアを内包する視錐台の８頂点を求める
+            //エリアを内包する視錐台の８頂点を求める
             // エリアの近平面の中心からの上面、下面までの距離を求める
             float nearY = tanf(g_camera3D->GetViewAngle() * 0.5f) * nearDepth;
 

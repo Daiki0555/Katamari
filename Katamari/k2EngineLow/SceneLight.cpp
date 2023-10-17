@@ -2,6 +2,7 @@
 #include "SceneLight.h"
 namespace nsK2EngineLow
 {
+	SceneLight* SceneLight::m_Sinstance = nullptr;
 	SceneLight::SceneLight()
 	{
 		m_light.directionLight.eyePos = g_camera3D->GetPosition();

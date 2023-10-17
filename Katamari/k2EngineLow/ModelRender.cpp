@@ -28,6 +28,8 @@ namespace nsK2EngineLow {
 		//モデルの初期化
 		InitDeferredModel(filePath, enModelUpAxis, isShadow, isShadowReceiver);
 
+		//InitZPrepassModel(filePath,enModelUpAxis);
+
 		//各種ワールド行列を更新する
 		UpdateWorldMatrixInModes();
 	}
@@ -38,7 +40,8 @@ namespace nsK2EngineLow {
 		int numAnimationClips,
 		EnModelUpAxis enModelUpAxis,
 		const bool isShadow,
-		const bool isShadowReceiver
+		const bool isShadowReceiver,
+		const bool isOutline 
 	)
 	{
 		//スケルトンの初期化
@@ -48,7 +51,7 @@ namespace nsK2EngineLow {
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
 
 		//モデルの初期化
-		InitModelOnToon(filePath, enModelUpAxis, isShadow, isShadowReceiver);
+		InitModelOnToon(filePath, enModelUpAxis, isShadow, isShadowReceiver,isOutline);
 
 		//各種ワールド行列を更新する
 		UpdateWorldMatrixInModes();
@@ -57,7 +60,7 @@ namespace nsK2EngineLow {
 
 	void ModelRender::InitForwardRendering(ModelInitData& initData)
 	{
-		InitSkeleton(initData.m_tkmFilePath);
+		//InitSkeleton(initData.m_tkmFilePath);
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 		//作成した初期化データをもとにモデルを初期化する。
@@ -136,7 +139,8 @@ namespace nsK2EngineLow {
 		const char* tkmFilePath,
 		EnModelUpAxis modelUpAxis,
 		const bool isShadow,
-		const bool isShadowReceiver
+		const bool isShadowReceiver,
+		const bool isOutline
 	)
 	{
 		//通常モデルの初期化
@@ -162,7 +166,17 @@ namespace nsK2EngineLow {
 			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
 		}
 
-		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		//輪郭線を描画するなら
+		if (isOutline)
+		{
+			InitZPrepassModel(tkmFilePath, modelUpAxis);
+			modelInitData.m_expandShaderResoruceView[0] = &RenderingEngine::GetInstance()->GetZPrepassDepthTexture();
+		}
+		else
+		{
+			modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		}
+			
 
 		m_toonModel.Init(modelInitData);
 		if (isShadow) {
@@ -171,6 +185,27 @@ namespace nsK2EngineLow {
 		}
 	}
 
+
+	void ModelRender::InitZPrepassModel(
+		const char* tkmFilePath,
+		EnModelUpAxis modelUpAxis
+	)
+	{
+		ModelInitData modelInitData;
+		modelInitData.m_tkmFilePath = tkmFilePath;
+		modelInitData.m_fxFilePath = "Assets/shader/ZPrepass.fx";
+		modelInitData.m_modelUpAxis = modelUpAxis;
+
+		//アニメーションがあるなら
+		if (m_skeleton.IsInited()) {
+			//スケルトンを指定する
+			modelInitData.m_skeleton = &m_skeleton;
+			modelInitData.m_vsSkinEntryPointFunc = "VSSkinMain";
+		}
+		modelInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		m_zprepassModel.Init(modelInitData);
+
+	}
 
 	void ModelRender::InitShadowModel(
 		const char* tkmFilePath, 
@@ -198,10 +233,9 @@ namespace nsK2EngineLow {
 		//モデルのアップデート
 		UpdateWorldMatrixInModes();
 
-		//アニメーションが再生されているなら
-		if (m_skeleton.IsInited()) {
-			m_skeleton.Update(m_model.GetWorldMatrix());
-		}
+
+		UpdateModelSkeletons();
+		
 
 		m_animation.Progress(g_gameTime->GetFrameDeltaTime() * m_animationSpeed);
 		
@@ -209,7 +243,7 @@ namespace nsK2EngineLow {
 
 	void ModelRender::UpdateWorldMatrixInModes()
 	{
-
+		m_zprepassModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		//ディファードレンダリング用のモデルの更新処理
 		if (m_renderToGBufferModel.IsInited()) {
 			m_renderToGBufferModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
@@ -231,6 +265,33 @@ namespace nsK2EngineLow {
 				models.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 			}
 			
+		}
+	}
+
+	void ModelRender::UpdateModelSkeletons()
+	{
+		//アニメーションが再生されているなら
+
+		if (m_skeleton.IsInited()) {
+			//ディファードレンダリング用のスケルトンのの更新処理
+			if (m_renderToGBufferModel.IsInited())
+			{
+				m_skeleton.Update(m_renderToGBufferModel.GetWorldMatrix());
+			}
+			//フォワードレンダリング用のスケルトンの更新処理
+			if (m_forwardRenderModel.IsInited()) {
+				m_skeleton.Update(m_forwardRenderModel.GetWorldMatrix());
+			}
+
+			//トゥーンシェーダー用のスケルトンのの更新処理
+			if (m_toonModel.IsInited()) {
+				m_skeleton.Update(m_toonModel.GetWorldMatrix());
+			}
+
+			if (m_zprepassModel.IsInited()){
+				m_skeleton.Update(m_zprepassModel.GetWorldMatrix());
+			}
+
 		}
 	}
 

@@ -14,7 +14,8 @@ namespace nsK2EngineLow
 
 	void RenderingEngine::Init()
 	{
-		
+		InitZPrepassRenderTarget();
+
 		InitMainRenderTarget();
 
 		InitGBuffer();
@@ -45,6 +46,17 @@ namespace nsK2EngineLow
 		);
 	}
 
+	void RenderingEngine::InitZPrepassRenderTarget()
+	{
+		m_zprepassRenderTarget.Create(
+			g_graphicsEngine->GetFrameBufferWidth(),
+			g_graphicsEngine->GetFrameBufferHeight(),
+			1,
+			1,
+			DXGI_FORMAT_R32G32_FLOAT,
+			DXGI_FORMAT_D32_FLOAT
+		);
+	}
 	
 	void RenderingEngine::InitGBuffer()
 	{
@@ -52,7 +64,7 @@ namespace nsK2EngineLow
 		int frameBuffer_h = g_graphicsEngine->GetFrameBufferHeight();
 
 		// アルベドカラーを出力用のレンダリングターゲットを初期化する
-		m_gBuffer[enGBuffer_Albedo].Create(
+		m_gBuffer[enGBuffer_AlbedoDepth].Create(
 			frameBuffer_w,
 			frameBuffer_h,
 			1,
@@ -118,11 +130,12 @@ namespace nsK2EngineLow
 
 	void RenderingEngine::InitDeferredLighting()
 	{
+		
 		// シーンライトを初期化する。
-		m_sceneLight.Init();
+		SceneLight::GetSceneLightClass()->Init();
 
 		// シーンライトのデータをコピー。
-		m_lightingCB.m_light = m_sceneLight.GetSceneLight();
+		m_lightingCB.m_light = SceneLight::GetSceneLightClass()->GetSceneLight();
 
 		// ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
 		SpriteInitData m_deferredSpriteInitData;
@@ -200,13 +213,15 @@ namespace nsK2EngineLow
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
 		//ライティングに必要なライト情報を更新する
-		m_lightingCB.m_light = m_sceneLight.GetSceneLight();
+		m_lightingCB.m_light = SceneLight::GetSceneLightClass()->GetSceneLight();
 		for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
 		{
 			m_lightingCB.mlvp[areaNo] = m_shadowMapRenders.GetLVPMatrix(areaNo);
 		}
 
-		RenderToShadowMap(rc);
+		RenderToShadowMap(rc);		
+		
+		ZPrepass(rc);
 
 		RenderToGBuffer(rc);
 
@@ -236,11 +251,33 @@ namespace nsK2EngineLow
 		EndGPUEvent();
 	}
 
+	void RenderingEngine::ZPrepass(RenderContext& rc)
+	{
+		BeginGPUEvent("ZPrepass");
+		// まず、レンダリングターゲットとして設定できるようになるまで待つ
+		rc.WaitUntilToPossibleSetRenderTarget(m_zprepassRenderTarget);
+
+		// レンダリングターゲットを設定
+		rc.SetRenderTargetAndViewport(m_zprepassRenderTarget);
+
+		// レンダリングターゲットをクリア
+		rc.ClearRenderTargetView(m_zprepassRenderTarget);
+
+		for (auto& model : m_renderObjects)
+		{
+			model->OnZPrepass(rc);
+		}
+
+		rc.WaitUntilFinishDrawingToRenderTarget(m_zprepassRenderTarget);
+
+		EndGPUEvent();
+	}
+
 	void RenderingEngine::RenderToGBuffer(RenderContext& rc)
 	{
 		BeginGPUEvent("RenderToGBuffer");
 		RenderTarget* rts[] = {
-			&m_gBuffer[enGBuffer_Albedo],
+			&m_gBuffer[enGBuffer_AlbedoDepth],
 			&m_gBuffer[enGBuffer_Normal],
 			&m_gBuffer[enGBuffer_WorldPos],
 			&m_gBuffer[enGBuffer_MetaricShadowSmooth]
@@ -261,12 +298,12 @@ namespace nsK2EngineLow
 	void RenderingEngine::DeferredLighting(RenderContext& rc)
 	{
 		BeginGPUEvent("DeferredLighting");
-
 		// レンダリング先をメインレンダリングターゲットにする
 	    // メインレンダリングターゲットを設定
 		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
 		rc.SetRenderTargetAndViewport(m_mainRenderTarget);
 		rc.ClearRenderTargetView(m_mainRenderTarget);
+		
 		//G-Bufferの内容を元にしてディファードライティング
 		m_deferredLightInSpr.Draw(rc);
 
@@ -282,7 +319,7 @@ namespace nsK2EngineLow
 		rc.WaitUntilToPossibleSetRenderTarget(m_mainRenderTarget);
 		rc.SetRenderTarget(
 			m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
-			m_gBuffer[enGBuffer_Albedo].GetDSVCpuDescriptorHandle()
+			m_gBuffer[enGBuffer_AlbedoDepth].GetDSVCpuDescriptorHandle()
 		);
 
 		

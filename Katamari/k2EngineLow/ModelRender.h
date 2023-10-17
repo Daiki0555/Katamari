@@ -12,9 +12,9 @@ namespace nsK2EngineLow{
 		/// <param name="filePath">ファイルパス</param>
 		/// <param name="animationClip">アニメーションクリップ</param>
 		/// <param name="numAnimationClips">アニメーションの数</param>
-		/// <param name="enModelUpAxis"></param>
-		/// <param name="isShadow"></param>
-		/// <param name="isShadowReceiver"></param>
+		/// <param name="enModelUpAxis">モデルの上方向</param>
+		/// <param name="isShadow">影を生成するか</param>
+		/// <param name="isShadowReceiver">影を落とすか</param>
 		void InitDeferredRendering(
 			const char* filePath,
 			AnimationClip* animationClip = nullptr,
@@ -33,7 +33,8 @@ namespace nsK2EngineLow{
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
 			const bool isShadow = false,
-			const bool isShadowReceiver = false
+			const bool isShadowReceiver = false,
+			const bool isOutline=false
 		);
 
 		/// <summary>
@@ -191,7 +192,15 @@ namespace nsK2EngineLow{
 			}
 		}
 
-		
+		/// <summary>
+		/// ZPrepassから呼ばれる処理
+		/// </summary>
+		/// <param name="rc"></param>
+		void OnZPrepass(RenderContext& rc)override
+		{
+			m_zprepassModel.Draw(rc);
+		}
+
 		/// <summary>
 		/// シャドウマップへの描画パスから呼ばれる処理。
 		/// </summary>
@@ -248,7 +257,8 @@ namespace nsK2EngineLow{
 			const char* tkmFilePath,
 			EnModelUpAxis modelUpAxis,
 			const bool isShadow,
-			const bool isShadowReceiver
+			const bool isShadowReceiver,
+			const bool isOutline
 		);
 
 
@@ -263,12 +273,26 @@ namespace nsK2EngineLow{
 		);
 
 
+		/// <summary>
+		/// ZPrepass用のモデルの初期化
+		/// </summary>
+		/// <param name="tkmFilePath"></param>
+		/// <param name="modelUpAxis"></param>
+		void InitZPrepassModel(
+			const char* tkmFilePath,
+			EnModelUpAxis modelUpAxis
+		);
 
 
 		/// <summary>
 		/// 各種モデルのワールド行列を更新する。
 		/// </summary>
 		void UpdateWorldMatrixInModes();
+
+		/// <summary>
+		/// 各種スケルトンを更新する
+		/// </summary>
+		void UpdateModelSkeletons();
 	private:
 
 
@@ -276,6 +300,7 @@ namespace nsK2EngineLow{
 		Model			m_renderToGBufferModel;
 		Model			m_forwardRenderModel;
 		Model			m_toonModel;
+		Model			m_zprepassModel;
 		Model			m_shadowModels[NUM_SHADOW_MAP];						//影があるモデル
 		
 		Skeleton		m_skeleton;							

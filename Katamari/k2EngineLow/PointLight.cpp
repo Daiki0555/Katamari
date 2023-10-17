@@ -8,6 +8,6 @@ namespace nsK2EngineLow {
 
 	void PointLight::Update()
 	{
-		m_sceneLight.SetPointLight(GetNumber(), GetPosition(), GetColor(), GetRange());
+		SceneLight::GetSceneLightClass()->SetPointLight(GetNumber(), GetPosition(), GetColor(), GetRange());
 	}
 }

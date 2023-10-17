@@ -132,6 +132,10 @@ SPSOut PSMainCore(SPSIn psIn,int isShadowReciever)
     //アルベドカラーを出力
     psOut.albedo=g_texture.Sample(g_sampler,psIn.uv);
 
+    clip(psOut.albedo.a - 0.2f);    // ピクセルキル
+
+    psOut.albedo.w = psIn.pos.z;
+    
     //法線を出力
     psOut.normal.xyz=GetNormalFromNormalMap(
         psIn.normal,psIn.tangent,psIn.biNormal,psIn.uv);

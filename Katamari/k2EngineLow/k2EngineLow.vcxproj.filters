@@ -237,6 +237,7 @@
     <ClCompile Include="ShadowMapRender.cpp" />
     <ClCompile Include="CascadeShadowMapMatrix.cpp" />
     <ClCompile Include="SkyCube.cpp" />
+    <ClCompile Include="CollisionObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -525,6 +526,7 @@
     <ClInclude Include="ShadowMapRender.h" />
     <ClInclude Include="CascadeShadowMapMatrix.h" />
     <ClInclude Include="SkyCube.h" />
+    <ClInclude Include="CollisionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

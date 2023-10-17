@@ -7,8 +7,8 @@ namespace nsK2EngineLow {
 
 		//近景用のシャドウマップ
 		m_shadowMaps[0].Create(
-			2048,
-			2048,
+			4096,
+			4096,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -18,8 +18,8 @@ namespace nsK2EngineLow {
 
 		//中景用のシャドウマップ
 		m_shadowMaps[1].Create(
-			1024,
-			1024,
+			2048,
+			2048,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -29,8 +29,8 @@ namespace nsK2EngineLow {
 
 		//遠景用のシャドウマップ
 		m_shadowMaps[2].Create(
-			512,
-			512,
+			1024,
+			1024,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,

@@ -77,6 +77,15 @@ namespace nsK2EngineLow
 			return m_lightingCB;
 		}
 
+		/// <summary>
+	   /// ZPrepassで作成された深度テクスチャを取得
+	   /// </summary>
+	   /// <returns></returns>
+		Texture& GetZPrepassDepthTexture()
+		{
+			return m_zprepassRenderTarget.GetRenderTargetTexture();
+		}
+
 	public:
 	private:
 		/// <summary>
@@ -110,11 +119,23 @@ namespace nsK2EngineLow
 	    /// </summary>
 		void Init2DRenderTarget();
 
+
+		/// <summary>
+		/// ZPrepass用のレンダリングターゲットを初期化
+		/// </summary>
+		void InitZPrepassRenderTarget();
+
 		/// <summary>
 		/// シャドウマップに描画
 		/// </summary>
 		/// <param name="rc">レンダリングコンテキスト</param>
 		void RenderToShadowMap(RenderContext& rc);
+
+		/// <summary>
+	    /// ZPrepass
+	    /// </summary>
+	    /// <param name="rc">レンダリングコンテキスト</param>
+		void ZPrepass(RenderContext& rc);
 
 		/// <summary>
 		/// G-Bufferへの描画
@@ -149,7 +170,7 @@ namespace nsK2EngineLow
 		//GBuffer
 		enum EnGBffer
 		{
-			enGBuffer_Albedo,				//アルベド
+			enGBuffer_AlbedoDepth,			//アルベドと深度値
 			enGBuffer_Normal,				//法線
 			enGBuffer_WorldPos,				//ワールド座標
 			enGBuffer_MetaricShadowSmooth,   // メタリック、影パラメータ、スムース。
@@ -157,7 +178,6 @@ namespace nsK2EngineLow
 			enGBuffer_Num,
 		};
 		static RenderingEngine* m_instance;								// 唯一のインスタンスのアドレスを記録する変数。
-		Light m_light;
 		SceneLight m_sceneLight;
 		SLightingCB m_lightingCB;                       // ディファードライティング用の定数バッファ
 		
@@ -177,7 +197,7 @@ namespace nsK2EngineLow
 		Sprite m_mainSprite;
 		Sprite m_copyMainRtToFrameBufferSprite;						    // メインレンダリングターゲットをフレームバッファにコピーするためのスプライト
 
-		
+		RenderTarget m_zprepassRenderTarget;							//Zプレパス
 
 		std::vector<IRenderer*> m_renderObjects;
 	};
