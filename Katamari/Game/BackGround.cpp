@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "BackGround.h"
+#include "BackGround.h" 
 BackGround::~BackGround()
 {
 
@@ -21,10 +21,18 @@ bool BackGround::Start()
 	m_backRender.SetScale(m_scale);
 	m_backRender.Update();
 
-	PhysicsStaticObject physicsStaticObject;
-	//physicsStaticObject.CreateFromModel(m_backRender.GetModel(), m_backRender.GetModel().GetWorldMatrix());
-	//physicsStaticObject.GetbtCollisionObject()->setUserIndex(enCollisionAttr_Ground);
-	
+	Matrix matrix;
+	matrix = m_backRender.GetModel().CalcWorldMatrix(
+		m_position,
+		m_rotation,
+		m_scale
+	);
+
+
+	m_physicsObj.CreateFromModel(
+		m_backRender.GetModel(), 
+		m_backRender.GetModel().GetWorldMatrix()
+	);
 	return true;
 }
 
@@ -35,5 +43,5 @@ void BackGround::Update()
 
 void BackGround::Render(RenderContext& rc)
 {
-	//m_backRender.Draw(rc);
+	m_backRender.Draw(rc);
 }

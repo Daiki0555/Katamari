@@ -8,7 +8,7 @@ namespace nsK2EngineLow {
 		Vector3 lightPos;
 		float distLig = g_camera3D->GetFar() * 0.1f;
 		lightPos = lightDirection * -distLig;		//ライトまでの距離は外から指定できるようにする
-		lightCamera.SetPosition(g_camera3D->GetTarget() + Vector3(250, 600, 300) * 1.0f);
+		lightCamera.SetPosition(lightPos);
         lightCamera.SetTarget({ 0, 0, 0 });
 		//上方向を設定
 		if (fabsf(lightDirection.y) > 0.9999f) {

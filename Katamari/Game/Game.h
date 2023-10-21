@@ -2,6 +2,8 @@
 
 class Player;
 class Sphere;
+class Object;
+class Stick;
 class Game :public IGameObject
 {
 public:
@@ -25,6 +27,25 @@ public:
 	~Game();
 	bool Start();
 	void Update();
+
+	/// <summary>
+/// オブジェクトリストの設定
+/// </summary>
+/// <param name="object"></param>
+/// <returns></returns>
+	const void SetObjectList(Object* object)
+	{
+		m_objctList.emplace_back(object);
+	}
+
+	/// <summary>
+	/// オブジェクトリストの設定
+	/// </summary>
+	/// <returns></returns>
+	const std::vector<Object*> GetObjectList()
+	{
+		return m_objctList;
+	}
 public:
 private:
 	/// <summary>
@@ -35,5 +56,7 @@ private:
 	EnGameClearState m_gameClearState = m_enGameClearState_GameUnclearable;
 	Player* m_player=nullptr;
 	Sphere* m_sphere = nullptr;
+
+	std::vector<Object*>				m_objctList;
 };
 

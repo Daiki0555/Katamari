@@ -129,6 +129,15 @@ namespace nsK2EngineLow {
 		{
 			return m_worldMatrix;
 		}
+
+		/// <summary>
+		/// ワールド行列の設定。
+		/// </summary>
+		/// <returns></returns>
+		const void SetWorldMatrix(const Matrix& matrix)
+		{
+			m_worldMatrix=matrix;
+		}
 		/// <summary>
 		/// メッシュに対して問い合わせを行う。
 		/// </summary>

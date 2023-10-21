@@ -5,9 +5,10 @@
 #include "GameCamera.h"
 #include "BackGround.h"
 #include "Object.h"
+#include "Stick.h"
 Game::Game()
 {
-
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {
@@ -15,11 +16,11 @@ Game::~Game()
 }
 bool Game::Start()
 {
+	NewGO<Stick>(0,"stick");
+
 	InitLevel();
 	
 	NewGO<GameCamera>(0,"gameCamera");
-
-	
 
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
@@ -34,17 +35,19 @@ void Game::InitLevel()
 
 	LevelRender LevelRender;
 	LevelRender.Init("Assets/modelData/level/stage.tkl",[&](LevelObjeData& objdata) {
-		if (objdata.ForwardMatchName(L"unityChan")){
+		if (objdata.ForwardMatchName(L"katamari")){
+			//塊(コア)の作成
+			m_sphere = NewGO<Sphere>(0, "sphere");
+			m_sphere->SetPosition(objdata.position);
+			m_sphere->SetScale(objdata.scale);
+			m_sphere->SetRotation(objdata.rotaition);
+
 			//プレイヤーの作成
 			m_player = NewGO<Player>(0, "player");
 			m_player->SetPosition(objdata.position);
 			m_player->SetScale(objdata.scale);
 			m_player->SetRotation(objdata.rotaition);
-			//塊の作成
-			m_sphere = NewGO<Sphere>(0, "sphere");
-			m_sphere->SetPosition(objdata.position);
-			m_sphere->SetScale(objdata.scale);
-			m_sphere->SetRotation(objdata.rotaition);
+		
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"siba")) {
@@ -59,9 +62,11 @@ void Game::InitLevel()
 			object->SetPosition(objdata.position);
 			object->SetRotation(objdata.rotaition);
 			object->SetScale(objdata.scale);
+			m_objctList.emplace_back(object);
 		}
 			
 		});
+
 }
 
 void Game::Update()

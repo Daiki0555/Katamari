@@ -1,15 +1,21 @@
 #pragma once
 class Sphere;
+class Game;
 class Object :public IGameObject
 {
 public:
-	enum enObjectNameState {
+	enum EnObjectNameState{
 
 	};
 
-	enum enObjectState {
-
+	//オブジェクトの状態
+	enum EnObjectState {
+		m_enObject_NotInvolution,								//オブジェクトが巻き込まれていない状態
+		m_enObject_Involution,									//オブジェクトが巻き込まれている状態
 	};
+
+	
+
 	~Object();
 	bool Start();
 
@@ -61,6 +67,20 @@ public:
 	{
 		m_scale = scale;
 	}
+
+	/// <summary>
+	/// オブジェクトの状態を取得
+	/// </summary>
+	/// <returns></returns>
+	const EnObjectState GetObjectState() const
+	{
+		return m_objectState;
+	}
+
+	/// <summary>
+	/// ワールド行列の計算
+	/// </summary>
+	void CalcMatrix();
 private:
 	/// <summary>
 	/// オブジェクトの読み込み処理
@@ -82,12 +102,19 @@ private:
 	/// </summary>
 	void Involution();
 
+	
+
 private:
 	ModelRender m_objectRender;
 	CollisionObject m_collisionObject;
+	PhysicsStaticObject m_physicsObj;
 	Sphere* m_sphere;
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_scale = Vector3::Zero;
 	Quaternion m_rotation = Quaternion::Identity;
+	Matrix m_matInCore;										//塊（コア）を含む行列
+	Matrix m_objectWorldMatrix;								//巻き込み後のオブジェクトのワールド行列
+
+	EnObjectState m_objectState = m_enObject_NotInvolution;
 };
 
