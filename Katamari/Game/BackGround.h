@@ -54,6 +54,7 @@ public:
 	}
 private:
 private:
+	PhysicsStaticObject m_physicsObj;
 	ModelRender m_backRender;
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_scale = Vector3::Zero;

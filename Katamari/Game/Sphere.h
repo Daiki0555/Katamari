@@ -1,5 +1,7 @@
 #pragma once
-class Player;
+class Object;
+class Game;
+class Stick;
 class Sphere: public IGameObject
 {
 public:
@@ -26,7 +28,6 @@ public:
 		m_enSphere_InvincibleEnd,	//無敵終了
 		m_enPlayer_GameEnd,			//ゲーム終了
 	};
-
 
 	~Sphere();
 	bool Start();
@@ -81,7 +82,7 @@ public:
 	}
 
 	/// <summary>
-	/// 移動速度の取得
+	/// 大きさの取得
 	/// </summary>
 	/// <returns></returns>
 	const Vector3 GetScale()const
@@ -89,6 +90,41 @@ public:
 		return m_scale;
 	}
 
+	/// <summary>
+	/// 移動速度の取得
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 GetMoveSpeed()
+	{
+		return m_moveSpeed;
+	}
+
+
+	/// <summary>
+	/// モデル情報の取得
+	/// </summary>
+	/// <returns></returns>
+	ModelRender& GetSphereModel()
+	{
+		return m_sphereRender;
+	}
+
+	/// <summary>
+	/// 塊の半径
+	/// </summary>
+	/// <returns></returns>
+	const float GetRadius() const
+	{
+		return m_radius;
+	}
+
+	/// <summary>
+	/// 塊の半径の設定
+	/// </summary>
+	const void SetRadius(const float radius)
+	{
+		m_radius = radius;
+	}
 
 public:
 
@@ -104,21 +140,33 @@ private:
 	/// </summary>
 	void Rotation();
 
+
+
+
 private:
+	Object* m_object;
+	Game* m_game;
+	Stick* m_stick = nullptr;
+
 	ModelRender m_sphereRender;
-	Player* m_player;
+	
 	Vector3 m_position ={0.0f,50.0f,0.0f};
+	Vector3 m_moveSpeed = Vector3::Zero;
+
+
 	Vector3 m_beforePosition = Vector3::Zero;
 	Vector3 m_scale = Vector3::One;
+	
 	const float m_protMoveSpeedMultiply = 5.0f;					//最初の速度
 	float m_moveSpeedMultiply = 5.0f;							//移動速度
-	float m_radius=0.0f;
-
+	
+	float m_radius = 0.0f;										//球体の半径
 
 	CharacterController m_charaCon;
 
 	Quaternion m_rotation= Quaternion::Identity;
 	CollisionObject m_collisionObject;
 	float m_angle = 0.0f;
+
 };
 

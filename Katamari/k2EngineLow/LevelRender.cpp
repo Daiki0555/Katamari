@@ -18,13 +18,13 @@ namespace nsK2EngineLow {
 
 	void LevelRender::Init(
 		const char* filePath,
-		std::function<bool(LevelObjeData& objData)> hookFunc
+		std::function<bool(LevelObjecData& objData)> hookFunc
 	)
 	{
 		//tklファイルのロード
 		m_tklFile.Load(filePath);
 
-		MatrixTklToLever();
+		MatrixTklToLevel();
 
 		//ルートボーンはいらないため、iを1から始めることで除外する
 		for (int i = 1; i < m_boneList.size(); i++) {
@@ -33,17 +33,17 @@ namespace nsK2EngineLow {
 			if (bone->GetParentBoneNo() == 0) {
 
 				////行列から座標を作成
-				LevelObjeData levelObjData;
-				bone->CalcWorldTRS(levelObjData.position, levelObjData.rotaition, levelObjData.scale);
+				LevelObjecData levelObjData;
+				bone->CalcWorldTRS(levelObjData.position, levelObjData.rotation, levelObjData.scale);
 
 				//ZupとYupの変更。
 				float fix = levelObjData.position.y;
 				levelObjData.position.y = levelObjData.position.z;
 				levelObjData.position.z = -fix;
 
-				fix = levelObjData.rotaition.z;
-				levelObjData.rotaition.z = levelObjData.rotaition.y;
-				levelObjData.rotaition.y = fix;
+				fix = levelObjData.rotation.z;
+				levelObjData.rotation.z = levelObjData.rotation.y;
+				levelObjData.rotation.y = fix;
 
 				std::swap(levelObjData.scale.y, levelObjData.scale.z);
 
@@ -91,7 +91,7 @@ namespace nsK2EngineLow {
 		}
 	}
 
-	void LevelRender::MatrixTklToLever()
+	void LevelRender::MatrixTklToLevel()
 	{
 		m_tklFile.QuaryObject([&](TklFile::SObject& tklObj) {
 			//コピー。

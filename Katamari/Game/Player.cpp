@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Sphere.h"
+
 namespace
 {
 	const float		SPEED_DOWN = 0.8;									//速度減速率
-	const float		PLAYER_WALKSPEED = 30.0f;							//歩き時の乗算量
-	const float		PLAYER_RUNSPEED = 60.0f;							//走り時の乗算量
+	const float		PLAYER_WALKSPEED = 5.0f;							//歩き時の乗算量
+	const float		PLAYER_RUNSPEED = 10.0f;							//走り時の乗算量
+	const float		ENTER_STICK = 0.001f;
 }
 Player::~Player()
 {
@@ -13,6 +16,8 @@ Player::~Player()
 
 bool Player::Start()
 {
+	m_sphere = FindGO<Sphere>("sphere");
+
 	//アニメーションを読み込む
 	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/player/idle.tka");
 	m_animationClips[m_enAnimationClip_Idle].SetLoopFlag(true);
@@ -41,6 +46,7 @@ bool Player::Start()
 void Player::Update()
 {
 
+
 	Move();
 
 	Rotation();
@@ -54,42 +60,16 @@ void Player::Update()
 	m_playerRender.Update();
 }
 
+
 void Player::Move()
 {
-	Vector3 lstic;
-	lstic.x = 0.0f;
-	lstic.z = 0.0f;
-	//速度を初期化
-	m_moveSpeed.x *= SPEED_DOWN;
-	m_moveSpeed.z *= SPEED_DOWN;
-	//左ステックの情報を取得
-	lstic.x = g_pad[0]->GetLStickXF();
-	lstic.y = g_pad[0]->GetLStickYF();
-	//カメラの前方向と、右方向の取得
-	Vector3 cameraFoward = g_camera3D->GetForward();
-	Vector3 cameraRight = g_camera3D->GetRight();
-
-	//XZ平面での前方方向と右方向を取得
-	cameraFoward.y = 0.0f;
-	cameraFoward.Normalize();
-	cameraRight.y = 0.0f;
-	cameraRight.Normalize();
-	//もしAボタンが押されているなら
-	if (g_pad[0]->IsPress(enButtonA) ){
-		//左ステックと歩く速度を乗算させる
-		m_moveSpeed += cameraFoward * lstic.y * PLAYER_RUNSPEED * g_gameTime->GetFrameDeltaTime();
-		m_moveSpeed += cameraRight * lstic.x * PLAYER_RUNSPEED * g_gameTime->GetFrameDeltaTime();
-	}
-	else {
-		//左ステックと歩く速度を乗算させる
-		m_moveSpeed += cameraFoward * lstic.y * PLAYER_WALKSPEED * g_gameTime->GetFrameDeltaTime();
-		m_moveSpeed += cameraRight * lstic.x * PLAYER_WALKSPEED * g_gameTime->GetFrameDeltaTime();
-	}
-	m_position += m_moveSpeed;
+	
 }
 
 void Player::Rotation()
 {
+	m_moveSpeed = m_sphere->GetMoveSpeed();
+
 	//もし少しも動いていないなら
 	if (fabsf(m_moveSpeed.x) < 0.001f
 		&& fabsf(m_moveSpeed.z) < 0.001f) {

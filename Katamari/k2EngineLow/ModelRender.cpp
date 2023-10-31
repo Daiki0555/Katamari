@@ -232,13 +232,50 @@ namespace nsK2EngineLow {
 	{
 		//モデルのアップデート
 		UpdateWorldMatrixInModes();
-
+		
 
 		UpdateModelSkeletons();
 		
 
 		m_animation.Progress(g_gameTime->GetFrameDeltaTime() * m_animationSpeed);
 		
+	}
+
+	void ModelRender::InvolutionModelsUpdate(
+		Matrix matrix,
+		EnModelUpAxis modelUpAxis
+	)
+	{
+		SetWorldMatrixInModes(matrix);
+		
+		UpdateModelSkeletons();
+	}
+
+	void ModelRender::SetWorldMatrixInModes(Matrix matrix)
+	{
+		m_zprepassModel.SetWorldMatrix(matrix);
+		//ディファードレンダリング用のモデルの更新処理
+		if (m_renderToGBufferModel.IsInited()) {
+			m_renderToGBufferModel.SetWorldMatrix(matrix);
+		}
+
+		//フォワードレンダリング用のモデルの更新処理
+		if (m_forwardRenderModel.IsInited()) {
+			m_forwardRenderModel.SetWorldMatrix(matrix);
+		}
+
+		//トゥーンシェーダー用のモデルの更新処理
+		if (m_toonModel.IsInited()) {
+			m_toonModel.SetWorldMatrix(matrix);
+		}
+
+		for (auto& models : m_shadowModels) {
+			if (models.IsInited())
+			{
+				models.SetWorldMatrix(matrix);
+			}
+
+		}
 	}
 
 	void ModelRender::UpdateWorldMatrixInModes()

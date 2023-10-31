@@ -1,4 +1,6 @@
 #pragma once
+class Sphere;
+
 class Player :public IGameObject
 {
 public:
@@ -12,6 +14,8 @@ public:
 		m_enPlayer_InvincibleEnd,	//無敵終了
 		m_enPlayer_GameEnd,			//ゲーム終了
 	};
+
+
 
 	~Player();
 	bool Start();
@@ -64,14 +68,7 @@ public:
 		m_scale = scale;
 	}
 
-	/// <summary>
-	/// 移動速度の取得
-	/// </summary>
-	/// <returns></returns>
-	const Vector3 GetMoveSpeed()
-	{
-		return m_moveSpeed;
-	}
+
 
 	/// <summary>
 	/// プレイヤーの状態を設定
@@ -92,7 +89,6 @@ public:
 		return m_playerState;
 	}
 
-
 public:
 
 private:
@@ -106,6 +102,7 @@ private:
 	/// </summary>
 	void Rotation();
 
+	
 	/// <summary>
 	/// アニメーションの再生
 	/// </summary>
@@ -137,8 +134,11 @@ private:
 	void ManageState();
 
 private:
+	Sphere* m_sphere=nullptr;
+
 
 	ModelRender m_playerRender;
+
 
 	//アニメーション
 	enum EnAnimationClip {
@@ -147,17 +147,21 @@ private:
 		m_enAnimationClip_Run,				//走りアニメーション
 		m_enAnimationClip_Num,				//アニメーションの数
 	};
+	EnPlayerState m_playerState = m_enPlayer_Idle;				//待機状態
 	AnimationClip m_animationClips[m_enAnimationClip_Num];
-
 
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_moveSpeed = Vector3::Zero;
+
+
 	Vector3 m_scale = Vector3::One;
 
 	Quaternion m_rotation = Quaternion::Identity;
 	
 	CharacterController* m_characon;							//キャラコン
 
-	EnPlayerState m_playerState = m_enPlayer_Idle;				//待機状態
+	float m_radius = 0.0f;										//球体の半径
+
+	
 };
 

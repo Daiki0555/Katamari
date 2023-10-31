@@ -49,6 +49,15 @@ namespace nsK2EngineLow{
 		void Update();
 
 		/// <summary>
+		/// 巻き込まれたオブジェクトの更新処理
+		/// </summary>
+		void InvolutionModelsUpdate(
+			Matrix matrix,
+			EnModelUpAxis enModelUpAxis = enModelUpAxisZ
+		);
+
+
+		/// <summary>
 		/// 描画処理
 		/// </summary>
 		/// <param name="rc"></param>
@@ -79,7 +88,21 @@ namespace nsK2EngineLow{
 		/// <returns></returns>
 		Model& GetModel()
 		{
-			return m_model;
+			//ディファードレンダリング用のスケルトンのの更新処理
+			if (m_renderToGBufferModel.IsInited())
+			{
+				return m_renderToGBufferModel;
+			}
+			//フォワードレンダリング用のスケルトンの更新処理
+			if (m_forwardRenderModel.IsInited()) {
+				return m_forwardRenderModel;
+			}
+
+			//トゥーンシェーダー用のスケルトンのの更新処理
+			if (m_toonModel.IsInited()) {
+				return m_toonModel;
+			}
+
 		}
 
 		/// <summary>
@@ -143,6 +166,25 @@ namespace nsK2EngineLow{
 			m_animationSpeed = animationSpeed;
 		}
 
+
+		/// <summary>
+		/// 巻き込まれているかの設定
+		/// </summary>
+		/// <param name="flag"></param>
+		void SetIsInvolution(const bool flag)
+		{
+			m_isInvolution = flag;
+		}
+
+		/// <summary>
+		/// ワールド行列の代入
+		/// </summary>
+		/// <param name="matrix"></param>
+		void SetMatrix(const Matrix matrix)
+		{
+			m_setMatrix = matrix;
+		}
+
 		/// <summary>
 		/// ボーン名前からボーン番号を検索
 		/// </summary>
@@ -161,7 +203,6 @@ namespace nsK2EngineLow{
 		{
 			return m_skeleton.GetBone(boneNo);
 		}
-
 		/// <summary>
 		/// G-Buffer描画パスから呼ばれる処理
 		/// </summary>
@@ -283,6 +324,10 @@ namespace nsK2EngineLow{
 			EnModelUpAxis modelUpAxis
 		);
 
+		/// <summary>
+		/// ワールド行列を代入する
+		/// </summary>
+		void SetWorldMatrixInModes(Matrix matrix);
 
 		/// <summary>
 		/// 各種モデルのワールド行列を更新する。
@@ -293,10 +338,10 @@ namespace nsK2EngineLow{
 		/// 各種スケルトンを更新する
 		/// </summary>
 		void UpdateModelSkeletons();
+
+
 	private:
 
-
-		Model			m_model;
 		Model			m_renderToGBufferModel;
 		Model			m_forwardRenderModel;
 		Model			m_toonModel;
@@ -320,6 +365,10 @@ namespace nsK2EngineLow{
 		float			m_animationSpeed = 1.0f;			//アニメーションスピード
 		
 		bool			m_isUpdateAnimation = true;			//アニメーションを更新するかの判定
+
+		bool			m_isInvolution = false;				//巻き込まれているかの判定
+
+		Matrix			m_setMatrix;						//ワールド行行列を代入するためだけの変数
 	};
 }
 
