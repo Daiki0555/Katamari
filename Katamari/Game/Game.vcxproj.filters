@@ -4,6 +4,9 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{94b7925a-8666-44a3-ab76-22b977c59656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -17,8 +20,14 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Stick.cpp" />
+    <ClCompile Include="ObjectData.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="IMove.cpp" />
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -31,7 +40,13 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="BackGround.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Stick.h" />
+    <ClInclude Include="ObjectData.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="IMove.h" />
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

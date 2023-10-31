@@ -25,14 +25,24 @@ bool Sphere::Start()
 	m_game = FindGO<Game>("game");
 	m_stick = FindGO<Stick>("stick");
 
-	m_sphereRender.InitToonModel("Assets/modelData/sphere/sphere.tkm", 0, 0, enModelUpAxisY, true, false, true);
+	//スフィアモデルの情報の設定
+	m_sphereRender.InitToonModel("Assets/modelData/sphere/sphere.tkm",
+		0,
+		0, 
+		enModelUpAxisY, 
+		true, 
+		false, 
+		true
+	);
 	m_sphereRender.SetPosition(m_position);
 	m_sphereRender.SetRotation(m_rotation);
 	m_sphereRender.SetScale(m_scale);
 	m_sphereRender.Update();
 
+	//初期半径の設定
 	m_radius = INITIAL_RADIUS;
 
+	//キャラコンの設定
 	m_charaCon.Init(
 		100.0f,
 		100.0f,
@@ -63,10 +73,13 @@ void Sphere::Update()
 		g_gameTime->GetFrameDeltaTime()
 	);
 
-	m_beforePosition = m_position;
+	
 	m_sphereRender.SetRotation(m_rotation);
 	m_sphereRender.SetPosition(m_position);
 	m_sphereRender.Update();
+
+	//前の座標を記憶する
+	m_beforePosition = m_position;
 
 	//一番新しい塊のワールド行列が必要なので
 	//ここで巻き込まれたオブジェクトのワールド行列を計算する
@@ -100,6 +113,7 @@ void Sphere::Move()
 	cameraFoward.Normalize();
 	cameraRight.y = 0.0f;
 	cameraRight.Normalize();
+
 	//左ステックと歩く速度を乗算させる
 	if (m_stick->GetStickState() == Stick::m_enStick_Both){
 		m_moveSpeed += cameraFoward * stick.y * ALWAYS_SPEED * g_gameTime->GetFrameDeltaTime();
@@ -108,9 +122,11 @@ void Sphere::Move()
 
 	//もし地面に着いていないなら
 	if (m_charaCon.IsOnGround() == false){
+		//落下するようにする
 		m_moveSpeed.y -= GRAVITY * g_gameTime->GetFrameDeltaTime();
 	}
 	else {
+		//落下しないようにする
 		m_moveSpeed.y = 0.0f;
 	}
 
@@ -120,15 +136,17 @@ void Sphere::Move()
 void Sphere::Rotation()
 {
 	const float rotationSpeed = 3.0f;//=1.0f*(m_protMoveSpeedMultiply/ m_moveSpeedMultiply);
-
+	//前の座標との差分を求める
 	Vector3 move = m_position - m_beforePosition;
 	move.y = 0.0f;
 
+	//動いていないなら
 	if (fabsf(move.x) < 0.001f
 		&& fabsf(move.z) < 0.001f) {
 		return;
 	}
 	
+	//進行方向のベクトルの長さを求める
 	float length = move.Length();
 
 	//ノーマライズして移動方向の方向ベクトルを求める

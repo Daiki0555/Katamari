@@ -227,8 +227,10 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="IMove.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectData.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -244,7 +246,9 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="IMove.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectData.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="stdafx.h" />

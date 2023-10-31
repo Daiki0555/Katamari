@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Sphere.h"
 namespace {
-	const float		HIT_OBJECT = 15.0f;					// ‰ò‚É“–‚½‚é”ÍˆÍ
+	const float		HIT_OBJECT = 10.0f;					// ‰ò‚É“–‚½‚é”ÍˆÍ
 }
 Object::~Object()
 {

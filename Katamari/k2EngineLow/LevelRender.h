@@ -2,9 +2,9 @@
 #include "level3D/TklFile.h"
 namespace nsK2EngineLow {
 
-	struct LevelObjeData {
+	struct LevelObjecData {
 		Vector3			position;		//座標
-		Quaternion		rotaition;		//回転
+		Quaternion		rotation;		//回転
 		Vector3			scale;			//大きさ
 		const wchar_t* name;			//名前
 		int				number = 0;		//番号
@@ -42,15 +42,17 @@ namespace nsK2EngineLow {
 		LevelRender();
 		~LevelRender();
 		/// <summary>
-		/// 初期化処理
+		/// 初期化処理。
 		/// </summary>
-		void Init(const char* filePath, std::function<bool(LevelObjeData& objData)>hookFunc);
+		/// <param name="filePath"></param>
+		/// <param name="hookFunc"></param>
+		void Init(const char* filePath, std::function<bool(LevelObjecData& objData)> hookFunc);
 
 	private:
 		/// <summary>
 		/// Tklファイルの行列を変換する
 		/// </summary>
-		void MatrixTklToLever();
+		void MatrixTklToLevel();
 	private:
 		using BonePtr = std::unique_ptr<Bone>;		//ボーンのポインタ
 		std::vector<BonePtr>	m_boneList;			//ボーンのリスト

@@ -8,7 +8,7 @@ BackGround::~BackGround()
 bool BackGround::Start()
 {
 	m_backRender.InitDeferredRendering(
-		"Assets/modelData/stage/siba.tkm",
+		"Assets/modelData/stage/Stage/Stage.tkm",
 		0,
 		0, 
 		enModelUpAxisZ, 
@@ -21,13 +21,6 @@ bool BackGround::Start()
 	m_backRender.SetScale(m_scale);
 	m_backRender.Update();
 
-	Matrix matrix;
-	matrix = m_backRender.GetModel().CalcWorldMatrix(
-		m_position,
-		m_rotation,
-		m_scale
-	);
-
 
 	m_physicsObj.CreateFromModel(
 		m_backRender.GetModel(), 
@@ -38,7 +31,7 @@ bool BackGround::Start()
 
 void BackGround::Update()
 {
-	
+
 }
 
 void BackGround::Render(RenderContext& rc)
