@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Object.h"
 #include "Sphere.h"
+#include "IMove.h"
 namespace {
 	const float		HIT_OBJECT = 10.0f;					// ‰ò‚É“–‚½‚é”ÍˆÍ
 }
@@ -16,10 +17,6 @@ bool Object::Start()
 	InitObject();
 	InitCollision();
 
-	/*m_physicsObj.CreateFromModel(
-		m_objectRender.GetModel(), 
-		m_objectRender.GetModel().GetWorldMatrix()
-	);*/
 	return true;
 }
 
@@ -52,11 +49,16 @@ void Object::Update()
 	}
 	else
 	{
-		
+		Move();
 		Hit();
 		m_objectRender.Update();
 	}
 
+	
+}
+
+void Object::Move()
+{
 	
 }
 

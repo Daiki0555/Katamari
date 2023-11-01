@@ -229,6 +229,10 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="IMove.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MoveFB.cpp" />
+    <ClCompile Include="MoveLR.cpp" />
+    <ClCompile Include="MoveRand.cpp" />
+    <ClCompile Include="MoveUD.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectData.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -247,6 +251,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="IMove.h" />
+    <ClInclude Include="MoveFB.h" />
+    <ClInclude Include="MoveLR.h" />
+    <ClInclude Include="MoveRand.h" />
+    <ClInclude Include="MoveUD.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectData.h" />
     <ClInclude Include="Player.h" />

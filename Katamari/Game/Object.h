@@ -1,6 +1,7 @@
 #pragma once
 class Sphere;
 class Game;
+class IMove;
 class Object :public IGameObject
 {
 public:
@@ -82,6 +83,12 @@ public:
 	/// </summary>
 	void CalcMatrix();
 private:
+
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void Move();
+
 	/// <summary>
 	/// オブジェクトの読み込み処理
 	/// </summary>
@@ -114,7 +121,7 @@ private:
 	Quaternion m_rotation = Quaternion::Identity;
 	Matrix m_matInCore;										//塊（コア）を含む行列
 	Matrix m_objectWorldMatrix;								//巻き込み後のオブジェクトのワールド行列
-
+	IMovePtr
 	EnObjectState m_objectState = m_enObject_NotInvolution;
 };
 
