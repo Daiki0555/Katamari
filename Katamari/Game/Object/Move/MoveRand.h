@@ -1,4 +1,5 @@
 #pragma once
+#include "IMove.h"
 class MoveRand :public IMove
 {
 public:

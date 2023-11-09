@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameCamera.h"
-#include "Sphere.h"
+#include "Player/Sphere.h"
 #include "Stick.h"
 namespace
 {

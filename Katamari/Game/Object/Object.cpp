@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Object.h"
-#include "Sphere.h"
-#include "IMove.h"
+#include "Player/Sphere.h"
+#include "Move/MoveFB.h"
+#include "Move/MoveLR.h"
+#include "Move/MoveUD.h"
+#include "Move/MoveRand.h"
 namespace {
 	const float		HIT_OBJECT = 10.0f;					// ‰ò‚É“–‚½‚é”ÍˆÍ
 }
@@ -41,6 +44,30 @@ void Object::InitCollision()
 
 }
 
+void Object::InitMove(EnMoveState state)
+{
+	switch (state)
+	{
+	case m_enMove_LR:
+		m_objectMove = std::make_unique<MoveFB>();
+		break;
+	case m_enMove_FB:
+		m_objectMove = std::make_unique<MoveLR>();
+		break;
+	case m_enMove_UD:
+		m_objectMove = std::make_unique<MoveUD>();
+		break;
+	case m_enMove_Rand:
+		m_objectMove = std::make_unique<MoveRand>();
+		break;
+	case m_enMove_No:
+		break;
+	default:
+		break;
+	}
+	
+}
+
 void Object::Update()
 {
 	if (m_objectState != m_enObject_NotInvolution)
@@ -59,7 +86,7 @@ void Object::Update()
 
 void Object::Move()
 {
-	
+	//m_objectMove->Move();
 }
 
 void Object::Hit()

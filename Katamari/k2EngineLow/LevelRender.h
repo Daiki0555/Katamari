@@ -6,7 +6,7 @@ namespace nsK2EngineLow {
 		Vector3			position;		//À•W
 		Quaternion		rotation;		//‰ñ“]
 		Vector3			scale;			//‘å‚«‚³
-		const wchar_t* name;			//–¼‘O
+		const wchar_t*  name;			//–¼‘O
 		int				number = 0;		//”Ô†
 
 		/// <summary>

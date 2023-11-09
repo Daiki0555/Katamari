@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "MoveRand.h"
-#include "IMove.h"
 MoveRand::~MoveRand()
 {
 

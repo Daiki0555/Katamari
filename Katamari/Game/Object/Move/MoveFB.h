@@ -1,8 +1,10 @@
 #pragma once
-class MoveLR :public IMove
+#include "IMove.h"
+class MoveFB:public IMove
 {
 public:
-	~MoveLR()override;
+
+	~MoveFB()override;
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -16,7 +18,9 @@ public:
 	/// ˆÚ“®ˆ—
 	/// </summary>
 	const Vector3& Move() override;
+
 public:
 private:
 private:
 };
+

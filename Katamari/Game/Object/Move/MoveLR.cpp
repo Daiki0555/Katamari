@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "MoveLR.h"
-#include "IMove.h"
 MoveLR::~MoveLR()
 {
 

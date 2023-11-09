@@ -227,16 +227,16 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="IMove.cpp" />
+    <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MoveFB.cpp" />
-    <ClCompile Include="MoveLR.cpp" />
-    <ClCompile Include="MoveRand.cpp" />
-    <ClCompile Include="MoveUD.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectData.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Object\Move\MoveFB.cpp" />
+    <ClCompile Include="Object\Move\MoveLR.cpp" />
+    <ClCompile Include="Object\Move\MoveRand.cpp" />
+    <ClCompile Include="Object\Move\MoveUD.cpp" />
+    <ClCompile Include="Object\Object.cpp" />
+    <ClCompile Include="Object\ObjectData.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Player\Sphere.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -244,24 +244,26 @@
     </ClCompile>
     <ClCompile Include="Stick.cpp" />
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="Object\WordManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="IMove.h" />
-    <ClInclude Include="MoveFB.h" />
-    <ClInclude Include="MoveLR.h" />
-    <ClInclude Include="MoveRand.h" />
-    <ClInclude Include="MoveUD.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectData.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Object\Move\IMove.h" />
+    <ClInclude Include="Object\Move\MoveFB.h" />
+    <ClInclude Include="Object\Move\MoveLR.h" />
+    <ClInclude Include="Object\Move\MoveRand.h" />
+    <ClInclude Include="Object\Move\MoveUD.h" />
+    <ClInclude Include="Object\Object.h" />
+    <ClInclude Include="Object\ObjectData.h" />
+    <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="Player\Sphere.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stick.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="Object\WordManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

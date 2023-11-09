@@ -25,7 +25,9 @@
 #include <dxgi.h>
 #include <dxgitype.h>
 #include <dxgiformat.h>
-
+#include <string>
+#include <fstream>
+#include <sstream>
 
 #include "DirectXTK/Inc/CommonStates.h"
 #include "DirectXTK/Inc/SpriteBatch.h"

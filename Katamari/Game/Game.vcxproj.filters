@@ -19,32 +19,33 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Player\Sphere.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Stick.cpp" />
-    <ClCompile Include="ObjectData.cpp">
+    <ClCompile Include="Object\ObjectData.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="IMove.cpp">
+    <ClCompile Include="Object\Move\IMove.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="MoveLR.cpp">
+    <ClCompile Include="Object\Move\MoveLR.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="MoveFB.cpp">
+    <ClCompile Include="Object\Move\MoveFB.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="MoveUD.cpp">
+    <ClCompile Include="Object\Move\MoveUD.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
-    <ClCompile Include="MoveRand.cpp">
+    <ClCompile Include="Object\Move\MoveRand.cpp">
       <Filter>Object\Move</Filter>
     </ClCompile>
+    <ClCompile Include="Object\WordManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -53,31 +54,32 @@
     </ClInclude>
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="Player\Sphere.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Stick.h" />
-    <ClInclude Include="ObjectData.h">
+    <ClInclude Include="Object\ObjectData.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="Object\Object.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="IMove.h">
+    <ClInclude Include="Object\Move\IMove.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveLR.h">
+    <ClInclude Include="Object\Move\MoveLR.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveFB.h">
+    <ClInclude Include="Object\Move\MoveFB.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveUD.h">
+    <ClInclude Include="Object\Move\MoveUD.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
-    <ClInclude Include="MoveRand.h">
+    <ClInclude Include="Object\Move\MoveRand.h">
       <Filter>Object\Move</Filter>
     </ClInclude>
+    <ClInclude Include="Object\WordManager.h" />
   </ItemGroup>
 </Project>

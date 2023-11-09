@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Sphere.h"
-#include "Object.h"
+#include "Object/Object.h"
 #include "Game.h"
 #include "Stick.h"
 namespace 

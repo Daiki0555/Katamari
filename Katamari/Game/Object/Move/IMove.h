@@ -12,11 +12,17 @@ enum EnMoveState {
 /// <summary>
 /// オブジェクト移動の基底クラス
 /// </summary>
-class IMove : public IGameObject
+class IMove 
 {
 public:
 	virtual ~IMove(){};
 
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="rot"></param>
 	virtual void Init(const Vector3& pos,const Quaternion& rot){};
 
 	/// <summary>
