@@ -12,18 +12,24 @@ enum EnMoveState {
 /// <summary>
 /// オブジェクト移動の基底クラス
 /// </summary>
-class IMove : public IGameObject
+class IMove 
 {
 public:
-	IMove(){};
 	virtual ~IMove(){};
 
-	virtual void Init(){};
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="rot"></param>
+	virtual void Init(const Vector3& pos,const Quaternion& rot){};
 
 	/// <summary>
 	/// 移動処理
 	/// </summary>
-	virtual void Move(){};
+	virtual const Vector3& Move() { return Vector3::Zero; };
+
 	
 	/// <summary>
 	/// 移動ステートを取得
@@ -46,7 +52,10 @@ public:
 protected:
 	Vector3 m_position = Vector3::Zero;
 	float m_moveSpeed = 0.0f;
+
+	Quaternion m_rotation = Quaternion::Identity;
 private:
 	EnMoveState m_moveState;					//移動のステート
 
 };
+using IMovePtr = std::unique_ptr<IMove>;

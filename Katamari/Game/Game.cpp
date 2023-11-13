@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "Player.h"
-#include "Sphere.h"
+#include "Player/Player.h"
+#include "Player/Sphere.h"
 #include "GameCamera.h"
 #include "BackGround.h"
-#include "Object.h"
+#include "Object/Object.h"
+#include "Object/ObjectData.h"
 #include "Stick.h"
+#include "Object/WordManager.h"
 Game::Game()
 {
 	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
@@ -32,7 +34,7 @@ bool Game::Start()
 
 void Game::InitLevel()
 {
-
+	
 	LevelRender LevelRender;
 	LevelRender.Init("Assets/modelData/level/dagasi.tkl",[&](LevelObjecData& objdata) {
 		if (objdata.ForwardMatchName(L"katamari")){
@@ -57,12 +59,28 @@ void Game::InitLevel()
 			backGround->SetRotation(objdata.rotation);
 			return true;
 		}
-		else if (objdata.ForwardMatchName(L"obj")) {
-			Object* object = NewGO<Object>(0, "object");
-			object->SetPosition(objdata.position);
-			object->SetRotation(objdata.rotation);
-			object->SetScale(objdata.scale);
-			m_objctList.emplace_back(object);
+		else if (objdata.ForwardMatchName(L"o")) {
+			for (auto objectData : ObjectData::GetInstance()->GetObjectData())
+			{
+				//wchar_t型に変換した後
+				//レベルと名前が一致するかを求める
+				std::wstring wchar(objectData.m_name.begin(), objectData.m_name.end());
+				if (objdata.ForwardMatchName(wchar.c_str()))
+				{
+					Object* object = NewGO<Object>(0, "object");
+					//名前から移動方法を求める
+					StructMoveState moveState = SerchMove(objdata.name);
+					object->InitMove(moveState.state);
+					object->SetObjectData(&objectData);
+					object->SetPosition(objdata.position);
+					object->SetRotation(objdata.rotation);
+					object->SetScale(objdata.scale);
+					m_objctList.emplace_back(object);
+					
+				}
+			
+			}
+			return true;
 		}
 			
 		});
