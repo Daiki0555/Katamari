@@ -83,6 +83,15 @@ namespace nsK2EngineLow {
 		{
 			return m_currentViewport;
 		}
+
+		/// <summary>
+		/// ビューポートを取得。
+		/// </summary>
+		/// <returns></returns>
+		void SetViewport(const D3D12_VIEWPORT& vierporet)
+		{
+			m_currentViewport = vierporet;
+		}
 		/// <summary>
 		/// シザリング矩形を設定
 		/// </summary>

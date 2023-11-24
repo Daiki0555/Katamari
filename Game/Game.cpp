@@ -8,6 +8,7 @@
 #include "Object/ObjectData.h"
 #include "Stick.h"
 #include "Object/WordManager.h"
+#include "GameUI/ObjectUI.h"
 namespace {
 	int a = 0;
 }
@@ -22,10 +23,11 @@ Game::~Game()
 bool Game::Start()
 {
 	NewGO<Stick>(0,"stick");
-
+	NewGO<ObjectUI>(0, "objectUI");
 	InitLevel();
 	
 	NewGO<GameCamera>(0,"gameCamera");
+	
 
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);

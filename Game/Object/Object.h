@@ -4,6 +4,7 @@
 class Sphere;
 class Game;
 class IMove;
+class ObjectUI;
 class Object :public IGameObject
 {
 public:
@@ -139,6 +140,8 @@ private:
 	StructObjectData* m_objData;											//オブジェクトのデータ
 	
 	Sphere* m_sphere;
+
+	ObjectUI* m_objectUI;
 	
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_scale = Vector3::Zero;

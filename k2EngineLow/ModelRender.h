@@ -34,7 +34,8 @@ namespace nsK2EngineLow{
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
 			const bool isShadow = false,
 			const bool isShadowReceiver = false,
-			const bool isOutline=false
+			const bool isOutline=false,
+			const bool isWipeModel = false
 		);
 
 		/// <summary>
@@ -243,6 +244,15 @@ namespace nsK2EngineLow{
 		}
 
 		/// <summary>
+		/// ワイプ処理から呼ばれる
+		/// </summary>
+		/// <param name="rc"></param>
+		void OnWipeModelRender(RenderContext& rc, Camera& camera) override
+		{
+			m_wipeModel.Draw(rc,camera,1);
+		}
+
+		/// <summary>
 		/// シャドウマップへの描画パスから呼ばれる処理。
 		/// </summary>
 		/// <param name="rc">レンダリングコンテキスト</param>
@@ -299,7 +309,8 @@ namespace nsK2EngineLow{
 			EnModelUpAxis modelUpAxis,
 			const bool isShadow,
 			const bool isShadowReceiver,
-			const bool isOutline
+			const bool isOutline,
+			const bool isWipeModel
 		);
 
 
@@ -324,6 +335,7 @@ namespace nsK2EngineLow{
 			EnModelUpAxis modelUpAxis
 		);
 
+
 		/// <summary>
 		/// ワールド行列を代入する
 		/// </summary>
@@ -347,7 +359,8 @@ namespace nsK2EngineLow{
 		Model			m_toonModel;
 		Model			m_zprepassModel;
 		Model			m_shadowModels[NUM_SHADOW_MAP];						//影があるモデル
-		
+		Model			m_wipeModel;
+
 		Skeleton		m_skeleton;							
 
 		EnModelUpAxis	m_enFbxUpAxis = enModelUpAxisZ;		//モデルの上方向

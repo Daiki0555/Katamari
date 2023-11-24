@@ -5,7 +5,7 @@
 struct StructObjectData
 {
 	std::string m_name;			//オブジェクトデータの名前
-	const char* m_jName;		//日本語での名前
+	std::string m_jName;		//日本語での名前
 	float m_volume;				//オブジェクトの体積
 };
 
@@ -63,6 +63,7 @@ public:
 	}
 public:
 private:
+
 private:
 	std::vector<StructObjectData> objects;
 	static ObjectData* m_instance;

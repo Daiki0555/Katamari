@@ -49,6 +49,15 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
+		/// ワイプ処理呼ばれる処理
+		/// </summary>
+		/// <param name="rc"></param>
+		virtual void OnWipeModelRender(RenderContext& rc, Camera& camera)
+		{
+
+		}
+
+		/// <summary>
 		/// シャドウマップへの描画パスから呼ばれる処理。
 		/// </summary>
 		/// <param name="rc">レンダリングコンテキスト</param>

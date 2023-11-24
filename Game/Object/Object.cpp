@@ -5,6 +5,7 @@
 #include "Move/MoveLR.h"
 #include "Move/MoveUD.h"
 #include "Move/MoveRand.h"
+#include "GameUI/ObjectUI.h"
 namespace {
 	const float		HIT_OBJECT = 10.0f;					// 塊に当たる範囲
 }
@@ -16,7 +17,7 @@ Object::~Object()
 bool Object::Start()
 {
 	m_sphere = FindGO<Sphere>("sphere");
-
+	m_objectUI = FindGO<ObjectUI>("objectUI");
 	InitCollision();
 
 	return true;
@@ -99,7 +100,9 @@ void Object::Move()
 
 void Object::Hit()
 {
-	Vector3 diff = m_sphere->GetPosition() - m_position;
+	Vector3 pos = m_sphere->GetPosition();
+	pos.y = 0.0f;
+	Vector3 diff = pos - m_position;
 	if (diff.Length() <= HIT_OBJECT)
 	{
 		Involution();
@@ -127,6 +130,7 @@ void Object::Involution()
 	mWorld =  mScale * mRot * mTrans;
 	//塊（コア）を含むオブジェクトのワールド行列と塊の逆行列を計算する
 	m_matInCore.Multiply(mWorld, inverseMatrix);
+	m_objectUI->InitWipeModelUI(*m_objData);
 }
 
 void Object::CalcMatrix()

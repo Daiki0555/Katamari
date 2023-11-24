@@ -40,6 +40,9 @@ namespace nsK2EngineLow {
 				albedoMap->InitFromMemory(map, mapSize);
 				g_engine->RegistTextureToBank(filePath, albedoMap);
 			}
+			else {
+				//albedoMap->AddRef();
+			}
 			m_albedoMap = albedoMap;
 		}
 
@@ -52,7 +55,7 @@ namespace nsK2EngineLow {
 				map = tkmMat.normalMap->data.get();
 				mapSize = tkmMat.normalMap->dataSize;
 			}
-			else
+			elsehttps://files.slack.com/files-pri/T03P8GZ5146-F061HKVGXCZ/download/texture.h?origin_team=T03P8GZ5146
 			{
 				filePath = nullTextureMaps.GetNormalMapFilePath();
 				map = nullTextureMaps.GetNormalMap().get();
@@ -65,6 +68,9 @@ namespace nsK2EngineLow {
 				normalMap = new Texture();
 				normalMap->InitFromMemory(map, mapSize);
 				g_engine->RegistTextureToBank(filePath, normalMap);
+			}
+			else {
+				//normalMap->AddRef();
 			}
 			m_normalMap = normalMap;
 		}
@@ -93,6 +99,9 @@ namespace nsK2EngineLow {
 				specularMap->InitFromMemory(map, mapSize);
 				g_engine->RegistTextureToBank(filePath, specularMap);
 			}
+			else {
+				//specularMap->AddRef();
+			}
 			m_specularMap = specularMap;
 		}
 
@@ -118,6 +127,9 @@ namespace nsK2EngineLow {
 				reflectionMap->InitFromMemory(map, mapSize);
 				g_engine->RegistTextureToBank(filePath, reflectionMap);
 			}
+			else {
+				//reflectionMap->AddRef();
+			}
 			m_reflectionMap = reflectionMap;
 		}
 
@@ -142,6 +154,9 @@ namespace nsK2EngineLow {
 				refractionMap = new Texture();
 				refractionMap->InitFromMemory(map, mapSize);
 				g_engine->RegistTextureToBank(filePath, refractionMap);
+			}
+			else {
+				//refractionMap->AddRef();
 			}
 			m_refractionMap = refractionMap;
 		}
@@ -213,9 +228,9 @@ namespace nsK2EngineLow {
 			InitShaders(fxFilePath, vsEntryPointFunc, vsSkinEntryPointFunc, psEntryPointFunc);
 			//パイプラインステートを初期化。
 			InitPipelineState(
-				colorBufferFormat, 
-				alphaBlendMode, 
-				isDepthWrite, 
+				colorBufferFormat,
+				alphaBlendMode,
+				isDepthWrite,
 				isDepthTest,
 				cullMode
 			);

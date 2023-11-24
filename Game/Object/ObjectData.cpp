@@ -5,7 +5,7 @@ void ObjectData::Init()
 {
 	FILE* fp = NULL;
 	
-	std::string fname = "Assets/Excel/ObjectData.csv";
+	std::string fname = "Assets/Excel/ObjectDat.csv";
 	std::string buf;
 
 	// 読み込むcsvファイルを開く
@@ -26,7 +26,7 @@ void ObjectData::Init()
 
 		//日本語のオブジェクト名を読み込む
 		std::getline(stream, buf, ',');
-		objectData.m_jName = buf.c_str();
+		objectData.m_jName = buf;
 
 		//オブジェクトの体積を読み込む
 		std::getline(stream, buf, ',');

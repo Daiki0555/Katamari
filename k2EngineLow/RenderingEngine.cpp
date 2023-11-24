@@ -2,6 +2,13 @@
 #include "RenderingEngine.h"
 namespace nsK2EngineLow
 {
+	namespace {
+		const Vector3 WIPE_CAMERA_POSITION = { 11200.0f, 400.0f, 1300.0f };
+		const Vector3 WIPE_CAMERA_TARGET = { 11200.0f, 50.0f, 1200.0f };
+		const float WIPE_CAMERA_NEAR = 150.0f;
+		const float WIPE_CAMERA_FAR = 5000.0f;
+	}
+
 	RenderingEngine* RenderingEngine::m_instance = nullptr;
 	RenderingEngine::RenderingEngine()
 	{
@@ -27,6 +34,8 @@ namespace nsK2EngineLow
 		InitDeferredLighting();
 
 		Init2DRenderTarget();
+
+		InitViewPort();
 
 		m_postEffect.Init(m_mainRenderTarget);
 	}
@@ -137,6 +146,7 @@ namespace nsK2EngineLow
 		// シーンライトのデータをコピー。
 		m_lightingCB.m_light = SceneLight::GetSceneLightClass()->GetSceneLight();
 
+
 		// ポストエフェクト的にディファードライティングを行うためのスプライトを初期化
 		SpriteInitData m_deferredSpriteInitData;
 
@@ -158,6 +168,8 @@ namespace nsK2EngineLow
 		{
 			m_deferredSpriteInitData.m_textures[texNo++] = &m_shadowMapRenders.GetShadowMap(areaNo);
 		}
+
+
 
 		m_deferredSpriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
@@ -209,15 +221,35 @@ namespace nsK2EngineLow
 		m_mainSprite.Init(spriteInitData);
 	}
 
+	void RenderingEngine::InitViewPort()
+	{
+		//通常画面の描画
+		m_viewPorts[0].Width = FRAME_BUFFER_W;		//画面の横サイズ
+		m_viewPorts[0].Height = FRAME_BUFFER_H;   //画面の縦サイズ
+		m_viewPorts[0].TopLeftX = 0;   //画面左上のx座標
+		m_viewPorts[0].TopLeftY = 0;   //画面左上のy座標
+		m_viewPorts[0].MinDepth = 0.0f;   //深度値の最小値
+		m_viewPorts[0].MaxDepth = 1.0f;   //深度値の最大値
+
+		//ワイプ画面の描画。
+		m_viewPorts[1].Width = 960 / 4 + 3;   //画面の横サイズ
+		m_viewPorts[1].Height = 540 / 4 + 3;   //画面の縦サイズ
+		m_viewPorts[1].TopLeftX = -290;   //画面左上のx座標
+		m_viewPorts[1].TopLeftY = 662;   //画面左上のy座標
+		m_viewPorts[1].MinDepth = 0.0f;   //深度値の最小値
+		m_viewPorts[1].MaxDepth = 0.5f;   //深度値の最大値
+		
+		//ワイプカメラを初期化
+		m_wipeCamera.SetPosition(WIPE_CAMERA_POSITION);
+		m_wipeCamera.SetTarget(WIPE_CAMERA_TARGET);
+		m_wipeCamera.SetNear(WIPE_CAMERA_NEAR);
+		m_wipeCamera.SetFar(WIPE_CAMERA_FAR);
+		m_wipeCamera.Update();
+	}
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
-		//ライティングに必要なライト情報を更新する
-		m_lightingCB.m_light = SceneLight::GetSceneLightClass()->GetSceneLight();
-		for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
-		{
-			m_lightingCB.mlvp[areaNo] = m_shadowMapRenders.GetLVPMatrix(areaNo);
-		}
+
 
 		RenderToShadowMap(rc);		
 		
@@ -297,6 +329,15 @@ namespace nsK2EngineLow
 
 	void RenderingEngine::DeferredLighting(RenderContext& rc)
 	{
+
+		//ライティングに必要なライト情報を更新する
+		m_lightingCB.m_light = SceneLight::GetSceneLightClass()->GetSceneLight();
+
+		for (int areaNo = 0; areaNo < NUM_SHADOW_MAP; areaNo++)
+		{
+			m_lightingCB.mlvp[areaNo] = m_shadowMapRenders.GetLVPMatrix(areaNo);
+		}
+
 		BeginGPUEvent("DeferredLighting");
 		// レンダリング先をメインレンダリングターゲットにする
 	    // メインレンダリングターゲットを設定
@@ -322,7 +363,8 @@ namespace nsK2EngineLow
 			m_gBuffer[enGBuffer_AlbedoDepth].GetDSVCpuDescriptorHandle()
 		);
 
-		
+		//ビューポートを設定。
+		rc.SetViewportAndScissor(m_viewPorts[0]);
 		for (auto& forwardObj : m_renderObjects) {
 			forwardObj->OnForwardRender(rc);
 		}
@@ -332,6 +374,13 @@ namespace nsK2EngineLow
 			toonObj->OnToonRender(rc);
 		}
 
+		//ビューポートを設定。
+		rc.SetViewport(m_viewPorts[1]);
+
+
+		for (auto& wipeModel : m_renderObjects) {
+			wipeModel->OnWipeModelRender(rc, m_wipeCamera);
+		}
 		// メインレンダリングターゲットへの書き込み終了待ち
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
 		

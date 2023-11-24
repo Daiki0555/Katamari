@@ -28,8 +28,6 @@ namespace nsK2EngineLow {
 		//モデルの初期化
 		InitDeferredModel(filePath, enModelUpAxis, isShadow, isShadowReceiver);
 
-		//InitZPrepassModel(filePath,enModelUpAxis);
-
 		//各種ワールド行列を更新する
 		UpdateWorldMatrixInModes();
 	}
@@ -41,7 +39,8 @@ namespace nsK2EngineLow {
 		EnModelUpAxis enModelUpAxis,
 		const bool isShadow,
 		const bool isShadowReceiver,
-		const bool isOutline 
+		const bool isOutline,
+		const bool isWipeModel
 	)
 	{
 		//スケルトンの初期化
@@ -51,7 +50,7 @@ namespace nsK2EngineLow {
 		InitAnimation(animationClips, numAnimationClips, enModelUpAxis);
 
 		//モデルの初期化
-		InitModelOnToon(filePath, enModelUpAxis, isShadow, isShadowReceiver,isOutline);
+		InitModelOnToon(filePath, enModelUpAxis, isShadow, isShadowReceiver,isOutline, isWipeModel);
 
 		//各種ワールド行列を更新する
 		UpdateWorldMatrixInModes();
@@ -140,7 +139,8 @@ namespace nsK2EngineLow {
 		EnModelUpAxis modelUpAxis,
 		const bool isShadow,
 		const bool isShadowReceiver,
-		const bool isOutline
+		const bool isOutline,
+		const bool isWipeModel
 	)
 	{
 		//通常モデルの初期化
@@ -182,6 +182,11 @@ namespace nsK2EngineLow {
 		if (isShadow) {
 			//シャドウ用のモデルの初期化
 			InitShadowModel(tkmFilePath, modelUpAxis);
+		}
+
+		if (isWipeModel) {
+			//ワイプ用モデルの初期化
+			m_wipeModel.Init(modelInitData);
 		}
 	}
 

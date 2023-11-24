@@ -86,6 +86,15 @@ namespace nsK2EngineLow
 			return m_zprepassRenderTarget.GetRenderTargetTexture();
 		}
 
+		/// <summary>
+		/// ワイプ用のビューポートを取得
+		/// </summary>
+		/// <returns></returns>
+		D3D12_VIEWPORT& GetWipeViewPort()
+		{
+			return m_viewPorts[1];
+		}
+
 	public:
 	private:
 		/// <summary>
@@ -124,6 +133,11 @@ namespace nsK2EngineLow
 		/// ZPrepass用のレンダリングターゲットを初期化
 		/// </summary>
 		void InitZPrepassRenderTarget();
+
+		/// <summary>
+		/// ビューポートの初期化
+		/// </summary>
+		void InitViewPort();
 
 		/// <summary>
 		/// シャドウマップに描画
@@ -200,6 +214,10 @@ namespace nsK2EngineLow
 		RenderTarget m_zprepassRenderTarget;							//Zプレパス
 
 		std::vector<IRenderer*> m_renderObjects;
+
+		Camera m_wipeCamera;
+
+		D3D12_VIEWPORT			m_viewPorts[2];
 	};
 }
 
