@@ -2,7 +2,7 @@
 #include "Object/ObjectData.h"
 namespace 
 {
-	const int OBJECT_NUM_SORT=15;
+	const int OBJECT_NUM_SORT=2;
 }
 class ObjectUI : public IGameObject
 {
@@ -15,9 +15,17 @@ public:
 	/// ワイプに表示するモデルを求める
 	/// </summary>
 	/// <param name="objectData"></param>
-	void InitWipeModelUI(const StructObjectData& objectData);
+	void InitWipeModelUI(const StructObjectData objectData);
 
-
+	/// <summary>
+	/// 大きさの設定
+	/// </summary>
+	/// <param name="scale"></param>
+	/// <returns></returns>
+	const void SetScale(const Vector3 scale)
+	{
+		m_scale = scale;
+	}
 public:
 
 private:
@@ -26,7 +34,7 @@ private:
 	/// <summary>
 	/// ワイプ用カメラの回転
 	/// </summary>
-	void WipeCameraRotation();
+	void Rotation();
 
 	/// <summary>
 	/// ワイプを描画出来る時間
@@ -51,5 +59,6 @@ private:
 	ObjectUIDatas m_objectUIDatas[OBJECT_NUM_SORT];
 
 	float m_drawTimer = 0.0f;
+	int m_levelNumber = 0;
 };
 

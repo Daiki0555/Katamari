@@ -81,6 +81,15 @@ public:
 	}
 
 	/// <summary>
+	/// 大きさの取得
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 GetScale()const
+	{
+		return m_scale;
+	}
+
+	/// <summary>
 	/// オブジェクトの状態を取得
 	/// </summary>
 	/// <returns></returns>
@@ -98,12 +107,19 @@ public:
 	/// オブジェクトデータを設定する
 	/// </summary>
 	/// <param name="objdata"></param>
-	const void SetObjectData(StructObjectData* objdata)
+	const void SetObjectData(const StructObjectData objdata)
 	{
 		m_objData = objdata;
 	}
 
-	
+	/// <summary>
+	/// オブジェクトの名前を返す
+	/// </summary>
+	/// <returns></returns>
+	const std::string GetObjectName()const
+	{
+		return m_objData.m_name;
+	}
 
 private:
 
@@ -137,7 +153,7 @@ private:
 	CollisionObject m_collisionObject;
 	PhysicsStaticObject m_physicsObj;
 	
-	StructObjectData* m_objData;											//オブジェクトのデータ
+	StructObjectData m_objData;											//オブジェクトのデータ
 	
 	Sphere* m_sphere;
 

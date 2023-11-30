@@ -107,7 +107,7 @@ void Object::Hit()
 	{
 		Involution();
 		m_objectState = m_enObject_Involution;
-		m_sphere->AddVolume(m_objData->m_volume);
+		m_sphere->AddVolume(m_objData.m_volume);
 	}
 }
 
@@ -130,7 +130,7 @@ void Object::Involution()
 	mWorld =  mScale * mRot * mTrans;
 	//塊（コア）を含むオブジェクトのワールド行列と塊の逆行列を計算する
 	m_matInCore.Multiply(mWorld, inverseMatrix);
-	m_objectUI->InitWipeModelUI(*m_objData);
+	m_objectUI->InitWipeModelUI(m_objData);
 }
 
 void Object::CalcMatrix()

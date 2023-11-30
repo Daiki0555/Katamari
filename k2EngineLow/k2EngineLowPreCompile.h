@@ -29,6 +29,8 @@
 #include <fstream>
 #include <sstream>
 #include <random>
+#include <codecvt>
+#include <locale>
 #include "DirectXTK/Inc/CommonStates.h"
 #include "DirectXTK/Inc/SpriteBatch.h"
 #include "DirectXTK/Inc/SpriteFont.h"

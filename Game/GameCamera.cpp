@@ -40,11 +40,6 @@ void GameCamera::Update()
 
 	InvertCamera();
 
-
-
-
-	
-	
 	g_camera3D->SetPosition(m_toCameraPos);
 	g_camera3D->SetTarget(m_target);
 	//XV

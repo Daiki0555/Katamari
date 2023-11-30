@@ -48,6 +48,7 @@
     <ClCompile Include="Object\WordManager.cpp" />
     <ClCompile Include="GameUI\ModelUI.cpp" />
     <ClCompile Include="GameUI\ObjectUI.cpp" />
+    <ClCompile Include="GameUI\TimerUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -85,5 +86,6 @@
     <ClInclude Include="Object\WordManager.h" />
     <ClInclude Include="GameUI\ModelUI.h" />
     <ClInclude Include="GameUI\ObjectUI.h" />
+    <ClInclude Include="GameUI\TimerUI.h" />
   </ItemGroup>
 </Project>

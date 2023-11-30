@@ -247,6 +247,7 @@
     <ClCompile Include="Stick.cpp" />
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Object\WordManager.cpp" />
+    <ClCompile Include="GameUI\TimerUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Stick.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Object\WordManager.h" />
+    <ClInclude Include="GameUI\TimerUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

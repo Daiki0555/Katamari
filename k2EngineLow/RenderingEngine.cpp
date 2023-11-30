@@ -3,8 +3,8 @@
 namespace nsK2EngineLow
 {
 	namespace {
-		const Vector3 WIPE_CAMERA_POSITION = { 11200.0f, 400.0f, 1300.0f };
-		const Vector3 WIPE_CAMERA_TARGET = { 11200.0f, 50.0f, 1200.0f };
+		const Vector3 WIPE_CAMERA_POSITION = { 11000.0f, 50.0f, -200.0f };
+		const Vector3 WIPE_CAMERA_TARGET = { 11000.0f, 20.0f, 0.0f };
 		const float WIPE_CAMERA_NEAR = 150.0f;
 		const float WIPE_CAMERA_FAR = 5000.0f;
 	}
@@ -234,8 +234,8 @@ namespace nsK2EngineLow
 		//ワイプ画面の描画。
 		m_viewPorts[1].Width = 960 / 4 + 3;   //画面の横サイズ
 		m_viewPorts[1].Height = 540 / 4 + 3;   //画面の縦サイズ
-		m_viewPorts[1].TopLeftX = -290;   //画面左上のx座標
-		m_viewPorts[1].TopLeftY = 662;   //画面左上のy座標
+		m_viewPorts[1].TopLeftX = 8.0;   //画面左上のx座標
+		m_viewPorts[1].TopLeftY = 662.0;   //画面左上のy座標
 		m_viewPorts[1].MinDepth = 0.0f;   //深度値の最小値
 		m_viewPorts[1].MaxDepth = 0.5f;   //深度値の最大値
 		
@@ -374,6 +374,10 @@ namespace nsK2EngineLow
 			toonObj->OnToonRender(rc);
 		}
 
+
+		EndGPUEvent();
+
+		BeginGPUEvent("WipeRender");
 		//ビューポートを設定。
 		rc.SetViewport(m_viewPorts[1]);
 

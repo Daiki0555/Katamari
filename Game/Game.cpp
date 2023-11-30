@@ -9,12 +9,13 @@
 #include "Stick.h"
 #include "Object/WordManager.h"
 #include "GameUI/ObjectUI.h"
+#include "GameUI/TimerUI.h"
 namespace {
 	int a = 0;
 }
 Game::Game()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {
@@ -23,11 +24,10 @@ Game::~Game()
 bool Game::Start()
 {
 	NewGO<Stick>(0,"stick");
-	NewGO<ObjectUI>(0, "objectUI");
 	InitLevel();
-	
+	NewGO<ObjectUI>(0, "objectUI");
 	NewGO<GameCamera>(0,"gameCamera");
-	
+	NewGO<TimerUI>(0, "timerUI");
 
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
@@ -82,7 +82,7 @@ void Game::InitLevel()
 					//–¼‘O‚©‚çˆÚ“®•û–@‚ð‹‚ß‚é
 					StructMoveState moveState = SerchMove(objdata.name);
 					object->InitMove(moveState.m_state,moveState.m_move,moveState.m_range);
-					object->SetObjectData(&objectData);
+					object->SetObjectData(objectData);
 					
 					m_objctList.emplace_back(object);
 

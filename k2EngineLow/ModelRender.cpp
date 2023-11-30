@@ -301,6 +301,10 @@ namespace nsK2EngineLow {
 			m_toonModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		}
 
+		if (m_wipeModel.IsInited()) {
+			m_wipeModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		}
+
 		for (auto& models : m_shadowModels) {
 			if (models.IsInited())
 			{
@@ -335,6 +339,7 @@ namespace nsK2EngineLow {
 			}
 
 		}
+
 	}
 
 	void ModelRender::Draw(RenderContext& rc)

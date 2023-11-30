@@ -249,7 +249,9 @@ namespace nsK2EngineLow{
 		/// <param name="rc"></param>
 		void OnWipeModelRender(RenderContext& rc, Camera& camera) override
 		{
-			m_wipeModel.Draw(rc,camera,1);
+			if (m_wipeModel.IsInited()) {
+				m_wipeModel.Draw(rc, camera, 1);
+			}
 		}
 
 		/// <summary>
