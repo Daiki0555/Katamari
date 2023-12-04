@@ -15,7 +15,7 @@ namespace {
 }
 Game::Game()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {

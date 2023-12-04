@@ -14,7 +14,8 @@ namespace nsK2EngineLow {
 			const char* filePath,
 			const float w,
 			const float h,
-			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans
+			AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans,
+			bool isCircle=false
 		);
 
 		/// <summary>

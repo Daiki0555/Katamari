@@ -119,20 +119,14 @@ public:
 	}
 
 	/// <summary>
-	/// ‰ò‚Ì”¼Œa‚Ìİ’è
-	/// </summary>
-	const void SetRadius(const float radius)
-	{
-		m_radius = radius;
-	}
-
-	/// <summary>
 	/// ‘ÌÏ‚ğ‰ÁZ‚·‚é
 	/// </summary>
 	/// <param name="volume"></param>
 	const void AddVolume(const float volume)
 	{
-		m_volume += volume;
+		m_volume += volume*1000;
+		m_radius = pow(3.0f * m_volume / (4.0f * Math::PI), 1.0f / 3.0f);
+		m_charaCon.SetRadius(m_radius);
 	}
 public:
 
@@ -176,17 +170,16 @@ private:
 	Vector3 m_position ={0.0f,50.0f,0.0f};
 	Vector3 m_moveSpeed = Vector3::Zero;
 
-	Vector3 m_beforePosition = Vector3::Zero;
+	Vector3 m_beforePosition = Vector3::Zero;					//ˆÚ“®‘O‚ÌÀ•W
 	Vector3 m_scale = Vector3::One;
 	
 	
-	CharacterController m_charaCon;
+	CharacterSphereController m_charaCon;
 
 	Quaternion m_rotation= Quaternion::Identity;
 	
 	CollisionObject m_collisionObject;
 	
-	const float m_protMoveSpeedMultiply = 5.0f;					//Å‰‚Ì‘¬“x
 	float m_moveSpeedMultiply = 5.0f;							//ˆÚ“®‘¬“x
 
 	float m_radius = 0.0f;										//‹…‘Ì‚Ì”¼Œa

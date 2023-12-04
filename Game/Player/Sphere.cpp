@@ -7,13 +7,16 @@ namespace
 {
 	const float		SPEED_DOWN = 0.9f;									//速度減速率
 	const float		STANDARDSIZE = 40.0f;								//基準の塊の直径
-	const float		ALWAYS_SPEED = 6.0f;								//歩き時の乗算量
+	const float		ALWAYS_SPEED = 5.0f;								//歩き時の乗算量
 	const float		ALWAYS_RUNSPEED = 50.0f;							//走り時の乗算量
 	const float		ENTER_STICK = 0.001f;
-	const float		INITIAL_RADIUS = 10.0f;								//初期半径
+	const float		INITIAL_RADIUS = 13.0f;								//初期半径
 	const float		GRAVITY = 10.0f;
 	const float		DASH_AVAILABLE_TIME = 0.5f;							//ダッシュ可能時間
 	const int		DASH_AVAILABLE_COUNT=5;								//ダッシュ可能カウント
+	const float		MODEL_UP = 10.0f;
+	const float		ROT_SPEED = 3.0f;
+	const float		COLIION_YDOWNPOS = 5.0f;
 }
 Sphere::~Sphere()
 {
@@ -47,12 +50,14 @@ bool Sphere::Start()
 	//キャラコンの設定
 	m_charaCon.Init(
 		m_radius,
-		20.0f,
 		m_position
 	);
 
+	//球の体積を求める
+	m_volume = Math::PI * pow(m_radius, 3.0f) * 4 / 3;
+
 	m_collisionObject.CreateSphere(
-		m_position,
+		Vector3{ m_position.x,m_position.y - COLIION_YDOWNPOS,m_position.z },
 		m_rotation,
 		m_radius
 	);
@@ -76,10 +81,9 @@ void Sphere::Update()
 		g_gameTime->GetFrameDeltaTime()
 	);
 
-	m_position.y += m_radius;
-	
+	m_collisionObject.SetPosition(Vector3{ m_position.x, m_position.y + MODEL_UP, m_position.z });
 	m_sphereRender.SetRotation(m_rotation);
-	m_sphereRender.SetPosition(m_position);
+	m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UP,m_position.z });
 	m_sphereRender.Update();
 
 	//前の座標を記憶する
@@ -101,8 +105,9 @@ void Sphere::Move()
 	if (m_dashCount >= DASH_AVAILABLE_COUNT) {
 		Dash();
 	}
-	else {
-	
+	else {	
+		//移動速度
+		m_moveSpeedMultiply= ALWAYS_SPEED*(INITIAL_RADIUS/m_radius);
 
 		Vector3 Rstick = m_stick->GetRStickValue();
 		Vector3 Lstick = m_stick->GetLStickValue();
@@ -119,8 +124,8 @@ void Sphere::Move()
 
 		//左ステックと歩く速度を乗算させる
 		if (m_stick->GetStickState() == m_enStick_Both) {
-			m_moveSpeed += cameraFoward * stick.y * ALWAYS_SPEED * g_gameTime->GetFrameDeltaTime();
-			m_moveSpeed += cameraRight * stick.x * ALWAYS_SPEED * g_gameTime->GetFrameDeltaTime();
+			m_moveSpeed += cameraFoward * stick.y * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
+			m_moveSpeed += cameraRight * stick.x * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
 		}
 	}
 	
@@ -213,7 +218,7 @@ void Sphere::Gravity()
 
 void Sphere::Rotation()
 {
-	const float rotationSpeed = 3.0f;//=1.0f*(m_protMoveSpeedMultiply/ m_moveSpeedMultiply);
+	const float rotationSpeed = 3.0f*(m_moveSpeedMultiply/ALWAYS_SPEED);
 	//前の座標との差分を求める
 	Vector3 move = m_position - m_beforePosition;
 	move.y = 0.0f;

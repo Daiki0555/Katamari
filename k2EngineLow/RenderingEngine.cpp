@@ -201,7 +201,6 @@ namespace nsK2EngineLow
 		// 2D用のシェーダーを使用する
 		spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
 		spriteInitData.m_vsEntryPointFunc = "VSMain";
-		spriteInitData.m_psEntryPoinFunc = "PSMain";
 		//上書き。
 		spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
 		//レンダリングターゲットのフォーマット。

@@ -5,7 +5,8 @@ namespace nsK2EngineLow {
 		const char* filePath,
 		const float w,
 		const float h,
-		AlphaBlendMode alphaBlendMode
+		AlphaBlendMode alphaBlendMode,
+		bool isCircle
 	)
 	{
 		SpriteInitData initData;
@@ -17,6 +18,11 @@ namespace nsK2EngineLow {
 		initData.m_width = static_cast<UINT>(w);
 		initData.m_height = static_cast<UINT>(h);
 		initData.m_alphaBlendMode = alphaBlendMode;
+		if (isCircle){
+			initData.m_psEntryPoinFunc = "PSCircleGauge";
+			initData.m_expandConstantBuffer = &RenderingEngine::GetInstance()->GetSpriteCB();
+			initData.m_expandConstantBufferSize= sizeof(RenderingEngine::GetInstance()->GetSpriteCB());
+		}
 		m_sprite.Init(initData);
 	}
 	void SpriteRender::Draw(RenderContext& rc)

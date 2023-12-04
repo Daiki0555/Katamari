@@ -13,6 +13,13 @@ namespace nsK2EngineLow
 			Matrix mlvp[NUM_SHADOW_MAP];			// ライトビュープロジェクション行列。
 		};
 
+		//スプライト用の構造体
+		struct SpriteCB
+		{
+			float m_degree;
+		};
+
+
 		/// <summary>
 		/// インスタンスの作成
 		/// </summary>
@@ -93,6 +100,17 @@ namespace nsK2EngineLow
 		D3D12_VIEWPORT& GetWipeViewPort()
 		{
 			return m_viewPorts[1];
+		}
+
+
+
+		/// <summary>
+		/// スプライト用の構造体
+		/// </summary>
+		/// <returns></returns>
+		SpriteCB& GetSpriteCB()
+		{
+			return m_spriteCB;
 		}
 
 	public:
@@ -218,6 +236,7 @@ namespace nsK2EngineLow
 		Camera m_wipeCamera;
 
 		D3D12_VIEWPORT			m_viewPorts[2];
+		SpriteCB m_spriteCB;
 	};
 }
 
