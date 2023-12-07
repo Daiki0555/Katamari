@@ -44,12 +44,11 @@ bool ObjectUI::Start()
 					//ファイルパスを求める
 					char filepath[256];
 					sprintf(filepath, "Assets/modelData/object/%s/%s.tkm", objName, objName);
-					m_objectUIDatas[m_levelNumber].m_objectModel.InitToonModel(
+					m_objectUIDatas[m_levelNumber].m_objectModel.InitDeferredRendering(
 						filepath,
 						0,
 						0,
 						enModelUpAxisZ,
-						false,
 						false,
 						false,
 						true
@@ -125,6 +124,7 @@ void ObjectUI::InitWipeModelUI(StructObjectData objectData)
 			m_objectUIDatas[i].m_isDraw = true;
 			//共通の描画時間を初期化
 			m_drawTimer = DRAW_TIME;
+			m_rotation = Quaternion::Identity;
 		}
 	}
 }

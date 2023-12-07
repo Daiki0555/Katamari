@@ -10,13 +10,14 @@ namespace
 	const float		ALWAYS_SPEED = 5.0f;								//歩き時の乗算量
 	const float		ALWAYS_RUNSPEED = 50.0f;							//走り時の乗算量
 	const float		ENTER_STICK = 0.001f;
-	const float		INITIAL_RADIUS = 13.0f;								//初期半径
+	const float		INITIAL_RADIUS = 11.0f;							//初期半径
 	const float		GRAVITY = 10.0f;
 	const float		DASH_AVAILABLE_TIME = 0.5f;							//ダッシュ可能時間
 	const int		DASH_AVAILABLE_COUNT=5;								//ダッシュ可能カウント
 	const float		MODEL_UP = 10.0f;
 	const float		ROT_SPEED = 3.0f;
 	const float		COLIION_YDOWNPOS = 5.0f;
+	const float     BRAKE_SPEED_DOWN = 0.3f;							//ブレーキ時のスピード減速率
 }
 Sphere::~Sphere()
 {
@@ -55,13 +56,6 @@ bool Sphere::Start()
 
 	//球の体積を求める
 	m_volume = Math::PI * pow(m_radius, 3.0f) * 4 / 3;
-
-	m_collisionObject.CreateSphere(
-		Vector3{ m_position.x,m_position.y - COLIION_YDOWNPOS,m_position.z },
-		m_rotation,
-		m_radius
-	);
-
 	return true;
 }
 
@@ -81,13 +75,13 @@ void Sphere::Update()
 		g_gameTime->GetFrameDeltaTime()
 	);
 
-	m_collisionObject.SetPosition(Vector3{ m_position.x, m_position.y + MODEL_UP, m_position.z });
 	m_sphereRender.SetRotation(m_rotation);
 	m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UP,m_position.z });
 	m_sphereRender.Update();
 
 	//前の座標を記憶する
 	m_beforePosition = m_position;
+
 
 	//一番新しい塊のワールド行列が必要なので
 	//ここで巻き込まれたオブジェクトのワールド行列を計算する
@@ -111,7 +105,7 @@ void Sphere::Move()
 
 		Vector3 Rstick = m_stick->GetRStickValue();
 		Vector3 Lstick = m_stick->GetLStickValue();
-		Vector3 stick = Rstick + Lstick;
+		Vector3 Stick = Rstick + Lstick;
 		//カメラの前方向と、右方向の取得
 		Vector3 cameraFoward = g_camera3D->GetForward();
 		Vector3 cameraRight = g_camera3D->GetRight();
@@ -124,22 +118,24 @@ void Sphere::Move()
 
 		//左ステックと歩く速度を乗算させる
 		if (m_stick->GetStickState() == m_enStick_Both) {
-			m_moveSpeed += cameraFoward * stick.y * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
-			m_moveSpeed += cameraRight * stick.x * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
+			m_moveSpeed += cameraFoward * Stick.y * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
+			m_moveSpeed += cameraRight * Stick.x * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
 		}
 	}
 	
-	Gravity();
-
-	//速度を初期化
+	//普通に速度を減速させる
 	m_moveSpeed.x *= SPEED_DOWN;
 	m_moveSpeed.z *= SPEED_DOWN;
+	
+	Gravity();
+
+	Brake();
+
 	m_position += m_moveSpeed;
 }
 
 void Sphere::Dash()
 {
-
 	//カメラの前方向と、右方向の取得
 	Vector3 cameraFoward = g_camera3D->GetForward();
 	if (!m_isDash) {
@@ -148,14 +144,25 @@ void Sphere::Dash()
 	}
 	//ダッシュ時にある程度走らせる
 	else {
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 5; i++) {
 			m_moveSpeed += cameraFoward * ALWAYS_RUNSPEED * g_gameTime->GetFrameDeltaTime();
 			m_moveSpeed *= SPEED_DOWN;
 		}
 		m_isDash = true;
 	}
+}
 
+void Sphere::Brake()
+{
 
+	//ブレーキしていないかつ、両方のステックが倒されたときに移動速度がある程度あるなら
+	if (!m_isBrake &&
+		m_stick->GetStickState() == m_enStick_Both) {
+		
+	}
+	else {
+		m_isBrake = false;
+	}
 }
 
 void Sphere::DashCount()

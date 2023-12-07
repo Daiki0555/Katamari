@@ -5,6 +5,7 @@ class Sphere;
 class Game;
 class IMove;
 class ObjectUI;
+class FlowerUI;
 class Object :public IGameObject
 {
 public:
@@ -156,6 +157,7 @@ private:
 	StructObjectData m_objData;											//オブジェクトのデータ
 	
 	Sphere* m_sphere;
+	FlowerUI* m_flowerUI;
 
 	ObjectUI* m_objectUI;
 	

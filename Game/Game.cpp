@@ -10,9 +10,7 @@
 #include "Object/WordManager.h"
 #include "GameUI/ObjectUI.h"
 #include "GameUI/TimerUI.h"
-namespace {
-	int a = 0;
-}
+#include "GameUI/FlowerUI.h"
 Game::Game()
 {
 	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
@@ -28,7 +26,7 @@ bool Game::Start()
 	NewGO<ObjectUI>(0, "objectUI");
 	NewGO<GameCamera>(0,"gameCamera");
 	NewGO<TimerUI>(0, "timerUI");
-
+	NewGO<FlowerUI>(0, "flowerUI");
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
 	skyCube->SetType((EnSkyCubeType)enSkyCubeType_Day);
@@ -41,24 +39,25 @@ void Game::InitLevel()
 {
 	
 	LevelRender LevelRender;
-	LevelRender.Init("Assets/modelData/level/dagasi.tkl",[&](LevelObjecData& objdata) {
-		if (objdata.ForwardMatchName(L"katamari")){
+	LevelRender.Init("Assets/modelData/level/dagasi.tkl", [&](LevelObjecData& objdata) {
+		if (objdata.ForwardMatchName(L"katamari")) {
 			//塊(コア)の作成
 			m_sphere = NewGO<Sphere>(0, "sphere");
 			m_sphere->SetPosition(objdata.position);
 			m_sphere->SetScale(objdata.scale);
 			m_sphere->SetRotation(objdata.rotation);
-
+			return true;
+		}
+		else if (objdata.ForwardMatchName(L"unityChan")) {
 			//プレイヤーの作成
 			m_player = NewGO<Player>(0, "player");
 			m_player->SetPosition(objdata.position);
 			m_player->SetScale(objdata.scale);
 			m_player->SetRotation(objdata.rotation);
-		
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"stage")) {
-			BackGround* backGround=NewGO<BackGround>(0, "backGround");
+			BackGround* backGround = NewGO<BackGround>(0, "backGround");
 			backGround->SetPosition(objdata.position);
 			backGround->SetScale(objdata.scale);
 			backGround->SetRotation(objdata.rotation);
@@ -81,19 +80,18 @@ void Game::InitLevel()
 
 					//名前から移動方法を求める
 					StructMoveState moveState = SerchMove(objdata.name);
-					object->InitMove(moveState.m_state,moveState.m_move,moveState.m_range);
+					object->InitMove(moveState.m_state, moveState.m_move, moveState.m_range);
 					object->SetObjectData(objectData);
-					
+
 					m_objctList.emplace_back(object);
 
 				}
-			
+
 			}
 			return true;
 		}
-			
+		
 		});
-
 }
 
 void Game::Update()

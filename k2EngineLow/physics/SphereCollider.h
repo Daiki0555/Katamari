@@ -11,14 +11,14 @@ namespace nsK2EngineLow {
 	{
 	public:
 		//デストラクタ
-		~SphereCollider();
+	~SphereCollider();
 		void Create(const float radius);
 		btCollisionShape* GetBody() const override
 		{
 			return m_shape.get();
 		}
 		/// <summary>
-		/// 半径の
+		/// 半径の取得	
 		/// </summary>
 		/// <returns></returns>
 		float GetRadius() const

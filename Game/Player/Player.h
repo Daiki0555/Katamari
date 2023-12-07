@@ -158,7 +158,7 @@ private:
 
 	Quaternion m_rotation = Quaternion::Identity;
 	
-	CharacterController* m_characon;							//キャラコン
+	CharacterController m_characon;							//キャラコン
 
 	float m_radius = 0.0f;										//球体の半径
 
