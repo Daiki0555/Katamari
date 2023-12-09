@@ -1,9 +1,9 @@
 オブジェクト名（Level）,日本語名,体積,巻き込まれるサイズ,速さ,動き,
 oBishop,ビショップ,1.1,,0,N,o
-oBox,かご,1.1,,0,N,o
+oBox,カゴ,1.1,,0,N,o
 oBurger,バーガー,1.1,,0,N,o
 oCar,クルマ,1.1,,1.1,R,o
-oChessBoard,チェス盤,1.1,,1.1,U,o
+oChessBoard,チェスボード,1.1,,1.1,U,o
 oCola,コーラ,1.1,,0,N,o
 oCup,コップ,1.1,,0,N,o
 oDonut,ドーナツ,1.1,,1.1,S,o
@@ -14,6 +14,7 @@ oOrange,ミカン,1.1,,1,N,o
 oPancake,パンケーキ,1.1,,1.1,S,o
 oPawn,ポーン,1.1,,0,N,o
 oQueen,クイーン,1.1,,0,N,o
-oRat,ねずみ,1.1,,1.1,F,o
+oRat,ネズミ,1.1,,1.1,F,o
 oRook,ルーク,1.1,,0,N,o
 oWine,ワイン,1.1,,0,N,o
+oCheese,チーズ,1.1,,0,N,
