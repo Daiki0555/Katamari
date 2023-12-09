@@ -1,5 +1,6 @@
 #pragma once
-class ModelUI
+class Player;
+class ModelUI:public IGameObject
 {
 public:
 	~ModelUI();
@@ -9,8 +10,30 @@ public:
 
 private:
 
-private:
 
-	Vector3 m_scale = Vector3::Zero;
+	void Render(RenderContext& rc);
+
+	/// <summary>
+	/// アニメーション
+	/// </summary>
+	void Animation();
+
+
+private:
+	//アニメーション
+	enum EnAnimationClip {
+		m_enAnimationClip_Idle,				//待機アニメーション
+		m_enAnimationClip_Walk,				//歩きアニメーション
+		m_enAnimationClip_Run,				//走りアニメーション
+		m_enAnimationClip_Num,				//アニメーションの数
+	};
+	AnimationClip m_animationClips[m_enAnimationClip_Num];
+
+	Player* m_player=nullptr;
+	ModelRender m_modelUI;
+	ModelRender m_earthRender;
+	Vector3 m_position = Vector3::Zero;
+	Vector3 m_scale = Vector3::One;
+	Quaternion m_rotation = Quaternion::Identity;
 };
 

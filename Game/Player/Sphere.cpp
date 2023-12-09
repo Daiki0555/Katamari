@@ -138,7 +138,7 @@ void Sphere::Dash()
 {
 	//カメラの前方向と、右方向の取得
 	Vector3 cameraFoward = g_camera3D->GetForward();
-	if (!m_isDash) {
+	if (m_isDash) {
 		m_moveSpeed += cameraFoward * ALWAYS_RUNSPEED * g_gameTime->GetFrameDeltaTime();
 
 	}

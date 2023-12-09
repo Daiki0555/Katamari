@@ -11,9 +11,10 @@
 #include "GameUI/ObjectUI.h"
 #include "GameUI/TimerUI.h"
 #include "GameUI/FlowerUI.h"
+#include "GameUI/ModelUI.h"
 Game::Game()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {
@@ -27,10 +28,11 @@ bool Game::Start()
 	NewGO<GameCamera>(0,"gameCamera");
 	NewGO<TimerUI>(0, "timerUI");
 	NewGO<FlowerUI>(0, "flowerUI");
+	NewGO<ModelUI>(0, "modelUI");
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
 	skyCube->SetType((EnSkyCubeType)enSkyCubeType_Day);
-	skyCube->SetScale(100.0f);
+	skyCube->SetScale(150.0f);
 	skyCube->Update();
 	return true;
 }

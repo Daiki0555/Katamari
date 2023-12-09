@@ -6,7 +6,7 @@ namespace nsK2EngineLow
 		const Vector3 WIPE_CAMERA_POSITION = { 11000.0f, 50.0f, -200.0f };
 		const Vector3 WIPE_CAMERA_TARGET = { 11000.0f, 20.0f, 0.0f };
 		const float WIPE_CAMERA_NEAR = 150.0f;
-		const float WIPE_CAMERA_FAR = 5000.0f;
+		const float WIPE_CAMERA_FAR = 500.0f;
 	}
 
 	RenderingEngine* RenderingEngine::m_instance = nullptr;

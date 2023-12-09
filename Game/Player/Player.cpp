@@ -5,7 +5,7 @@
 namespace
 {
 	const float PLAYER_RADIUS = 5.0f;					//半径
-	const float PLAYER_HEIGHT = 15.0f;					//高さ
+	const float PLAYER_HEIGHT = 10.0f;					//高さ
 
 }
 Player::~Player()
@@ -55,7 +55,7 @@ void Player::Update()
 
 	Move();
 
-	//Rotation();
+	Rotation();
 
 	ManageState();
 
@@ -77,24 +77,20 @@ void Player::Update()
 
 void Player::Move()
 {
+	//カメラの前ベクトル
 	Vector3 pos = g_camera3D->GetForward();
+	//カメラの前ベクトルと塊の半径の乗算する
 	pos = pos * m_sphere->GetRadius() * 1.2f;
+	//したものを塊の座標から引く
 	m_position= m_sphere->GetPosition() - pos;
 }
 
 void Player::Rotation()
 {
 	m_moveSpeed = m_sphere->GetMoveSpeed();
-
-	//もし少しも動いていないなら
-	if (fabsf(m_moveSpeed.x) < 0.001f
-		&& fabsf(m_moveSpeed.z) < 0.001f) {
-		return;
-	}
-	//atn2を使って角度を求める
-	float angle = atan2(-m_moveSpeed.x, m_moveSpeed.z);
-	//SetRotationを使用する
-	m_rotation.SetRotationY(-angle);
+	//カメラの前ベクトル
+	Vector3 pos = g_camera3D->GetForward();
+	m_rotation.SetRotation(Vector3::AxisY, atan2f(pos.x, pos.z));
 }
 
 void Player::ManageState()

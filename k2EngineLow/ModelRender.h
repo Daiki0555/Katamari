@@ -36,7 +36,7 @@ namespace nsK2EngineLow{
 			const bool isShadow = false,
 			const bool isShadowReceiver = false,
 			const bool isOutline = false,
-			const bool isToon=false
+			const bool isWipeModel =false
 		);
 
 		/// <summary>
@@ -314,7 +314,7 @@ namespace nsK2EngineLow{
 			const bool isShadow,
 			const bool isShadowReceiver,
 			const bool isOutline,
-			const bool isToon
+			const bool isWipeModel
 		);
 
 
