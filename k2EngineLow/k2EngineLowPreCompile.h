@@ -100,7 +100,7 @@ static const int MAX_BONE = 512;	// É{Å[ÉìÇÃç≈ëÂêîÅB
 #include "physics/CollisionAttr.h"
 #include "physics/CharacterController.h"
 #include "physics/PhysicsStaticObject.h"
-
+#include "CharacterSphereController.h"
 #include "gameObject/GameObjectManager.h"
 #include "gameObject/IGameObject.h"
 
@@ -129,6 +129,7 @@ const int NUM_SHADOW_MAP = 3;
 #include "ShadowMapRender.h"
 #include "SkyCube.h"
 #include "RenderingEngine.h"
+
 
 
 #include "LevelRender.h"

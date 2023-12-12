@@ -333,7 +333,17 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 		 +dirLig.ambient
 		 +limColor
 	 	 +pointLight;	
+
 	albedoColor.xyz*=lig;
+
+	//法線とライトの方向とで内積を計算する
+	float t =dot(psIn.normal,-dirLig.ligDirection);
+
+	//内積の結果が 0.1 以下なら、最終カラーの色味を若干落とす
+	if(t<0.1f){
+		albedoColor.xyz*=0.5f;
+	}
+
 	return albedoColor;
 }
 

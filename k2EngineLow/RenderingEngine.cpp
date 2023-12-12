@@ -6,7 +6,7 @@ namespace nsK2EngineLow
 		const Vector3 WIPE_CAMERA_POSITION = { 11000.0f, 50.0f, -200.0f };
 		const Vector3 WIPE_CAMERA_TARGET = { 11000.0f, 20.0f, 0.0f };
 		const float WIPE_CAMERA_NEAR = 150.0f;
-		const float WIPE_CAMERA_FAR = 5000.0f;
+		const float WIPE_CAMERA_FAR = 500.0f;
 	}
 
 	RenderingEngine* RenderingEngine::m_instance = nullptr;
@@ -201,7 +201,6 @@ namespace nsK2EngineLow
 		// 2D用のシェーダーを使用する
 		spriteInitData.m_fxFilePath = "Assets/shader/sprite.fx";
 		spriteInitData.m_vsEntryPointFunc = "VSMain";
-		spriteInitData.m_psEntryPoinFunc = "PSMain";
 		//上書き。
 		spriteInitData.m_alphaBlendMode = AlphaBlendMode_None;
 		//レンダリングターゲットのフォーマット。

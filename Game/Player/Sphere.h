@@ -119,20 +119,14 @@ public:
 	}
 
 	/// <summary>
-	/// 塊の半径の設定
-	/// </summary>
-	const void SetRadius(const float radius)
-	{
-		m_radius = radius;
-	}
-
-	/// <summary>
 	/// 体積を加算する
 	/// </summary>
 	/// <param name="volume"></param>
 	const void AddVolume(const float volume)
 	{
 		m_volume += volume;
+		m_radius = pow(3.0f * m_volume / (4.0f * Math::PI), 1.0f / 3.0f);
+		m_charaCon.SetRadius(m_radius);
 	}
 public:
 
@@ -146,6 +140,11 @@ private:
 	/// ダッシュ
 	/// </summary>
 	void Dash();
+
+	/// <summary>
+	/// ブレーキ
+	/// </summary>
+	void Brake();
 
 	/// <summary>
 	/// ダッシュカウント
@@ -174,19 +173,18 @@ private:
 	ModelRender m_sphereRender;
 	
 	Vector3 m_position ={0.0f,50.0f,0.0f};
+
 	Vector3 m_moveSpeed = Vector3::Zero;
 
-	Vector3 m_beforePosition = Vector3::Zero;
+	Vector3 m_beforePosition = Vector3::Zero;					//移動前の座標
+
 	Vector3 m_scale = Vector3::One;
 	
-	
-	CharacterController m_charaCon;
+	CharacterSphereController m_charaCon;
 
 	Quaternion m_rotation= Quaternion::Identity;
 	
-	CollisionObject m_collisionObject;
 	
-	const float m_protMoveSpeedMultiply = 5.0f;					//最初の速度
 	float m_moveSpeedMultiply = 5.0f;							//移動速度
 
 	float m_radius = 0.0f;										//球体の半径
@@ -202,5 +200,7 @@ private:
 	bool m_isInverseStick = true;								//ステックを逆に倒した時に反転する
 
 	bool m_isDash = false;										//ダッシュしているかどうか
+
+	bool m_isBrake = false;										//ブレーキしていないなら
 };
 

@@ -21,7 +21,8 @@ namespace nsK2EngineLow{
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis=enModelUpAxisZ,
 			const bool isShadow=false,
-			const bool isShadowReceiver=false
+			const bool isShadowReceiver=false,
+			const bool isWipeModel=false
 			);
 
 		/// <summary>
@@ -34,8 +35,8 @@ namespace nsK2EngineLow{
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
 			const bool isShadow = false,
 			const bool isShadowReceiver = false,
-			const bool isOutline=false,
-			const bool isWipeModel = false
+			const bool isOutline = false,
+			const bool isWipeModel =false
 		);
 
 		/// <summary>
@@ -296,7 +297,8 @@ namespace nsK2EngineLow{
 			const char* tkmFilePath,
 			EnModelUpAxis modelUpAxis,
 			const bool isShadow,
-			const bool isShadowReceiver
+			const bool isShadowReceiver,
+			const bool isWipeModel
 		);
 
 		/// <summary>

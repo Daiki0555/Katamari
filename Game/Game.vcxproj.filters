@@ -49,6 +49,8 @@
     <ClCompile Include="GameUI\ModelUI.cpp" />
     <ClCompile Include="GameUI\ObjectUI.cpp" />
     <ClCompile Include="GameUI\TimerUI.cpp" />
+    <ClCompile Include="GameUI\FlowerUI.cpp" />
+    <ClCompile Include="Object\Move\MoveNo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -87,5 +89,7 @@
     <ClInclude Include="GameUI\ModelUI.h" />
     <ClInclude Include="GameUI\ObjectUI.h" />
     <ClInclude Include="GameUI\TimerUI.h" />
+    <ClInclude Include="GameUI\FlowerUI.h" />
+    <ClInclude Include="Object\Move\MoveNo.h" />
   </ItemGroup>
 </Project>

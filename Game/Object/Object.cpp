@@ -5,7 +5,9 @@
 #include "Move/MoveLR.h"
 #include "Move/MoveUD.h"
 #include "Move/MoveRand.h"
+#include "Move/MoveNo.h"
 #include "GameUI/ObjectUI.h"
+#include "GameUI/FlowerUI.h"
 namespace {
 	const float		HIT_OBJECT = 10.0f;					// ‰ò‚É“–‚½‚é”ÍˆÍ
 }
@@ -18,6 +20,7 @@ bool Object::Start()
 {
 	m_sphere = FindGO<Sphere>("sphere");
 	m_objectUI = FindGO<ObjectUI>("objectUI");
+	m_flowerUI = FindGO<FlowerUI>("flowerUI");
 	InitCollision();
 
 	return true;
@@ -66,6 +69,7 @@ void Object::InitMove(
 		m_objectMove = std::make_unique<MoveRand>();
 		break;
 	case m_enMove_No:
+		m_objectMove = std::make_unique<MoveNo>();
 		break;
 	default:
 		break;
@@ -107,7 +111,7 @@ void Object::Hit()
 	{
 		Involution();
 		m_objectState = m_enObject_Involution;
-		m_sphere->AddVolume(m_objData.m_volume);
+		m_sphere->AddVolume(m_objData.m_volume*100.0f);
 	}
 }
 

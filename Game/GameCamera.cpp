@@ -20,7 +20,7 @@ bool GameCamera::Start()
 	m_stick = FindGO<Stick>("stick");
 	m_initialCameraPos = CAMERA_POS;
 	g_camera3D->SetNear(0.5f);
-	g_camera3D->SetFar(5000.0f);
+	g_camera3D->SetFar(7000.0f);
 	return true;
 }
 
