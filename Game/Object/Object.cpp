@@ -5,6 +5,7 @@
 #include "Move/MoveLR.h"
 #include "Move/MoveUD.h"
 #include "Move/MoveRand.h"
+#include "Move/MoveNo.h"
 #include "GameUI/ObjectUI.h"
 #include "GameUI/FlowerUI.h"
 namespace {
@@ -68,6 +69,7 @@ void Object::InitMove(
 		m_objectMove = std::make_unique<MoveRand>();
 		break;
 	case m_enMove_No:
+		m_objectMove = std::make_unique<MoveNo>();
 		break;
 	default:
 		break;

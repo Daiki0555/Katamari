@@ -18,11 +18,11 @@ namespace nsK2EngineLow
 		//ディレクションライトの初期化
 		SetDirectionLight(
 			Vector3(1,-1,1),
-			Vector3(0.5f,0.5f,0.5f)
+			Vector3(0.3f,0.3f,0.3f)
 		);
 
 		//環境光の初期化
-		SetAmbientLight(0.7f);
+		SetAmbientLight(0.8f);
 
 		//半球ライトの初期化
 		/*SetHemiSphereLight(
