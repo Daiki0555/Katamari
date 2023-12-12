@@ -32,7 +32,7 @@ bool Game::Start()
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
 	skyCube->SetType((EnSkyCubeType)enSkyCubeType_Day);
-	skyCube->SetScale(150.0f);
+	skyCube->SetScale(500.0f);
 	skyCube->Update();
 	return true;
 }

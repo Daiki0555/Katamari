@@ -230,6 +230,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameUI\ModelUI.cpp" />
     <ClCompile Include="GameUI\ObjectUI.cpp" />
+    <ClCompile Include="Object\Move\MoveNo.cpp" />
     <ClCompile Include="Object\Move\IMove.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Move\MoveFB.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameUI\ModelUI.h" />
     <ClInclude Include="GameUI\ObjectUI.h" />
+    <ClInclude Include="Object\Move\MoveNo.h" />
     <ClInclude Include="Object\Move\IMove.h" />
     <ClInclude Include="Object\Move\MoveFB.h" />
     <ClInclude Include="Object\Move\MoveLR.h" />

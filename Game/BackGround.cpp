@@ -8,7 +8,7 @@ BackGround::~BackGround()
 bool BackGround::Start()
 {
 	m_backRender.InitDeferredRendering(
-		"Assets/modelData/stage/Stage/Stage.tkm",
+		"Assets/modelData/stage/Stage.tkm",
 		0,
 		0, 
 		enModelUpAxisZ, 
