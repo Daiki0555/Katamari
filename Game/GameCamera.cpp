@@ -6,8 +6,8 @@ namespace
 {
 	const Vector3 CAMERA_POS = { 0.0f,0.0f,-80.0f };
 	const Vector3 TARGET_UP = { 0.0f, 20.0f, 0.0f };
-	const float	CAMERA_ROTSPEED = 1.0f;
-	const float CAMERA_BOTH_ROTSPEED = 2.0f;
+	const float	CAMERA_ROTSPEED = 0.2f;
+	const float CAMERA_BOTH_ROTSPEED = 0.6f;
 }
 GameCamera::~GameCamera()
 {
@@ -28,13 +28,7 @@ void GameCamera::Update()
 {
 
 	if (!m_isTurningCamera) {
-		if (m_stick->GetStickState() == m_enStick_Both) {
-			MoveRotation();
-		}
-		else {
-			Rotation();
-		}
-
+		Rotation();
 	}
 	
 
@@ -47,29 +41,9 @@ void GameCamera::Update()
 }
 
 void GameCamera::Rotation()
-{
-	float stick = 0.0f;
-	if (m_stick->GetStickState() == m_enStick_Right){
-		stick= m_stick->GetRStickValue().y;
-		//Y軸周りの回転
-		m_rotation.SetRotationDeg(Vector3::AxisY, -CAMERA_ROTSPEED * stick);
-		m_rotation.Apply(m_initialCameraPos);
-
-	}
-	else if (m_stick->GetStickState() == m_enStick_Left){
-		stick = m_stick->GetLStickValue().y;
-		//Y軸周りの回転
-		m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_ROTSPEED * stick);
-		m_rotation.Apply(m_initialCameraPos);
-	}
-	//注視点のY座標を上げる
-	m_target = m_sphere->GetPosition();
-	m_target += TARGET_UP;
-	m_toCameraPos = m_target + m_initialCameraPos;
-}
-
-void GameCamera::MoveRotation()
-{
+{	
+	//ダッシュカウントが2以上の時に回転させない用の座標
+	Vector3 dashCountCameraPos = m_initialCameraPos;
 	float stick = 0.0f;
 	if (m_stick->GetRStickValue().y >= m_stick->GetLStickValue().y) {
 		//右ステックと左ステックの入力量の差分を求める
@@ -85,6 +59,26 @@ void GameCamera::MoveRotation()
 		m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_BOTH_ROTSPEED * stick);
 		m_rotation.Apply(m_initialCameraPos);
 	}
+
+
+	if (m_stick->GetStickState() == m_enStick_Right){
+		stick= m_stick->GetRStickValue().y;
+		//Y軸周りの回転
+		m_rotation.SetRotationDeg(Vector3::AxisY, -CAMERA_ROTSPEED * stick);
+		m_rotation.Apply(m_initialCameraPos);
+
+	}
+	else if (m_stick->GetStickState() == m_enStick_Left){
+		stick = m_stick->GetLStickValue().y;
+		m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_ROTSPEED * stick);
+		m_rotation.Apply(m_initialCameraPos);
+	}
+
+	//ダッシュカウントが1以上なら
+	if (m_sphere->GetDashCount() > 1) {
+		m_initialCameraPos = dashCountCameraPos;
+	}
+
 	//注視点のY座標を上げる
 	m_target = m_sphere->GetPosition();
 	m_target += TARGET_UP;

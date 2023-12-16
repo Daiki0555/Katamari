@@ -3,12 +3,14 @@
 /// ステックの状態
 /// </summary>
 enum EnStickState {
-	m_enStick_Right,					//右ステックだけ
-	m_enStick_Left,						//左ステックだけ
-	m_enStick_Both,						//両方のステックが倒れているなら
-	m_enStick_No,						//何もしていないなら
-	m_enStick_LeftYInverseRightY,		//Y方向で+左ステックと反対に-右ステックになっているなら
-	m_enStick_RightYInverseLeftY,		//Y方向で+右ステックと反対に-左ステックになっているなら
+	m_enStick_Right,						//右ステックだけ
+	m_enStick_Left,							//左ステックだけ
+	m_enStick_Both,							//両方のステックが倒れているなら
+	m_enStick_No,							//何もしていないなら
+	m_enStick_LYInverseRY,					//Y方向で左+右-なら
+	m_enStick_RYInverseLY,					//Y方向で右+左-なら
+	m_enStick_FullLeftYInverseRightY,		//最大にY方向で+左ステックと反対に-右ステックになっているなら
+	m_enStick_FullRightYInverseLeftY,		//最大にY方向で+右ステックと反対に-左ステックになっているなら
 };
 
 class Stick:public IGameObject

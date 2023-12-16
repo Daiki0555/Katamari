@@ -25,12 +25,14 @@ void Stick::StickState()
 
 	if (m_Lstick.y > FULL_KNOCKDOWN_STICK &&
 		m_Rstick.y < -FULL_KNOCKDOWN_STICK) {
-		m_stickState = m_enStick_LeftYInverseRightY;
+		m_stickState = m_enStick_FullLeftYInverseRightY;
 	}
 	else if (m_Lstick.y < -FULL_KNOCKDOWN_STICK &&
 		m_Rstick.y > FULL_KNOCKDOWN_STICK) {
-		m_stickState = m_enStick_RightYInverseLeftY;
+		m_stickState = m_enStick_FullRightYInverseLeftY;
 	}
+
+
 
 	//右スティックの入力がありかつ
 	else if (m_Rstick.LengthSq() >= ENTER_STICK) {

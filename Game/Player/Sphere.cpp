@@ -5,14 +5,14 @@
 #include "Stick.h"
 namespace 
 {
-	const float		SPEED_DOWN = 0.9f;									//速度減速率
+	const float		SPEED_DOWN = 0.95f;									//速度減速率
 	const float		STANDARDSIZE = 40.0f;								//基準の塊の直径
-	const float		ALWAYS_SPEED = 5.0f;								//歩き時の乗算量
+	const float		ALWAYS_SPEED = 2.0f;								//歩き時の乗算量
 	const float		ALWAYS_RUNSPEED = 50.0f;							//走り時の乗算量
 	const float		ENTER_STICK = 0.001f;
-	const float		INITIAL_RADIUS = 11.0f;							//初期半径
+	const float		INITIAL_RADIUS = 11.0f;								//初期半径
 	const float		GRAVITY = 10.0f;
-	const float		DASH_AVAILABLE_TIME = 0.5f;							//ダッシュ可能時間
+	const float		DASH_AVAILABLE_TIME = 0.3f;							//ダッシュ可能時間
 	const int		DASH_AVAILABLE_COUNT=5;								//ダッシュ可能カウント
 	const float		MODEL_UP = 10.0f;
 	const float		ROT_SPEED = 3.0f;
@@ -30,6 +30,7 @@ bool Sphere::Start()
 	m_object = FindGO<Object>("object");
 	m_game = FindGO<Game>("game");
 	m_stick = FindGO<Stick>("stick");
+
 
 	//スフィアモデルの情報の設定
 	m_sphereRender.InitToonModel("Assets/modelData/sphere/sphere.tkm",
@@ -121,6 +122,14 @@ void Sphere::Move()
 			m_moveSpeed += cameraFoward * Stick.y * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
 			m_moveSpeed += cameraRight * Stick.x * m_moveSpeedMultiply * g_gameTime->GetFrameDeltaTime();
 		}
+		else if (m_stick->GetStickState() == m_enStick_Right) {
+			m_moveSpeed += cameraFoward * Rstick.y * g_gameTime->GetFrameDeltaTime()* m_moveSpeed.z;
+			m_moveSpeed += cameraRight * Rstick.x *  g_gameTime->GetFrameDeltaTime()* m_moveSpeed.x;
+		}
+		else if (m_stick->GetStickState() == m_enStick_Left) {
+			m_moveSpeed += cameraFoward * Lstick.y * g_gameTime->GetFrameDeltaTime();
+			m_moveSpeed += cameraRight * Lstick.x *  g_gameTime->GetFrameDeltaTime();
+		}
 	}
 	
 	//普通に速度を減速させる
@@ -169,20 +178,20 @@ void Sphere::DashCount()
 {
 	if (m_isInverseStick) {
 		//ステックの向きが反転したなら
-		if (m_stick->GetStickState() == m_enStick_RightYInverseLeftY) {
+		if (m_stick->GetStickState() == m_enStick_FullRightYInverseLeftY) {
 			m_dashCount++;
 			m_dashTimer = DASH_AVAILABLE_TIME;
 		}
 	}
 	else {
 		//ステックの向きが反転したなら
-		if (m_stick->GetStickState() == m_enStick_LeftYInverseRightY) {
+		if (m_stick->GetStickState() == m_enStick_FullLeftYInverseRightY) {
 			m_dashCount++;
 			m_dashTimer = DASH_AVAILABLE_TIME;
 		}
 	}
 
-	if (m_stick->GetStickState() == m_enStick_LeftYInverseRightY) {
+	if (m_stick->GetStickState() == m_enStick_FullLeftYInverseRightY) {
 		//この処理が初めてなら
 		if (m_dashCount == 0) {
 			//trueでも加算できるようにする
@@ -191,7 +200,7 @@ void Sphere::DashCount()
 		}
 		m_isInverseStick = true;
 	}
-	else if (m_stick->GetStickState() == m_enStick_RightYInverseLeftY) {
+	else if (m_stick->GetStickState() == m_enStick_FullRightYInverseLeftY) {
 		//この処理が初めてなら
 		if (m_dashCount == 0) {
 			//falseでも加算できるようにする

@@ -5,7 +5,7 @@ namespace nsK2EngineLow{
 	public:
 		struct LuminanceCB
 		{
-			float threshold = 0.20f;	//臒l
+			float threshold = 1.0f;	//臒l
 		};
 	public:
 		/// <summary>

@@ -2,7 +2,7 @@
 #include "Object/ObjectData.h"
 namespace 
 {
-	const int OBJECT_NUM_SORT = 19;
+	const int OBJECT_NUM_SORT = 22;
 }
 class ObjectUI : public IGameObject
 {

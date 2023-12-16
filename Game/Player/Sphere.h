@@ -117,6 +117,16 @@ public:
 	{
 		return m_radius;
 	}
+	
+
+	/// <summary>
+	/// ダッシュカウントの取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetDashCount() const
+	{
+		return m_dashCount;
+	}
 
 	/// <summary>
 	/// 体積を加算する
