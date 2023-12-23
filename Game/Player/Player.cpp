@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Sphere.h"
-
+#include "Stick.h"
 namespace
 {
 	const float PLAYER_RADIUS = 5.0f;					//半径
@@ -16,6 +16,7 @@ Player::~Player()
 bool Player::Start()
 {
 	m_sphere = FindGO<Sphere>("sphere");
+	m_stick = FindGO<Stick>("stick");
 
 	//アニメーションを読み込む
 	m_animationClips[m_enAnimationClip_Idle].Load("Assets/animData/player/idle.tka");
@@ -137,16 +138,16 @@ void Player::ProcessRunStateTransition()
 }
 
 void Player::ProcessCommonStateTransition()
-{
-	if (fabsf(m_moveSpeed.x) >= 0.001f || fabsf(m_moveSpeed.z) >= 0.001f){
-		if (g_pad[0]->IsPress(enButtonA)){
-			//ダッシュ中にする
-			m_playerState = m_enPlayer_Run;
-		}
-		else{
-			//歩き中にする
-			m_playerState = m_enPlayer_walk;
-		}
+{	
+	if (m_stick->GetStickState() == m_enStick_FullLeftYInverseRightY ||
+		m_stick->GetStickState() == m_enStick_FullRightYInverseLeftY||
+		m_sphere->GetDashCount()>=1) {
+		m_playerState = m_enPlayer_Run;
+	}
+
+	else if (fabsf(m_moveSpeed.x) >= 0.001f || fabsf(m_moveSpeed.z) >= 0.001f) {
+		//歩き中にする
+		m_playerState = m_enPlayer_walk;
 	}
 	else {
 		m_playerState = m_enPlayer_Idle;
@@ -164,7 +165,7 @@ void Player::Animation()
 		m_playerRender.PlayAnimation(m_enAnimationClip_Walk, 0.5f);
 		break;
 	case Player::m_enPlayer_Run:
-		m_playerRender.PlayAnimation(m_enAnimationClip_Run, 0.5f);
+		m_playerRender.PlayAnimation(m_enAnimationClip_Run, 1.0f);
 		break;
 	case Player::m_enPlayer_Back:
 		break;

@@ -1,6 +1,7 @@
 #pragma once
 class Sphere;
 class Stick;
+class Player;
 class GameCamera:public IGameObject
 {
 public:
@@ -20,6 +21,7 @@ private:
 	void InvertCamera();
 private:
 	Sphere*				m_sphere=nullptr;
+	//Player* m_sphere = nullptr;
 	Stick*				m_stick = nullptr;
 
 	Quaternion			m_rotation = Quaternion::Identity;

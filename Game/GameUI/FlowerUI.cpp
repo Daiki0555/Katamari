@@ -171,6 +171,9 @@ void FlowerUI::CommonMagnification()
 	//”¼Œa‚É‡‚í‚¹‚ÄŠg‘å—¦‚ð•Ï‚¦‚é
 	m_commonScale = UI_MIN_SCALE +(COMMON_SCALE_MAX- UI_MIN_SCALE)*((m_sphere->GetRadius()-m_initialRadius)/(OBJECTIVE- m_initialRadius));
 	m_commonScale = min(m_commonScale, COMMON_SCALE_MAX);
+	if (scale == OBJECTIVE) {
+		m_isObjectiveScale = true;
+	}
 }
 
 void FlowerUI::Render(RenderContext& rc)

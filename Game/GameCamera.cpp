@@ -1,13 +1,16 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include "Player/Sphere.h"
+#include "Player/Player.h"
 #include "Stick.h"
 namespace
 {
-	const Vector3 CAMERA_POS = { 0.0f,0.0f,-80.0f };
-	const Vector3 TARGET_UP = { 0.0f, 20.0f, 0.0f };
-	const float	CAMERA_ROTSPEED = 0.2f;
-	const float CAMERA_BOTH_ROTSPEED = 0.6f;
+	const Vector3 CAMERA_POS = { 0.0f,0.0f,-70.0f };
+	const Vector3 TARGET_UP = { 0.0f, 30.0f, 0.0f };
+	const float	CAMERA_ROTSPEED = 0.4f;
+	const float CAMERA_BOTH_ROTSPEED = 0.8f;
+	const float CAMERA_ROT_DEGREE = 87.0f;
+	const float CAMERA_ROT_DEGREE2 = 95.0f;
 }
 GameCamera::~GameCamera()
 {
@@ -17,6 +20,7 @@ GameCamera::~GameCamera()
 bool GameCamera::Start()
 {
 	m_sphere = FindGO<Sphere>("sphere");
+	//m_sphere = FindGO<Player>("player");
 	m_stick = FindGO<Stick>("stick");
 	m_initialCameraPos = CAMERA_POS;
 	g_camera3D->SetNear(0.5f);
@@ -42,24 +46,32 @@ void GameCamera::Update()
 
 void GameCamera::Rotation()
 {	
-	//ダッシュカウントが2以上の時に回転させない用の座標
-	Vector3 dashCountCameraPos = m_initialCameraPos;
 	float stick = 0.0f;
-	if (m_stick->GetRStickValue().y >= m_stick->GetLStickValue().y) {
-		//右ステックと左ステックの入力量の差分を求める
-		stick = m_stick->GetRStickValue().y - m_stick->GetLStickValue().y;
-		//Y軸周りの回転
-		m_rotation.SetRotationDeg(Vector3::AxisY, -CAMERA_BOTH_ROTSPEED * stick);
-		m_rotation.Apply(m_initialCameraPos);
+	Vector3 Rstick = m_stick->GetRStickValue();
+	Vector3 Lstick = m_stick->GetLStickValue();
+	//ベクトルの内積を計算
+	float dotProduct = Rstick.Dot(Lstick);
+	//内積方角度を計算
+	float angleRadians = acosf(dotProduct);
+	float angleDegrees = angleRadians * (180.0f / Math::PI);
+	//移動しているときもしくは
+	if (fabs(angleDegrees)<= CAMERA_ROT_DEGREE ||
+		fabs(angleDegrees)>= CAMERA_ROT_DEGREE2) {
+		if (m_stick->GetRStickValue().y >= m_stick->GetLStickValue().y) {
+			//右ステックと左ステックの入力量の差分を求める
+			stick = m_stick->GetRStickValue().y - m_stick->GetLStickValue().y;
+			//Y軸周りの回転
+			m_rotation.SetRotationDeg(Vector3::AxisY, -CAMERA_BOTH_ROTSPEED * stick);
+			m_rotation.Apply(m_initialCameraPos);
+		}
+		else {
+			//左ステックと右ステックの入力量の差分を求める
+			stick = m_stick->GetLStickValue().y - m_stick->GetRStickValue().y;
+			//Y軸周りの回転
+			m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_BOTH_ROTSPEED * stick);
+			m_rotation.Apply(m_initialCameraPos);
+		}
 	}
-	else {
-		//左ステックと右ステックの入力量の差分を求める
-		stick = m_stick->GetLStickValue().y - m_stick->GetRStickValue().y;
-		//Y軸周りの回転
-		m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_BOTH_ROTSPEED * stick);
-		m_rotation.Apply(m_initialCameraPos);
-	}
-
 
 	if (m_stick->GetStickState() == m_enStick_Right){
 		stick= m_stick->GetRStickValue().y;
@@ -72,11 +84,6 @@ void GameCamera::Rotation()
 		stick = m_stick->GetLStickValue().y;
 		m_rotation.SetRotationDeg(Vector3::AxisY, CAMERA_ROTSPEED * stick);
 		m_rotation.Apply(m_initialCameraPos);
-	}
-
-	//ダッシュカウントが1以上なら
-	if (m_sphere->GetDashCount() > 1) {
-		m_initialCameraPos = dashCountCameraPos;
 	}
 
 	//注視点のY座標を上げる

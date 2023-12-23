@@ -1,6 +1,6 @@
 #pragma once
 class Sphere;
-
+class Stick;
 class Player :public IGameObject
 {
 public:
@@ -135,7 +135,7 @@ private:
 
 private:
 	Sphere* m_sphere=nullptr;
-
+	Stick* m_stick = nullptr;
 
 	ModelRender m_playerRender;
 

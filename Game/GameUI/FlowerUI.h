@@ -15,6 +15,16 @@ public:
 	/// ‹¤’Ê‚ÌŠg‘å
 	/// </summary>
 	void CommonMagnification();
+
+	/// <summary>
+	/// –Ú•W‚Ì‘å‚«‚³‚©‚Ç‚¤‚©‚Ìæ“¾
+	/// </summary>
+	/// <returns></returns>
+	const bool GetIsObjectiveScale() const
+	{
+		return m_isObjectiveScale;
+	}
+
 private:
 	void Render(RenderContext& rc);
 	void Rotation();
@@ -49,5 +59,7 @@ private:
 	float m_initialRadius = 0.0f;								//‰Šú”¼Œa
 
 	Quaternion m_rotation = Quaternion::Identity;
+
+	bool m_isObjectiveScale = false;							//‘å‚«‚³‚ª–Ú•W‚©‚Ç‚¤‚©
 };
 

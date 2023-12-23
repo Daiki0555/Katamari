@@ -23,6 +23,5 @@ bool StageCollider::Start()
 		m_modelRender.GetModel().GetWorldMatrix(),
 		0.0f
 	);
-
 	return true;
 }

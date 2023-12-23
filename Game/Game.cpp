@@ -15,7 +15,7 @@
 #include "StageCollider.h"
 Game::Game()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {
@@ -89,7 +89,6 @@ void Game::InitLevel()
 		//			m_objctList.emplace_back(object);
 
 		//		}
-
 		//	}
 		//	return true;
 		//}

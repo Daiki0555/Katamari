@@ -54,6 +54,15 @@ public:
 	}
 
 	/// <summary>
+	/// 更新前の座標
+	/// </summary>
+	/// <returns></returns>
+	const Vector3& GetBeforePosition() const
+	{
+		return m_beforePosition;
+	}
+
+	/// <summary>
 	/// 回転の設定
 	/// </summary>
 	/// <param name="rot"></param>
@@ -147,6 +156,17 @@ private:
 	void Move();
 
 	/// <summary>
+	/// 反対同士のステック時の移動
+	/// </summary>
+	void InverseStickMove();
+
+
+	/// <summary>
+	/// どちらの向きに移動しているかの判定
+	/// </summary>
+	void IsMoving();
+	
+	/// <summary>
 	/// ダッシュ
 	/// </summary>
 	void Dash();
@@ -172,8 +192,10 @@ private:
 	/// </summary>
 	void Rotation();
 
-
-
+	/// <summary>
+	/// ダッシュ回転
+	/// </summary>
+	void DashRotation();
 
 private:
 	Object* m_object = nullptr;
@@ -181,6 +203,7 @@ private:
 	Stick* m_stick = nullptr;
 
 	ModelRender m_sphereRender;
+	FontRender m_fontRender;
 	
 	Vector3 m_position ={0.0f,50.0f,0.0f};
 
@@ -189,8 +212,12 @@ private:
 	Vector3 m_beforePosition = Vector3::Zero;					//移動前の座標
 
 	Vector3 m_scale = Vector3::One;
+	Vector3 m_inputStick = Vector3::Zero;
+	
+	Vector3 m_vertical = Vector3::Zero;
 	
 	CharacterSphereController m_charaCon;
+
 
 	Quaternion m_rotation= Quaternion::Identity;
 	
@@ -203,8 +230,12 @@ private:
 
 	float m_volume = 0.0f;										//オブジェクトの体積
 
-	float m_dashTimer=1.0f;										//ダッシュ可能な判定の時間
+	float m_dashTimer=0.0f;										//ダッシュ可能な判定の時間
 
+	float m_moveDownTime = 0.0f;
+
+	float m_beforeSpeedLength = 0.0f;
+	
 	int m_dashCount = 0;										//ダッシュカウント
 
 	bool m_isInverseStick = true;								//ステックを逆に倒した時に反転する
@@ -212,5 +243,8 @@ private:
 	bool m_isDash = false;										//ダッシュしているかどうか
 
 	bool m_isBrake = false;										//ブレーキしていないなら
+
+	bool m_isMovingBackward = false;							// 後退中かどうかを示すフラグ (falseなら前進)
+	bool m_wasMovingBackward = false;							// 直前まで後退中だったかどうかを示すフラグ (falseなら前進)
 };
 
