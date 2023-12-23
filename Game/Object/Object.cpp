@@ -30,13 +30,14 @@ void Object::InitObject(const char* objName)
 {
 	char filepath[256];
 	sprintf(filepath,"Assets/modelData/object/%s/%s.tkm", objName, objName);
-	m_objectRender.InitDeferredRendering(
+	m_objectRender.InitToonModel(
 		filepath,
 		0, 
 		0,
 		enModelUpAxisZ, 
 		true, 
-		false);
+		false,
+		true);
 
 	m_objectRender.SetPosition(m_position);
 	m_objectRender.SetRotation(m_rotation);

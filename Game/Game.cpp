@@ -12,9 +12,10 @@
 #include "GameUI/TimerUI.h"
 #include "GameUI/FlowerUI.h"
 #include "GameUI/ModelUI.h"
+#include "StageCollider.h"
 Game::Game()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 Game::~Game()
 {
@@ -65,31 +66,37 @@ void Game::InitLevel()
 			backGround->SetRotation(objdata.rotation);
 			return true;
 		}
-		else if (objdata.ForwardMatchName(L"o")) {
-			for (auto objectData : ObjectData::GetInstance()->GetObjectData())
-			{
-				//wchar_t型に変換した後
-				//レベルと名前が一致するかを求める
-				std::wstring wchar(objectData.m_name.begin(), objectData.m_name.end());
-				if (objdata.ForwardMatchName(wchar.c_str()))
-				{
-					Object* object = NewGO<Object>(0, "object");
+		//else if (objdata.ForwardMatchName(L"o")) {
+		//	for (auto objectData : ObjectData::GetInstance()->GetObjectData())
+		//	{
+		//		//wchar_t型に変換した後
+		//		//レベルと名前が一致するかを求める
+		//		std::wstring wchar(objectData.m_name.begin(), objectData.m_name.end());
+		//		if (objdata.ForwardMatchName(wchar.c_str()))
+		//		{
+		//			Object* object = NewGO<Object>(0, "object");
 
-					object->SetPosition(objdata.position);
-					object->SetRotation(objdata.rotation);
-					object->SetScale(objdata.scale);
-					object->InitObject(objectData.m_name.c_str());
+		//			object->SetPosition(objdata.position);
+		//			object->SetRotation(objdata.rotation);
+		//			object->SetScale(objdata.scale);
+		//			object->InitObject(objectData.m_name.c_str());
 
-					//名前から移動方法を求める
-					StructMoveState moveState = SerchMove(objdata.name);
-					object->InitMove(moveState.m_state, moveState.m_move, moveState.m_range);
-					object->SetObjectData(objectData);
+		//			//名前から移動方法を求める
+		//			StructMoveState moveState = SerchMove(objdata.name);
+		//			object->InitMove(moveState.m_state, moveState.m_move, moveState.m_range);
+		//			object->SetObjectData(objectData);
 
-					m_objctList.emplace_back(object);
+		//			m_objctList.emplace_back(object);
 
-				}
-
-			}
+		//		}
+		//	}
+		//	return true;
+		//}
+		else if (objdata.ForwardMatchName(L"Collider")) {
+			StageCollider* stageCollider = NewGO<StageCollider>(0,"stageCollider");
+			stageCollider->SetPosition(objdata.position);
+			stageCollider->SetScale(objdata.scale);
+			stageCollider->SetRotation(objdata.rotation);
 			return true;
 		}
 		

@@ -51,6 +51,7 @@
     <ClCompile Include="GameUI\TimerUI.cpp" />
     <ClCompile Include="GameUI\FlowerUI.cpp" />
     <ClCompile Include="Object\Move\MoveNo.cpp" />
+    <ClCompile Include="StageCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -91,5 +92,6 @@
     <ClInclude Include="GameUI\TimerUI.h" />
     <ClInclude Include="GameUI\FlowerUI.h" />
     <ClInclude Include="Object\Move\MoveNo.h" />
+    <ClInclude Include="StageCollider.h" />
   </ItemGroup>
 </Project>

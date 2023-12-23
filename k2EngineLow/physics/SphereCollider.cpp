@@ -10,7 +10,6 @@ namespace nsK2EngineLow {
 
 	SphereCollider::~SphereCollider()
 	{
-		delete &m_shape;
 	}
 	void SphereCollider::Create(const float radius)
 	{

@@ -24,7 +24,8 @@ bool BackGround::Start()
 
 	m_physicsObj.CreateFromModel(
 		m_backRender.GetModel(), 
-		m_backRender.GetModel().GetWorldMatrix()
+		m_backRender.GetModel().GetWorldMatrix(),
+		1.0f
 	);
 	return true;
 }

@@ -133,6 +133,7 @@ float4 CalcOutline(SPSIn psIn)
     // このピクセルの深度値を取得
     float depth = g_depthTexture.Sample(g_sampler, uv).x;
 
+	
     // 近傍8テクセルの深度値の平均値を計算する
     float depth2 = 0.0f;
     for( int i = 0; i < 8; i++)
@@ -305,7 +306,7 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 {
 	
 	float4 albedoColor=CalcOutline(psIn);
-	
+
 	//法線によるライティングを計算する
 	float3 normal=CalcNormal(psIn);
 
@@ -328,12 +329,12 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 
 	float3 lig=0.0f;
 
-	lig +=diffDirection
-	 	 +specuDirection
-		 +dirLig.ambient
-		 +limColor
-	 	 +pointLight;	
-
+	lig += diffDirection
+		+ specuDirection
+		+ dirLig.ambient
+		+ limColor
+		+ pointLight;
+		;
 	albedoColor.xyz*=lig;
 
 	//法線とライトの方向とで内積を計算する
@@ -341,7 +342,7 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 
 	//内積の結果が 0.1 以下なら、最終カラーの色味を若干落とす
 	if(t<0.1f){
-		albedoColor.xyz*=0.5f;
+		albedoColor.xyz*=0.8f;
 	}
 
 	return albedoColor;

@@ -412,6 +412,9 @@ float4 PSMain( SPSIn psIn) : SV_Target0
 		 ;
 
 	}
+	else {
+		lig += shadow;
+	}
 	
 	lig=min(lig,10.0f);
 	

@@ -18,7 +18,7 @@ namespace nsK2EngineLow {
 		GameObjectManager::DeleteInstance();
 		PhysicsWorld::DeleteInstance();
 		EffectEngine::DeleteInstance();
-
+		CollisionObjectManager::DeleteInstance();
 		delete g_soundEngine;
 	}
 	void K2EngineLow::Init(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight)
@@ -36,6 +36,7 @@ namespace nsK2EngineLow {
 
 		GameObjectManager::CreateInstance();
 		PhysicsWorld::CreateInstance();
+		CollisionObjectManager::CreateInstance();
 		g_soundEngine = new SoundEngine();
 		if (m_graphicsEngine) {
 			//エフェクトエンジンの初期化。

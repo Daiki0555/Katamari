@@ -241,6 +241,7 @@
     <ClCompile Include="Object\ObjectData.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Player\Sphere.cpp" />
+    <ClCompile Include="StageCollider.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -269,6 +270,7 @@
     <ClInclude Include="Object\ObjectData.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Player\Sphere.h" />
+    <ClInclude Include="StageCollider.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stick.h" />
     <ClInclude Include="system\system.h" />

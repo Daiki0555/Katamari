@@ -6,10 +6,20 @@ public:
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
-public:
-	void Rotation();
-private:
+	/// <summary>
+	/// タイマーの取得
+	/// </summary>
+	/// <returns></returns>
+	const float GetTimer() const
+	{
+		return m_timer;
+	}
 
+private:
+	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotation();
 private:
 	SpriteRender m_arrowRender;
 	SpriteRender m_clockBackRender;
