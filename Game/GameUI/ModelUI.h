@@ -6,7 +6,16 @@ public:
 	~ModelUI();
 	bool Start();
 	void Update();
-public:
+	
+	/// <summary>
+	/// •`‰æ‚·‚é‚©‚Ç‚¤‚©
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void IsDraw(const bool state)
+	{
+		m_isDraw = state;
+	}
 
 private:
 
@@ -35,5 +44,7 @@ private:
 	Vector3 m_position = Vector3::Zero;
 	Vector3 m_scale = Vector3::One;
 	Quaternion m_rotation = Quaternion::Identity;
+
+	bool m_isDraw = true;
 };
 

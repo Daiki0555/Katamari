@@ -36,7 +36,8 @@ namespace nsK2EngineLow{
 			const bool isShadow = false,
 			const bool isShadowReceiver = false,
 			const bool isOutline = false,
-			const bool isWipeModel =false
+			const bool isWipeModel =false,
+			int maxInstance=1
 		);
 
 		/// <summary>
@@ -51,9 +52,24 @@ namespace nsK2EngineLow{
 		void Update();
 
 		/// <summary>
+		/// インスタンシングデータの更新。
+		/// </summary>
+		/// <param name="instanceNo">インスタンス番号</param>
+		/// <param name="pos">座標</param>
+		/// <param name="rot">回転</param>
+		/// <param name="scale">拡大率</param>
+		void UpdateInstancingData(
+			int instanceNo,
+			Vector3& pos,
+			const Quaternion& rot,
+			const Vector3& scale
+		);
+
+		/// <summary>
 		/// 巻き込まれたオブジェクトの更新処理
 		/// </summary>
 		void InvolutionModelsUpdate(
+			int instanceNo,
 			Matrix matrix,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ
 		);
@@ -231,7 +247,7 @@ namespace nsK2EngineLow{
 		void OnToonRender(RenderContext& rc)override
 		{
 			if (m_toonModel.IsInited()){
-				m_toonModel.Draw(rc);
+				m_toonModel.Draw(rc, m_maxInstance);
 			}
 		}
 
@@ -241,7 +257,7 @@ namespace nsK2EngineLow{
 		/// <param name="rc"></param>
 		void OnZPrepass(RenderContext& rc)override
 		{
-			m_zprepassModel.Draw(rc);
+			m_zprepassModel.Draw(rc,m_maxInstance);
 		}
 
 		/// <summary>
@@ -266,6 +282,26 @@ namespace nsK2EngineLow{
 			int shadowMapNo,
 			const Matrix& lvpMatrix) override;
 		
+
+
+		/// <summary>
+		/// インスタン数を取得。
+		/// </summary>
+		/// <returns></returns>
+		int GetNumInstance() const
+		{
+			return m_numInstance;
+		}
+
+		/// <summary>
+		/// インスタン氏を除去
+		/// </summary>
+		/// <param name="instanceNo"></param>
+		void RemoveInstance(int instanceNo)
+		{
+			int matrixIndex = m_instanceNoToWorldMatrixArrayIndexTable[instanceNo];
+			m_worldMatrixArray[matrixIndex] = g_matZero;
+		}
 			
 		
 
@@ -341,9 +377,19 @@ namespace nsK2EngineLow{
 
 
 		/// <summary>
+		/// インスタンシング描画の初期化
+		/// </summary>
+		/// <param name="maxInstance"></param>
+		void InitInstancingDraw(int maxInstance);
+
+
+		/// <summary>
 		/// ワールド行列を代入する
 		/// </summary>
-		void SetWorldMatrixInModes(Matrix matrix);
+		void SetWorldMatrixInModes(
+			int instanceNo,
+			Matrix matrix
+		);
 
 		/// <summary>
 		/// 各種モデルのワールド行列を更新する。
@@ -386,7 +432,18 @@ namespace nsK2EngineLow{
 		bool			m_isInvolution = false;				//巻き込まれているかの判定
 
 		Matrix			m_setMatrix;						//ワールド行行列を代入するためだけの変数
-	};
+	
+		bool			m_isEnableInstancingDraw = false;	//インスタンシング描画をするか
+
+		std::unique_ptr<Matrix[]>	m_worldMatrixArray;		//ワールド行列の配列
+		
+		
+		StructuredBuffer			m_worldMatrixArraySB;							//ワールド行列をGPUに転送するためのストラクチャードバッファ
+		int							m_numInstance = 0;								// インスタンスの数。
+		int							m_maxInstance = 1;								//インスタンス最大数
+		std::unique_ptr<int[]>		m_instanceNoToWorldMatrixArrayIndexTable;		// インスタンス番号からワールド行列の配列のインデックスに変換するテーブル
+
+};
 }
 
 

@@ -1,18 +1,11 @@
 ///////////////////////////////////////
 // 構造体。
 ///////////////////////////////////////
-//スキニング用の頂点データをひとまとめ。
-struct SSkinVSIn{
-	int4  Indices  	: BLENDINDICES0;
-    float4 Weights  : BLENDWEIGHT0;
-};
 
-// 頂点シェーダーへの入力
-struct SVSIn
-{
-    float4 pos : POSITION;          //頂点座標。
-    SSkinVSIn skinVert;				//スキン用のデータ。
-};
+///////////////////////////////////////
+// 頂点シェーダーの共通処理をインクルードする。
+///////////////////////////////////////
+#include "ModelVSCommon.h"
 
 // ピクセルシェーダーへの入力
 struct SPSIn
@@ -22,23 +15,10 @@ struct SPSIn
     
 };
 
-
-
-///////////////////////////////////////
-// 定数バッファ。
-///////////////////////////////////////
-// モデル用の定数バッファー
-cbuffer ModelCb : register(b0)
-{
-    float4x4 mWorld;
-    float4x4 mView;
-    float4x4 mProj;
-};
-
-
-StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
-
-
+////////////////////////////////////////////////
+// グローバル変数。
+////////////////////////////////////////////////
+StructuredBuffer<float4x4> g_worldMatrixArray   : register(t10);	//ワールド行列の配列。インスタンシング描画の際に有効。
 
 ///////////////////////////////////////
 // 関数
@@ -63,15 +43,11 @@ float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 }
 
 // モデル用の頂点シェーダーのエントリーポイント
-SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
+SPSIn VSMainCore(SVSIn vsIn, float4x4 mWorldLocal)
 {
     SPSIn psIn;
-    float4x4 m;
-	if( hasSkin ){
-		m = CalcSkinMatrix(vsIn.skinVert);
-	}else{
-		m = mWorld;
-	}
+   	float4x4 m;
+	m = mWorldLocal;
     psIn.pos = mul(m, vsIn.pos); // モデルの頂点をワールド座標系に変換
     psIn.pos = mul(mView, psIn.pos); // ワールド座標系からカメラ座標系に変換
     psIn.depth.z = psIn.pos.z;
@@ -87,14 +63,22 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 /// </summary>
 SPSIn VSMain(SVSIn vsIn)
 {
-	return VSMainCore(vsIn, false);
+	return VSMainCore(vsIn, mWorld);
 }
 /// <summary>
 /// スキンありメッシュの頂点シェーダーのエントリー関数。
 /// </summary>
 SPSIn VSSkinMain( SVSIn vsIn ) 
 {
-	return VSMainCore(vsIn, true);
+	return VSMainCore(vsIn, CalcSkinMatrix(vsIn.skinVert));
+}
+
+/// <summary>
+/// スキンなしメッシュ用の頂点シェーダーのエントリー関数(インスタンシング描画用)。
+/// </summary>
+SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
+{
+	return VSMainCore(vsIn,g_worldMatrixArray[instanceID]);
 }
 
 // モデル用のピクセルシェーダーのエントリーポイント

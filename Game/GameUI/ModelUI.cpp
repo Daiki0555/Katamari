@@ -88,6 +88,9 @@ void ModelUI::Animation()
 
 void ModelUI::Render(RenderContext& rc)
 {
+	if (!m_isDraw) {
+		return;
+	}
 	m_earthRender.Draw(rc);
 	m_modelUI.Draw(rc);
 }

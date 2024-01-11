@@ -89,7 +89,15 @@ public:
 		return m_playerState;
 	}
 
-public:
+	/// <summary>
+	/// •`‰æ‚·‚é‚©‚Ç‚¤‚©
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void IsDraw(const bool state)
+	{
+		m_isDraw = state;
+	}
 
 private:
 	/// <summary>
@@ -162,6 +170,6 @@ private:
 
 	float m_radius = 0.0f;										//‹…‘Ì‚Ì”¼Œa
 
-	
+	bool m_isDraw = true;
 };
 

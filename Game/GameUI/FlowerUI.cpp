@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "FlowerUI.h"
 #include "Player/Sphere.h"
+#include "Game.h"
 namespace {
 	//イラストの共通の値
 	const Vector3 UI_POSITION = { -800.0f,450.0f,0.0f };
@@ -47,6 +48,7 @@ bool FlowerUI::Start()
 {
 	//塊の情報を持ってくる
 	m_sphere = FindGO<Sphere>("sphere");
+	m_game = FindGO<Game>("game");
 
 	//最初の大きさ
 	m_initialRadius= m_sphere->GetRadius();
@@ -172,7 +174,7 @@ void FlowerUI::CommonMagnification()
 	m_commonScale = UI_MIN_SCALE +(COMMON_SCALE_MAX- UI_MIN_SCALE)*((m_sphere->GetRadius()-m_initialRadius)/(OBJECTIVE- m_initialRadius));
 	m_commonScale = min(m_commonScale, COMMON_SCALE_MAX);
 	if (scale == OBJECTIVE) {
-		m_isObjectiveScale = true;
+		m_game->SetClearState(true);
 	}
 }
 

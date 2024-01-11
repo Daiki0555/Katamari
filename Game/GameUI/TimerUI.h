@@ -1,4 +1,5 @@
 #pragma once
+class Game;
 class TimerUI:public IGameObject
 {
 public:
@@ -21,6 +22,7 @@ private:
 	/// </summary>
 	void Rotation();
 private:
+	Game* m_game = nullptr;
 	SpriteRender m_arrowRender;
 	SpriteRender m_clockBackRender;
 	SpriteRender m_clockLimitRender;
@@ -31,5 +33,6 @@ private:
 	float m_timer = 0.0f;
 	float m_degree = 0.0f;
 	int m_intTime = 0;
+	bool m_isProcessing = false;
 };
 

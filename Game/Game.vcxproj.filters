@@ -52,6 +52,9 @@
     <ClCompile Include="GameUI\FlowerUI.cpp" />
     <ClCompile Include="Object\Move\MoveNo.cpp" />
     <ClCompile Include="StageCollider.cpp" />
+    <ClCompile Include="Scene\GameClear.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Object\ObjectRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -93,5 +96,8 @@
     <ClInclude Include="GameUI\FlowerUI.h" />
     <ClInclude Include="Object\Move\MoveNo.h" />
     <ClInclude Include="StageCollider.h" />
+    <ClInclude Include="Scene\GameClear.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Object\ObjectRender.h" />
   </ItemGroup>
 </Project>

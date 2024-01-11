@@ -17,6 +17,8 @@
 ////////////////////////////////////////////////
 Texture2D<float4> g_depthTexture : register(t10);
 
+StructuredBuffer<float4x4> g_worldMatrixArray   : register(t11);	//ワールド行列の配列。インスタンシング描画の際に有効。
+
 ////////////////////////////////////////////////
 // 定数バッファ。
 ////////////////////////////////////////////////
@@ -67,15 +69,11 @@ float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 /// <summary>
 /// 頂点シェーダーのコア関数。
 /// </summary>
-SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
+SPSIn VSMainCore(SVSIn vsIn, float4x4 mWorldLocal)
 {
-	 SPSIn psIn;
+	SPSIn psIn;
 	float4x4 m;
-	if( hasSkin ){
-		m = CalcSkinMatrix(vsIn.skinVert);
-	}else{
-		m = mWorld;
-	}
+	m = mWorldLocal;
     float4 worldPos = mul(m, vsIn.pos);
     psIn.pos=mul(m,vsIn.pos);      //モデルの頂点をワールド座標系に変換
     psIn.worldPos=worldPos;             //頂点シェーダーからワールド座標を出力
@@ -100,14 +98,22 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 /// </summary>
 SPSIn VSMain(SVSIn vsIn)
 {
-	return VSMainCore(vsIn, false);
+	return VSMainCore(vsIn, mWorld);
 }
 /// <summary>
 /// スキンありメッシュの頂点シェーダーのエントリー関数。
 /// </summary>
 SPSIn VSSkinMain( SVSIn vsIn ) 
 {
-	return VSMainCore(vsIn, true);
+	return VSMainCore(vsIn, CalcSkinMatrix(vsIn.skinVert));
+}
+
+/// <summary>
+/// スキンなしメッシュ用の頂点シェーダーのエントリー関数(インスタンシング描画用)。
+/// </summary>
+SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
+{
+	return VSMainCore(vsIn,g_worldMatrixArray[instanceID]);
 }
 
 float4 CalcOutline(SPSIn psIn)
