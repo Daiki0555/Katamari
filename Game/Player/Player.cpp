@@ -184,5 +184,8 @@ void Player::Animation()
 
 void Player::Render(RenderContext& rc)
 {
+	if (!m_isDraw){
+		return;
+	}
 	m_playerRender.Draw(rc);
 }

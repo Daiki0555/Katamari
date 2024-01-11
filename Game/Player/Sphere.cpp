@@ -445,6 +445,9 @@ void Sphere::DashRotation()
 
 void Sphere::Render(RenderContext& rc)
 {
+	if (!m_isDraw) {
+		return;
+	}
 	m_sphereRender.Draw(rc);
 	//m_fontRender.Draw(rc);
 }

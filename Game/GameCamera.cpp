@@ -3,6 +3,8 @@
 #include "Player/Sphere.h"
 #include "Player/Player.h"
 #include "Stick.h"
+#include "Game.h"
+#include "Scene/GameClear.h"
 namespace
 {
 	const Vector3 CAMERA_POS = { 0.0f,0.0f,-70.0f };
@@ -19,9 +21,14 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
+	//î•ñ‚Ìæ“¾
 	m_sphere = FindGO<Sphere>("sphere");
 	//m_sphere = FindGO<Player>("player");
 	m_stick = FindGO<Stick>("stick");
+	m_game = FindGO<Game>("game");
+	m_gameClear = FindGO<GameClear>("gameClear");
+
+
 	m_initialCameraPos = CAMERA_POS;
 	g_camera3D->SetNear(0.5f);
 	g_camera3D->SetFar(7000.0f);
@@ -30,14 +37,18 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
+	if (m_game->GetGameSceneState() == Game::m_enGameState_DuringGamePlay) {
+		if (!m_isTurningCamera) {
+			Rotation();
+		}
+		InvertCamera();
 
-	if (!m_isTurningCamera) {
-		Rotation();
+	}
+
+	if (m_gameClear->GetIsEndState()) {
+		EndCamera();
 	}
 	
-
-	InvertCamera();
-
 	g_camera3D->SetPosition(m_toCameraPos);
 	g_camera3D->SetTarget(m_target);
 	//XV
@@ -123,5 +134,16 @@ void GameCamera::InvertCamera()
 			m_isTurningCamera = false;
 			m_turnTimer = 0.0f;
 		}
+	}
+}
+
+
+void GameCamera::EndCamera()
+{
+	m_toCameraPos -= m_endCameraFront;
+	m_toCameraPos.y += 0.3f;
+	m_endTime -= g_gameTime->GetFrameDeltaTime();
+	if (m_endTime <= 0.0f) {
+		m_game->SetGameSceneState(Game::m_enGameState_GameEnd);
 	}
 }

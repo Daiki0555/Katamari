@@ -8,8 +8,9 @@
 #include "Move/MoveNo.h"
 #include "GameUI/ObjectUI.h"
 #include "GameUI/FlowerUI.h"
+#include "ObjectRender.h"
 namespace {
-	const float		HIT_OBJECT = 10.0f;					// 塊に当たる範囲
+	const float		HIT_OBJECT = 0.0f;					// 塊に当たる範囲
 }
 Object::~Object()
 {
@@ -18,32 +19,38 @@ Object::~Object()
 
 bool Object::Start()
 {
+	//SE
+	//オブジェクト巻き込み時
+	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/SE/object/obj.wav");
+	//クラクション
+	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/SE/object/carhorn.wav");
+	//コイン
+	g_soundEngine->ResistWaveFileBank(2, "Assets/sound/SE/object/coin.wav");
+	//炭酸ドリンク
+	g_soundEngine->ResistWaveFileBank(3, "Assets/sound/SE/object/drink.wav");
+	//馬
+	g_soundEngine->ResistWaveFileBank(4, "Assets/sound/SE/player/brake.wav");
+	//ネズミ
+	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/SE/object/rat.wav");
+	//ブレーキ
+	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/object/carhorn.wav");
+
 	m_sphere = FindGO<Sphere>("sphere");
 	m_objectUI = FindGO<ObjectUI>("objectUI");
 	m_flowerUI = FindGO<FlowerUI>("flowerUI");
+	/// <summary>
+	/// キーを元に取得する
+	/// </summary>
+	/// <returns></returns>
+	m_objectRender = FindGO<ObjectRender>(m_objData.m_name.c_str());
+	
+	
+	
 	InitCollision();
 
 	return true;
 }
 
-void Object::InitObject(const char* objName)
-{
-	char filepath[256];
-	sprintf(filepath,"Assets/modelData/object/%s/%s.tkm", objName, objName);
-	m_objectRender.InitToonModel(
-		filepath,
-		0, 
-		0,
-		enModelUpAxisZ, 
-		true, 
-		false,
-		true);
-
-	m_objectRender.SetPosition(m_position);
-	m_objectRender.SetRotation(m_rotation);
-	m_objectRender.SetScale(m_scale);
-	m_objectRender.Update();
-}
 
 void Object::InitCollision()
 {
@@ -91,8 +98,13 @@ void Object::Update()
 	{
 		Move();
 		Hit();
-		m_objectRender.SetPosition(m_position);
-		m_objectRender.Update();
+		m_objectRender->UpdateInstancingData(
+			m_instanceNo,
+			m_position,
+			m_rotation,
+			m_scale
+			);
+
 	}
 
 	
@@ -106,9 +118,9 @@ void Object::Move()
 void Object::Hit()
 {
 	Vector3 pos = m_sphere->GetPosition();
-	pos.y = 0.0f;
+	//pos.y -= 40.0f;
 	Vector3 diff = pos - m_position;
-	if (diff.Length() <= HIT_OBJECT)
+	if (diff.Length() <= m_sphere->GetRadius())
 	{
 		Involution();
 		m_objectState = m_enObject_Involution;
@@ -118,6 +130,7 @@ void Object::Hit()
 
 void Object::Involution()
 {
+
 	//塊（コア）の逆行列を求める
 	Matrix inverseMatrix;
 	inverseMatrix.Inverse(m_sphere->GetSphereModel().GetModel().GetWorldMatrix());
@@ -136,16 +149,29 @@ void Object::Involution()
 	//塊（コア）を含むオブジェクトのワールド行列と塊の逆行列を計算する
 	m_matInCore.Multiply(mWorld, inverseMatrix);
 	m_objectUI->InitWipeModelUI(m_objData);
+
+	//巻き込まれSEの再生　
+	SoundSource* se = NewGO<SoundSource>(0);
+	se->Init(0);
+	se->Play(false);
+	se->SetVolume(1.0f);
+	//もし０番以外が指定されているなら
+	if (m_objData.m_soundNumber!= 0) {
+		SoundSource* se2 = NewGO<SoundSource>(0);
+		se2->Init(m_objData.m_soundNumber);
+		se2->Play(false);
+		se2->SetVolume(1.0f);
+	}
 }
 
 void Object::CalcMatrix()
 {
 	//巻き込み後のオブジェクトのワールド行列の計算
 	m_objectWorldMatrix.Multiply(m_matInCore, m_sphere->GetSphereModel().GetModel().GetWorldMatrix());
-	m_objectRender.InvolutionModelsUpdate(m_objectWorldMatrix, enModelUpAxisZ);
+	m_objectRender->InvolutionModelsUpdate(m_instanceNo,m_objectWorldMatrix, enModelUpAxisZ);
 }
 
 void Object::Render(RenderContext& rc)
 {
-	m_objectRender.Draw(rc);
+
 }

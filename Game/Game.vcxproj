@@ -225,6 +225,9 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Object\ObjectRender.cpp" />
+    <ClCompile Include="Scene\GameClear.cpp" />
     <ClCompile Include="GameUI\FlowerUI.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -255,6 +258,9 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Object\ObjectRender.h" />
+    <ClInclude Include="Scene\GameClear.h" />
     <ClInclude Include="GameUI\FlowerUI.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />

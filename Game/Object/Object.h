@@ -6,6 +6,7 @@ class Game;
 class IMove;
 class ObjectUI;
 class FlowerUI;
+class ObjectRender;
 class Object :public IGameObject
 {
 public:
@@ -17,7 +18,6 @@ public:
 	};
 
 	
-
 	~Object();
 	bool Start();
 
@@ -28,11 +28,6 @@ public:
 	/// 動きの初期化
 	/// </summary>
 	void InitMove(EnMoveState state,const float speed,const float range);
-
-	/// <summary>
-	/// オブジェクトの読み込み処理
-	/// </summary>
-	void InitObject(const char* objName);
 
 	/// <summary>
 	/// 座標の設定
@@ -122,6 +117,14 @@ public:
 		return m_objData.m_name;
 	}
 
+	/// <summary>
+	/// インスタン番号を設定
+	/// </summary>
+	/// <param name="instanceNo"></param>
+	void SetInstanceNo(int instanceNo)
+	{
+		m_instanceNo = instanceNo;
+	}
 private:
 
 	/// <summary>
@@ -150,28 +153,31 @@ private:
 	
 
 private:
-	ModelRender m_objectRender;
-	CollisionObject m_collisionObject;
+	//ModelRender			m_objectRender;
+	CollisionObject		m_collisionObject;
 	PhysicsStaticObject m_physicsObj;
 	
-	StructObjectData m_objData;											//オブジェクトのデータ
+	StructObjectData	m_objData;											//オブジェクトのデータ
 	
-	Sphere* m_sphere;
-	FlowerUI* m_flowerUI;
+	Sphere*				m_sphere;
+	FlowerUI*			m_flowerUI;
 
-	ObjectUI* m_objectUI;
+	ObjectUI*			m_objectUI;
 	
-	Vector3 m_position = Vector3::Zero;
-	Vector3 m_scale = Vector3::Zero;
-	
-	Quaternion m_rotation = Quaternion::Identity;
+	ObjectRender*		m_objectRender=nullptr;
 
-	Matrix m_matInCore;														//塊（コア）を含む行列
-	Matrix m_objectWorldMatrix;												//巻き込み後のオブジェクトのワールド行列
+	Vector3				m_position = Vector3::Zero;
+	Vector3				m_scale = Vector3::Zero;
 	
-	EnObjectState m_objectState = m_enObject_NotInvolution;
-	EnMoveState m_moveState = m_enMove_No;
+	Quaternion			m_rotation = Quaternion::Identity;
 
-	IMovePtr m_objectMove;
+	Matrix				m_matInCore;														//塊（コア）を含む行列
+	Matrix				m_objectWorldMatrix;												//巻き込み後のオブジェクトのワールド行列
+	
+	EnObjectState		m_objectState = m_enObject_NotInvolution;
+	EnMoveState			m_moveState = m_enMove_No;
+
+	IMovePtr			m_objectMove;
+	int					m_instanceNo = 0;				// インスタンス番号。
 };
 

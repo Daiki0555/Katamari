@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TimerUI.h"
+#include "Game.h"
 namespace
 {
 	//アロースプライト用
@@ -21,6 +22,9 @@ TimerUI::~TimerUI()
 
 bool TimerUI::Start()
 {
+	//ゲーム取得
+	m_game = FindGO<Game>("game");
+
 	//タイマーの初期化
 	m_timer = GAME_TIME * 60.0f;
 	//制限時間から円形ゲージの角度を決定する
@@ -61,6 +65,14 @@ void TimerUI::Update()
 	m_timeRender.SetPosition(TIME_FONT_POSITION);
 	m_timeRender.SetScale(1.50f);
 	m_timeRender.SetShadowParam(true, 1.5f, Vector4{ 0.0f,0.0f,0.0f,0.80f });
+
+	//時間がなくなったら
+	if (m_intTime <= 0.0f&&
+		!m_isProcessing) {
+		//時間切れにする
+		m_game->SetGameSceneState(Game::m_enGameState_TimeUp);
+		m_isProcessing = true;
+	}
 }
 
 void TimerUI::Rotation()

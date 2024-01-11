@@ -31,7 +31,16 @@ void ObjectData::Init()
 		//オブジェクトの体積を読み込む
 		std::getline(stream, buf, ',');
 		objectData.m_volume = std::stof(buf);
+
+		//巻き込まれる大きさ
+		std::getline(stream, buf, ',');
+		objectData.m_involutionScale = std::stof(buf);
+
+		//SEのナンバー
+		std::getline(stream, buf, ',');
+		objectData.m_soundNumber = std::stoi(buf);
 		objects.emplace_back(objectData);
+
 	}
 	
 	file.close();

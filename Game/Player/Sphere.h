@@ -147,7 +147,16 @@ public:
 		m_radius = pow(3.0f * m_volume / (4.0f * Math::PI), 1.0f / 3.0f);
 		m_charaCon.SetRadius(m_radius);
 	}
-public:
+
+	/// <summary>
+	/// 描画するかどうか
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void IsDraw(const bool state)
+	{
+		m_isDraw = state;
+	}
 
 private:
 	/// <summary>
@@ -246,5 +255,7 @@ private:
 
 	bool m_isMovingBackward = false;							// 後退中かどうかを示すフラグ (falseなら前進)
 	bool m_wasMovingBackward = false;							// 直前まで後退中だったかどうかを示すフラグ (falseなら前進)
+
+	bool m_isDraw = true;
 };
 
