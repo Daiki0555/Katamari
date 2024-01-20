@@ -37,7 +37,7 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	if (m_game->GetGameSceneState() == Game::m_enGameState_DuringGamePlay) {
+	if (GameManager::GetInstance()->GetGameSceneState()==GameManager::m_enGameState_DuringGamePlay) {
 		if (!m_isTurningCamera) {
 			Rotation();
 		}
@@ -144,6 +144,6 @@ void GameCamera::EndCamera()
 	m_toCameraPos.y += 0.3f;
 	m_endTime -= g_gameTime->GetFrameDeltaTime();
 	if (m_endTime <= 0.0f) {
-		m_game->SetGameSceneState(Game::m_enGameState_GameEnd);
+		GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_GameEnd);
 	}
 }

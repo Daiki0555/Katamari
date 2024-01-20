@@ -12,23 +12,23 @@ GameManager::~GameManager()
 
 bool GameManager::Start()
 {
-	////SE
-	////オブジェクト巻き込み時
-	//g_soundEngine->ResistWaveFileBank(0, "Assets/sound/SE/object/obj.wav");
-	////クラクション
-	//g_soundEngine->ResistWaveFileBank(1, "Assets/sound/SE/object/carhorn.wav");
-	////コイン
-	//g_soundEngine->ResistWaveFileBank(2, "Assets/sound/SE/object/coin.wav");
-	////炭酸ドリンク
-	//g_soundEngine->ResistWaveFileBank(3, "Assets/sound/SE/object/drink.wav");
-	////馬
-	//g_soundEngine->ResistWaveFileBank(4, "Assets/sound/SE/player/brake.wav");
-	////ネズミ
-	//g_soundEngine->ResistWaveFileBank(5, "Assets/sound/SE/object/rat.wav");
-	////ブレーキ
-	//g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/object/carhorn.wav");
-	////BGM
-	//g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM.wav");
+	//SE
+	//オブジェクト巻き込み時
+	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/SE/object/obj.wav");
+	//クラクション
+	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/SE/object/carhorn.wav");
+	//コイン
+	g_soundEngine->ResistWaveFileBank(2, "Assets/sound/SE/object/coin.wav");
+	//炭酸ドリンク
+	g_soundEngine->ResistWaveFileBank(3, "Assets/sound/SE/object/drink.wav");
+	//馬
+	g_soundEngine->ResistWaveFileBank(4, "Assets/sound/SE/player/brake.wav");
+	//ネズミ
+	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/SE/object/rat.wav");
+	//ブレーキ
+	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/object/carhorn.wav");
+	//BGM
+	g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM1.wav");
 	return true;
 
 }

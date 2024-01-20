@@ -1,6 +1,7 @@
 #pragma once
 #include "Move/IMove.h"
 #include "ObjectData.h"
+#include "GameManager.h"
 class Sphere;
 class Game;
 class IMove;
@@ -125,6 +126,8 @@ public:
 	{
 		m_instanceNo = instanceNo;
 	}
+
+
 private:
 
 	/// <summary>
@@ -144,13 +147,11 @@ private:
 	/// “–‚½‚è”»’èˆ—
 	/// </summary>
 	void Hit();
-
+	
 	/// <summary>
 	/// Šª‚«‚İˆ—
 	/// </summary>
 	void Involution();
-
-	
 
 private:
 	//ModelRender			m_objectRender;

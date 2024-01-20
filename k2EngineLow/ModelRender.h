@@ -74,6 +74,10 @@ namespace nsK2EngineLow{
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ
 		);
 
+		void InvolutionTitleModelsUpdate(
+			Matrix matrix
+		);
+
 
 		/// <summary>
 		/// 描画処理
@@ -386,8 +390,15 @@ namespace nsK2EngineLow{
 		/// <summary>
 		/// ワールド行列を代入する
 		/// </summary>
-		void SetWorldMatrixInModes(
+		void SetInstanceWorldMatrixInModes(
 			int instanceNo,
+			Matrix matrix
+		);
+
+		/// <summary>
+		/// ワールド行列を代入する
+		/// </summary>
+		void SetWorldMatrixInModes(
 			Matrix matrix
 		);
 

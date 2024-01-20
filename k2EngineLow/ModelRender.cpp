@@ -346,12 +346,20 @@ namespace nsK2EngineLow {
 		EnModelUpAxis modelUpAxis
 	)
 	{
-		SetWorldMatrixInModes(instanceNo,matrix);
+		SetInstanceWorldMatrixInModes(instanceNo,matrix);
 		
 		UpdateModelSkeletons();
 	}
 
-	void ModelRender::SetWorldMatrixInModes(
+	void ModelRender::InvolutionTitleModelsUpdate(
+		Matrix matrix
+	)
+	{
+		SetWorldMatrixInModes(matrix);
+		UpdateModelSkeletons();
+	}
+
+	void ModelRender::SetInstanceWorldMatrixInModes(
 		int instanceNo,
 		Matrix matrix
 	)
@@ -378,6 +386,38 @@ namespace nsK2EngineLow {
 		}
 		m_numInstance++;
 	}
+
+	void ModelRender::SetWorldMatrixInModes(Matrix matrix)
+	{
+		m_zprepassModel.SetWorldMatrix(matrix);
+		//ディファードレンダリング用のモデルの更新処理
+		if (m_renderToGBufferModel.IsInited()) {
+			m_renderToGBufferModel.SetWorldMatrix(matrix);;
+		}
+
+		//フォワードレンダリング用のモデルの更新処理
+		if (m_forwardRenderModel.IsInited()) {
+			m_forwardRenderModel.SetWorldMatrix(matrix);;
+		}
+
+		//トゥーンシェーダー用のモデルの更新処理
+		if (m_toonModel.IsInited()) {
+			m_toonModel.SetWorldMatrix(matrix);;
+		}
+
+		if (m_wipeModel.IsInited()) {
+			m_wipeModel.SetWorldMatrix(matrix);;
+		}
+
+		for (auto& models : m_shadowModels) {
+			if (models.IsInited())
+			{
+				models.SetWorldMatrix(matrix);;
+			}
+
+		}
+	}
+
 
 	void ModelRender::UpdateWorldMatrixInModes()
 	{

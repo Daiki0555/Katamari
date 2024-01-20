@@ -55,6 +55,8 @@
     <ClCompile Include="Scene\GameClear.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Object\ObjectRender.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Scene\Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -99,5 +101,7 @@
     <ClInclude Include="Scene\GameClear.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object\ObjectRender.h" />
+    <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Scene\Fade.h" />
   </ItemGroup>
 </Project>

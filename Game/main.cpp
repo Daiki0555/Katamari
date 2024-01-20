@@ -2,7 +2,8 @@
 #include "system/system.h"
 #include "Debug.h"
 #include "Game.h"
-
+#include "Scene/Title.h"
+#include "Scene/Fade.h"
 // K2EngineLowのグローバルアクセスポイント。
 K2EngineLow* g_k2EngineLow = nullptr;
 
@@ -22,8 +23,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	RenderingEngine::GetInstance()->Init();
 
-	NewGO<Game>(0, "game");
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
+	//NewGO<Game>(0, "game");
+	NewGO<Title>(0, "title");
+	NewGO<Fade>(1, "fade");
 	// ここからゲームループ。
 	while (DispatchWindowMessage())
 	{

@@ -3,8 +3,13 @@
 #include "Object/Object.h"
 #include "Game.h"
 #include "Stick.h"
+#include "Scene/Title.h"
 namespace 
 {
+	//タイトル
+	const float		MODEL_UPPOS_RADIUS = 5.0f;				//モデルの半径と座標
+	
+	
 	const float		SPEED_DOWN = 0.99f;									//速度減速率
 	const float		STANDARDSIZE = 40.0f;								//基準の塊の直径
 	const float		ALWAYS_SPEED = 2.5f;								//歩き時の乗算量
@@ -27,6 +32,8 @@ namespace
 	const float		BRAKE_LENGTH_ADDSPEED = 0.8f;						//ブレーキ出来る時のステックのカメラとステックのベクトルの長さ
 	const float		SPEED_ZERO_LENGTH = 1.3f;							//移動が止まるベクトルの長さ
 	const float		SPEED_DOWN_TIME = 0.005f;							//スピード減速率の時間	
+
+
 }
 Sphere::~Sphere()
 {
@@ -39,7 +46,7 @@ bool Sphere::Start()
 	m_object = FindGO<Object>("object");
 	m_game = FindGO<Game>("game");
 	m_stick = FindGO<Stick>("stick");
-
+	m_title = FindGO<Title>("title");
 
 	//スフィアモデルの情報の設定
 	m_sphereRender.InitToonModel("Assets/modelData/sphere/sphere.tkm",
@@ -55,14 +62,24 @@ bool Sphere::Start()
 	m_sphereRender.SetScale(m_scale);
 	m_sphereRender.Update();
 
-	//初期半径の設定
-	m_radius = INITIAL_RADIUS;
-
-	//キャラコンの設定
-	m_charaCon.Init(
-		m_radius,
-		m_position
-	);
+	if (GameManager::GetInstance()->GetGameSceneState() == GameManager::m_enGameState_Title) {
+		//初期半径の設定
+		m_radius = MODEL_UPPOS_RADIUS;
+		//キャラコンの設定
+		m_charaCon.Init(
+			m_radius,
+			m_position
+		);
+	}
+	else {
+		//初期半径の設定
+		m_radius = INITIAL_RADIUS;
+		//キャラコンの設定
+		m_charaCon.Init(
+			m_radius,
+			m_position
+		);
+	}
 
 	//球の体積を求める
 	m_volume = Math::PI * pow(m_radius, 3.0f) * 4 / 3;
@@ -71,40 +88,79 @@ bool Sphere::Start()
 
 void Sphere::Update()
 {
-	
-	DashCount();
-
-	Move();
-
-	Rotation();
-
-	DashRotation();
-	
-	//キャラコンを使用して
-	//プレイヤーの座標とモデルの座標を更新する
-	m_charaCon.SetPosition(m_position);
-	m_position = m_charaCon.Execute(
-		m_moveSpeed, 
-		g_gameTime->GetFrameDeltaTime()
-	);
-
-	m_sphereRender.SetRotation(m_rotation);
-	m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UP,m_position.z });
-	m_sphereRender.Update();
-
-	//前の座標を記憶する
-	m_beforePosition = m_position;
-
-
-	//一番新しい塊のワールド行列が必要なので
-	//ここで巻き込まれたオブジェクトのワールド行列を計算する
-	for (int i = 0; i < m_game->GetObjectList().size(); i++) {
-		if (m_game->GetObjectList()[i]->GetObjectState() ==
-			Object::m_enObject_Involution) {
-			m_game->GetObjectList()[i]->CalcMatrix();
-		}
+	//タイトル時の処理
+	if (GameManager::GetInstance()->GetGameSceneState() == GameManager::m_enGameState_Title) {
+		TitleMove();
 		
+		//キャラコンを使用して
+		//プレイヤーの座標とモデルの座標を更新する
+		m_charaCon.SetPosition(m_position);
+		m_position = m_charaCon.Execute(
+			m_moveSpeed,
+			g_gameTime->GetFrameDeltaTime()
+		);
+
+		m_sphereRender.SetRotation(m_rotation);
+		m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UPPOS_RADIUS,m_position.z });
+		m_sphereRender.Update();
+
+		if (m_title->GetIsHit()) {
+			m_title->CalcMatrix();
+		}
 	}
+	else {
+		DashCount();
+
+		Move();
+
+		Rotation();
+
+		DashRotation();
+
+		//キャラコンを使用して
+		//プレイヤーの座標とモデルの座標を更新する
+		m_charaCon.SetPosition(m_position);
+		m_position = m_charaCon.Execute(
+			m_moveSpeed,
+			g_gameTime->GetFrameDeltaTime()
+		);
+
+		m_sphereRender.SetRotation(m_rotation);
+		m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UP,m_position.z });
+		m_sphereRender.Update();
+
+		//前の座標を記憶する
+		m_beforePosition = m_position;
+
+
+		//一番新しい塊のワールド行列が必要なので
+		//ここで巻き込まれたオブジェクトのワールド行列を計算する
+		for (int i = 0; i < m_game->GetObjectList().size(); i++) {
+			if (m_game->GetObjectList()[i]->GetObjectState() ==
+				Object::m_enObject_Involution) {
+				m_game->GetObjectList()[i]->CalcMatrix();
+			}
+
+		}
+	}
+}
+
+void Sphere::TitleMove()
+{
+	//カメラの前方向と、右方向の取得
+	Vector3 cameraFoward = g_camera3D->GetForward();
+	if (m_isTitleMove) {
+		m_moveSpeed += cameraFoward * ALWAYS_SPEED * g_gameTime->GetFrameDeltaTime();
+		m_moveSpeed.z *= SPEED_DOWN;
+	}
+	Vector3 Rstick = m_stick->GetRStickValue();
+	Vector3 Lstick = m_stick->GetLStickValue();
+	//前方向にある程度倒れているなら
+	if (Rstick.y > 0.5f &&
+		Lstick.y > 0.5f) {
+		m_isTitleMove = true;
+	}
+	m_position = m_moveSpeed;
 }
 
 void Sphere::Move()

@@ -7,6 +7,7 @@ class Stick;
 class FlowerUI;
 class TimerUI;
 class GameClear;
+class Fade;
 class Game :public IGameObject
 {
 public:
@@ -102,8 +103,9 @@ private:
 	FlowerUI* m_flowerUI = nullptr;
 	TimerUI* m_timerUI = nullptr;
 	GameClear* m_gameClear = nullptr;
-	SoundEngine m_bgmSound;
+	Fade* m_fade = nullptr;
 	bool m_isGameClearable = false;
+	bool m_isStartBGM = false;			//BGM‚ªŽn‚Ü‚Á‚½‚©‚Ç‚¤‚©
 	std::vector<Object*>				m_objctList;
 };
 

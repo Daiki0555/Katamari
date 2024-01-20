@@ -1,4 +1,5 @@
 #pragma once
+#include "GameManager.h"
 class Sphere;
 class Stick;
 class Player;

@@ -2,6 +2,7 @@
 class Object;
 class Game;
 class Stick;
+class Title;
 class Sphere: public IGameObject
 {
 public:
@@ -165,6 +166,11 @@ private:
 	void Move();
 
 	/// <summary>
+	/// タイトル時の動き
+	/// </summary>
+	void TitleMove();
+
+	/// <summary>
 	/// 反対同士のステック時の移動
 	/// </summary>
 	void InverseStickMove();
@@ -210,6 +216,7 @@ private:
 	Object* m_object = nullptr;
 	Game* m_game = nullptr;
 	Stick* m_stick = nullptr;
+	Title* m_title = nullptr;
 
 	ModelRender m_sphereRender;
 	FontRender m_fontRender;
@@ -257,5 +264,7 @@ private:
 	bool m_wasMovingBackward = false;							// 直前まで後退中だったかどうかを示すフラグ (falseなら前進)
 
 	bool m_isDraw = true;
+
+	bool m_isTitleMove = false;
 };
 
