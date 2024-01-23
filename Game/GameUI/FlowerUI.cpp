@@ -36,7 +36,7 @@ namespace {
 	const Vector3 OBJECTIVE_POSITION = { -770.0f,320.0f,0.0f };
 	const Vector3 OBJECTIVE_COLOR = { 1.0f,1.0f,1.0f };
 	const float OBJECTIVE_SCALE = 1.0f;
-	const int OBJECTIVE = 5;
+	const int OBJECTIVE = 20;
 
 }
 FlowerUI::~FlowerUI()

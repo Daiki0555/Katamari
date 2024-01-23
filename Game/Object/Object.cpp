@@ -112,7 +112,6 @@ void Object::Hit()
 			Involution();
 			m_objectState = m_enObject_Involution;
 			m_sphere->AddVolume(m_objData.m_volume);
-			GameManager::GetInstance().
 		}
 		else {
 			m_sphere->IsReflective(true);
