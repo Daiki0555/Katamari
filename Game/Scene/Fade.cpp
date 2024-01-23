@@ -12,9 +12,12 @@ Fade::~Fade()
 
 bool Fade::Start()
 {
+	GameManager::GetInstance();
 	//背景画像
 	m_backRender.Init("Assets/sprite/Fade/black.DDS", 1920, 1080);
+	
 	char filepath[256];
+	//テキスト画像の初期化
 	for (int i = 0; i < START_NUMBER; i++) {
 		sprintf(filepath, "Assets/sprite/Fade/fade%d.DDS", i);
 		m_startRender[i].Init(filepath, 1920, 1080);
@@ -68,8 +71,15 @@ void Fade::FontUpdate()
 	if (m_isGameStart) {
 		m_countUpdateTime -= g_gameTime->GetFrameDeltaTime();
 		if (m_countUpdateTime < 0.0f) {
+			if (m_startSpriteNumber == 0) {
+				//巻き込まれSEの再生　
+				SoundSource* se = NewGO<SoundSource>(0);
+				se->Init(8);
+				se->Play(false);
+			}
 			m_startSpriteNumber++;
 			m_startSpriteNumber = min(m_startSpriteNumber, START_NUMBER - 1);
+			
 			m_countUpdateTime = STRT_NUMBER_UPDATE;
 		}
 	}

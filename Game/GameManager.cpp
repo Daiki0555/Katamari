@@ -26,7 +26,11 @@ bool GameManager::Start()
 	//ネズミ
 	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/SE/object/rat.wav");
 	//ブレーキ
-	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/object/carhorn.wav");
+	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/player/brake.wav");
+	//ダッシュ
+	g_soundEngine->ResistWaveFileBank(7, "Assets/sound/SE/player/dash.wav");
+	//会話音
+	g_soundEngine->ResistWaveFileBank(8, "Assets/sound/SE/fadefont.wav");
 	//BGM
 	g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM1.wav");
 	return true;
@@ -42,6 +46,6 @@ void GameManager::SetBGM(const int num)
 		m_bgm = NewGO<SoundSource>(0);
 	}
 	m_bgm->Init(num);
-	m_bgm->SetVolume(1.0f);
+	m_bgm->SetVolume(0.5f);
 	m_bgm->Play(true);
 }

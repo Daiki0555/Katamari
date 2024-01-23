@@ -63,8 +63,6 @@ namespace nsK2EngineLow {
 					m_cascadeShadowMapMatrix.GetLightViewProjectionCropMatrix(shadowMapNo)
 				);
 			}
-			//•`‰æ‚ªI‚í‚Á‚½‚çƒNƒŠƒA
-			//m_modelsArray.clear();
 
 			 // ‘‚«‚İŠ®—¹‘Ò‚¿
 			rc.WaitUntilFinishDrawingToRenderTarget(shadowMap);

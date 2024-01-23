@@ -1,4 +1,5 @@
 #pragma once
+#include "GameManager.h"
 class Game;
 class TimerUI:public IGameObject
 {

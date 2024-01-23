@@ -57,6 +57,7 @@
     <ClCompile Include="Object\ObjectRender.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Scene\Fade.cpp" />
+    <ClCompile Include="Scene\Result.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -103,5 +104,6 @@
     <ClInclude Include="Object\ObjectRender.h" />
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Scene\Fade.h" />
+    <ClInclude Include="Scene\Result.h" />
   </ItemGroup>
 </Project>

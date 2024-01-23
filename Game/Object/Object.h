@@ -127,6 +127,15 @@ public:
 		m_instanceNo = instanceNo;
 	}
 
+	/// <summary>
+	/// 描画するかどうか
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void IsDraw(const bool state)
+	{
+		m_isDraw = state;
+	}
 
 private:
 
@@ -135,14 +144,11 @@ private:
 	/// </summary>
 	void Move();
 
-	
-
 	/// <summary>
 	/// コリジョンの初期化
 	/// </summary>
 	void InitCollision();
 	
-
 	/// <summary>
 	/// 当たり判定処理
 	/// </summary>
@@ -153,8 +159,8 @@ private:
 	/// </summary>
 	void Involution();
 
+
 private:
-	//ModelRender			m_objectRender;
 	CollisionObject		m_collisionObject;
 	PhysicsStaticObject m_physicsObj;
 	
@@ -179,6 +185,8 @@ private:
 	EnMoveState			m_moveState = m_enMove_No;
 
 	IMovePtr			m_objectMove;
-	int					m_instanceNo = 0;				// インスタンス番号。
+	int					m_instanceNo = 0;													// インスタンス番号。
+
+	bool				m_isDraw = true;
 };
 

@@ -8,27 +8,20 @@ class FlowerUI;
 class TimerUI;
 class GameClear;
 class Fade;
+class Result;
 class Game :public IGameObject
 {
 public:
-	enum EnGameSceneState
+	enum EnGameState
 	{
-		m_enGameState_GameStart,		//ゲームスタート時
-		m_enGameState_DuringGamePlay,	//ゲーム中
-		m_enGameState_TimeUp,			//時間切れ
-		m_enGameState_GameFade,			//ゲームフェード
 		m_enGameState_GameClear,		//ゲームクリア
 		m_enGameState_GameOver,			//ゲームオーバー
-		m_enGameState_GameBuck,			//他のメニューに戻る
-		m_enGameState_GameEnd			//ゲーム終了
 	};
 
 	Game();
 	~Game();
 	bool Start();
 	void Update();
-
-	void InitSound();
 
 	/// <summary>
 	/// オブジェクトリストの設定
@@ -63,18 +56,18 @@ public:
 	/// </summary>
 	/// <param name="state"></param>
 	/// <returns></returns>
-	const void SetGameSceneState(const EnGameSceneState state)
+	const void SetGameSceneState(const EnGameState state)
 	{
-		m_gameSceneState = state;
+		m_gameState = state;
 	}
 
 	/// <summary>
 	/// ゲームステートの取得
 	/// </summary>
 	/// <returns></returns>
-	const EnGameSceneState GetGameSceneState()const
+	const EnGameState GetGameSceneState()const
 	{
-		return m_gameSceneState;
+		return m_gameState;
 	}
 
 
@@ -95,17 +88,20 @@ private:
 	void GameOverProcessing();
 
 	void Render(RenderContext& rc);
+
 private:
-	EnGameSceneState m_gameSceneState = m_enGameState_GameStart;
-	SpriteRender m_clearRender;
-	Player* m_player=nullptr;
-	Sphere* m_sphere = nullptr;
-	FlowerUI* m_flowerUI = nullptr;
-	TimerUI* m_timerUI = nullptr;
-	GameClear* m_gameClear = nullptr;
-	Fade* m_fade = nullptr;
-	bool m_isGameClearable = false;
-	bool m_isStartBGM = false;			//BGMが始まったかどうか
+	EnGameState							m_gameState = m_enGameState_GameOver;		//ゲームステート
+	SpriteRender						m_clearRender;
+	Player*								m_player = nullptr;
+	Sphere*								m_sphere = nullptr;
+	FlowerUI*							m_flowerUI = nullptr;
+	TimerUI*							m_timerUI = nullptr;
+	GameClear*							m_gameClear = nullptr;
+	Fade*								m_fade = nullptr;
+	Result* m_result = nullptr;
+	bool								m_isGameClearable = false;						//クリア可能かどうか
+	bool								m_isStartBGM = false;							//BGMが始まったかどうか
+	bool								m_isWaitFadeOut = false;						//フェード中かどうか								
 	std::vector<Object*>				m_objctList;
 };
 

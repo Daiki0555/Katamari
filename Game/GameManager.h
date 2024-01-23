@@ -15,6 +15,9 @@ public:
 		m_enGameState_GameEnd,			//ゲーム終了
 		m_enGameState_Result
 	};
+
+	
+
 	~GameManager();
 
 	bool Start();
@@ -86,9 +89,11 @@ public:
 	void SetBGM(const int num);
 
 private:
+	
 private:
-	EnGameSceneState m_gameSceneState = m_enGameState_Title;
-	static GameManager* m_instance;						//インスタンス
-	SoundSource* m_bgm = nullptr;						//BGM
+	
+	EnGameSceneState		m_gameSceneState = m_enGameState_Title;			//ゲームシーンステート
+	static GameManager*		m_instance;										//インスタンス
+	SoundSource*			m_bgm = nullptr;								//BGM
 };
 

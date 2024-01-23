@@ -78,6 +78,9 @@ void Object::Update()
 	if (m_objectState != m_enObject_NotInvolution)
 	{
 		CalcMatrix();
+		if (!m_isDraw) {
+			m_objectRender->RemoveInstance(m_instanceNo);
+		}
 	}
 	else
 	{
@@ -103,13 +106,17 @@ void Object::Move()
 void Object::Hit()
 {
 	Vector3 pos = m_sphere->GetPosition();
-	//pos.y -= 40.0f;
 	Vector3 diff = pos - m_position;
-	if (diff.Length() <= m_sphere->GetRadius())
-	{
-		Involution();
-		m_objectState = m_enObject_Involution;
-		m_sphere->AddVolume(m_objData.m_volume*100.0f);
+	if (diff.Length() <= m_sphere->GetRadius()){
+		if (m_objData.m_involutionScale <= m_sphere->GetRadius()){
+			Involution();
+			m_objectState = m_enObject_Involution;
+			m_sphere->AddVolume(m_objData.m_volume);
+			GameManager::GetInstance().
+		}
+		else {
+			m_sphere->IsReflective(true);
+		}
 	}
 }
 

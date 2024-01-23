@@ -3,20 +3,14 @@ class Object;
 class Game;
 class Stick;
 class Title;
+namespace
+{
+	const float		REFLECTIVE_MAX_TIME = 0.50f;							//反射時間
+}
 class Sphere: public IGameObject
 {
 public:
-	/// <summary>
-	/// ボールの当たり判定の大きさの状態
-	/// </summary>
-	enum enSphereScaleState {
-		m_enSphere_Level1,
-		m_enSphere_Level2,
-		m_enSphere_Level3,
-		m_enSphere_Level4,
-		m_enSphere_Level5,
-		m_enSphere_LevelMax
-	};
+	
 
 	/// <summary>
 	/// ボールの状態
@@ -159,6 +153,17 @@ public:
 		m_isDraw = state;
 	}
 
+
+	/// <summary>
+	/// 反射させるかどうか
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void IsReflective(const bool state)
+	{
+		m_isReflective = state;
+	}
+
 private:
 	/// <summary>
 	/// 移動
@@ -212,6 +217,11 @@ private:
 	/// </summary>
 	void DashRotation();
 
+	/// <summary>
+	/// 反射時の動き
+	/// </summary>
+	void ReflectMove();
+
 private:
 	Object* m_object = nullptr;
 	Game* m_game = nullptr;
@@ -221,7 +231,7 @@ private:
 	ModelRender m_sphereRender;
 	FontRender m_fontRender;
 	
-	Vector3 m_position ={0.0f,50.0f,0.0f};
+	Vector3 m_position = Vector3::Zero;
 
 	Vector3 m_moveSpeed = Vector3::Zero;
 
@@ -238,7 +248,7 @@ private:
 	Quaternion m_rotation= Quaternion::Identity;
 	
 	
-	float m_moveSpeedMultiply = 5.0f;							//移動速度
+	float m_moveSpeedMultiply = 0.0f;							//移動速度
 
 	float m_radius = 0.0f;										//球体の半径
 
@@ -250,7 +260,9 @@ private:
 
 	float m_moveDownTime = 0.0f;
 
-	float m_beforeSpeedLength = 0.0f;
+	float m_beforeSpeedLength = 0.0f;							//直前の速度のベクトルの長さ
+
+	float m_reflectTime = REFLECTIVE_MAX_TIME;					//反射する時間
 	
 	int m_dashCount = 0;										//ダッシュカウント
 
@@ -265,6 +277,8 @@ private:
 
 	bool m_isDraw = true;
 
-	bool m_isTitleMove = false;
+	bool m_isTitleMove = false;									//タイトル時動いているか
+
+	bool m_isReflective = false;								//反射されるかどうか
 };
 

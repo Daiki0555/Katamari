@@ -7,7 +7,6 @@ void ObjectData::Init()
 	
 	std::string fname = "Assets/Excel/ObjectDat.csv";
 	std::string buf;
-
 	// 読み込むcsvファイルを開く
 	std::ifstream file(fname);
 	if (!file.is_open()) {

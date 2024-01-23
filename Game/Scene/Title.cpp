@@ -120,7 +120,7 @@ void Title::Hit()
 		Involution();
 		m_fade->StartFadeOut();
 		m_isWaitFadeOut = true;
-		m_fade->SetIsGameStart(true);
+		m_fade->IsGameStart(true);
 	}
 }
 

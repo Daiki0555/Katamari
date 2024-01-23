@@ -3,7 +3,7 @@
 namespace
 {
 	const int START_NUMBER = 16;
-	const float	STRT_NUMBER_UPDATE = 0.1f;
+	const float	STRT_NUMBER_UPDATE = 0.05f;
 }
 class Fade:public IGameObject
 {
@@ -44,7 +44,7 @@ public:
 	/// </summary>
 	/// <param name="state"></param>
 	/// <returns></returns>
-	const void SetIsGameStart(const bool state) {
+	const void IsGameStart(const bool state) {
 		m_isGameStart = state;
 	}
 

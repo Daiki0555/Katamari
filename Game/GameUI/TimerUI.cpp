@@ -11,7 +11,7 @@ namespace
 	const Vector3 CLOCK_POSITION = { 750.0f,350.0f,0.0f };
 	const Vector3 CLOCK_SCALE = { 1.0f,1.0f,1.0f };
 	const Vector2 CLOCK_PIVOT = { 0.5f,0.5f };
-	const float GAME_TIME = 5.0f;
+	const float GAME_TIME = 0.50f;
 	//タイムフォント用
 	const Vector3 TIME_FONT_POSITION = { 500.0f,500.0f,0.0f };
 }
@@ -70,7 +70,7 @@ void TimerUI::Update()
 	if (m_intTime <= 0.0f&&
 		!m_isProcessing) {
 		//時間切れにする
-		m_game->SetGameSceneState(Game::m_enGameState_TimeUp);
+		GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_TimeUp);
 		m_isProcessing = true;
 	}
 }

@@ -16,6 +16,7 @@
 #include "Scene/GameClear.h"
 #include "Object/ObjectRender.h"
 #include "Scene/Fade.h"
+#include "Scene/Result.h"
 #include <sstream>
 
 Game::Game()
@@ -28,7 +29,9 @@ Game::~Game()
 }
 bool Game::Start()
 {
-	
+	//リストのクリア
+	m_objctList.clear();
+
 	NewGO<Stick>(0,"stick");
 	InitLevel();
 	NewGO<ObjectUI>(0, "objectUI");
@@ -148,25 +151,43 @@ void Game::Update()
 	}
 
 	//時間がなくなった時に
-	if (m_gameSceneState==m_enGameState_TimeUp) {
+	if (GameManager::GetInstance()->GetGameSceneState()==GameManager::m_enGameState_TimeUp) {
 		//クリアスケールなら
 		if (m_isGameClearable) {
 			m_gameClear->IsClearStart(true);
-			m_gameSceneState = m_enGameState_GameClear;
+			m_gameState = m_enGameState_GameClear;
 		}
 		else {
-			m_gameSceneState = m_enGameState_GameOver;
+			m_gameState = m_enGameState_GameOver;
 		}
 	}
 
-	if (m_gameSceneState == m_enGameState_GameEnd) {
-		int hoge = 0;
+	if (m_isWaitFadeOut) {
+		ClearProcessing();
 	}
+	else {
+		if (GameManager::GetInstance()->GetGameSceneState() == GameManager::m_enGameState_GameEnd) {
+			if (m_gameState == m_enGameState_GameClear) {
+				m_fade->StartFadeOut();
+				m_fade->IsGameStart(false);
+				m_isWaitFadeOut = true;
+			}
+			else {
+
+			}
+		}
+	}
+
+
+	
 }
 
 void Game::ClearProcessing()
 {
-
+	if (!m_fade->IsFade()) {
+		NewGO<Result>(0, "result");
+		DeleteGO(this);
+	}
 }
 
 void Game::GameOverProcessing()
