@@ -225,6 +225,8 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Scene\Result.cpp" />
+    <ClCompile Include="Scene\Fade.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Object\ObjectRender.cpp" />
     <ClCompile Include="Scene\GameClear.cpp" />
@@ -254,10 +256,13 @@
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Object\WordManager.cpp" />
     <ClCompile Include="GameUI\TimerUI.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Scene\Result.h" />
+    <ClInclude Include="Scene\Fade.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object\ObjectRender.h" />
     <ClInclude Include="Scene\GameClear.h" />
@@ -282,6 +287,7 @@
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Object\WordManager.h" />
     <ClInclude Include="GameUI\TimerUI.h" />
+    <ClInclude Include="Scene\Title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

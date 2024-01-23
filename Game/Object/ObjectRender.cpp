@@ -9,7 +9,7 @@ bool ObjectRender::Start()
 		0,
 		0,
 		enModelUpAxisZ,
-		false,
+		true,
 		false,
 		true,
 		false,

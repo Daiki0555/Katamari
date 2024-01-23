@@ -15,11 +15,13 @@
 #include "StageCollider.h"
 #include "Scene/GameClear.h"
 #include "Object/ObjectRender.h"
+#include "Scene/Fade.h"
+#include "Scene/Result.h"
 #include <sstream>
 
 Game::Game()
 {
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	
 }
 Game::~Game()
 {
@@ -27,7 +29,9 @@ Game::~Game()
 }
 bool Game::Start()
 {
-	
+	//リストのクリア
+	m_objctList.clear();
+
 	NewGO<Stick>(0,"stick");
 	InitLevel();
 	NewGO<ObjectUI>(0, "objectUI");
@@ -44,13 +48,18 @@ bool Game::Start()
 	skyCube->SetScale(500.0f);
 	skyCube->Update();
 
+	
+	//ゲーム中にする
+	GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_DuringGamePlay);
+	//フェードイン処理
+	m_fade = FindGO<Fade>("fade");
+	m_fade->StartFadeIn();
 	//BGMの設定
 	//SoundSource* m_bgm = NewGO<SoundSource>(0);
 	//m_bgm->Init(10);
 	//m_bgm->SetVolume(0.0f);
 	//m_bgm->Play(true);
-	//ゲーム中にする
-	m_gameSceneState = m_enGameState_DuringGamePlay;
+	
 	return true;
 }
 
@@ -132,34 +141,53 @@ void Game::InitLevel()
 	}
 }
 
-void Game::InitSound()
-{
-	//BGM
-	g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM.wav");
-}
 
 void Game::Update()
 {
+	if (!m_fade->IsFade()&&
+		!m_isStartBGM) {
+		GameManager::GetInstance()->SetBGM(10);
+		m_isStartBGM = true;
+	}
+
 	//時間がなくなった時に
-	if (m_gameSceneState==m_enGameState_TimeUp) {
+	if (GameManager::GetInstance()->GetGameSceneState()==GameManager::m_enGameState_TimeUp) {
 		//クリアスケールなら
 		if (m_isGameClearable) {
 			m_gameClear->IsClearStart(true);
-			m_gameSceneState = m_enGameState_GameClear;
+			m_gameState = m_enGameState_GameClear;
 		}
 		else {
-			m_gameSceneState = m_enGameState_GameOver;
+			m_gameState = m_enGameState_GameOver;
 		}
 	}
 
-	if (m_gameSceneState == m_enGameState_GameEnd) {
-		int hoge = 0;
+	if (m_isWaitFadeOut) {
+		ClearProcessing();
 	}
+	else {
+		if (GameManager::GetInstance()->GetGameSceneState() == GameManager::m_enGameState_GameEnd) {
+			if (m_gameState == m_enGameState_GameClear) {
+				m_fade->StartFadeOut();
+				m_fade->IsGameStart(false);
+				m_isWaitFadeOut = true;
+			}
+			else {
+
+			}
+		}
+	}
+
+
+	
 }
 
 void Game::ClearProcessing()
 {
-
+	if (!m_fade->IsFade()) {
+		NewGO<Result>(0, "result");
+		DeleteGO(this);
+	}
 }
 
 void Game::GameOverProcessing()

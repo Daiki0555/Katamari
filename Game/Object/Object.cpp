@@ -19,21 +19,6 @@ Object::~Object()
 
 bool Object::Start()
 {
-	//SE
-	//オブジェクト巻き込み時
-	g_soundEngine->ResistWaveFileBank(0, "Assets/sound/SE/object/obj.wav");
-	//クラクション
-	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/SE/object/carhorn.wav");
-	//コイン
-	g_soundEngine->ResistWaveFileBank(2, "Assets/sound/SE/object/coin.wav");
-	//炭酸ドリンク
-	g_soundEngine->ResistWaveFileBank(3, "Assets/sound/SE/object/drink.wav");
-	//馬
-	g_soundEngine->ResistWaveFileBank(4, "Assets/sound/SE/player/brake.wav");
-	//ネズミ
-	g_soundEngine->ResistWaveFileBank(5, "Assets/sound/SE/object/rat.wav");
-	//ブレーキ
-	g_soundEngine->ResistWaveFileBank(6, "Assets/sound/SE/object/carhorn.wav");
 
 	m_sphere = FindGO<Sphere>("sphere");
 	m_objectUI = FindGO<ObjectUI>("objectUI");
@@ -93,6 +78,9 @@ void Object::Update()
 	if (m_objectState != m_enObject_NotInvolution)
 	{
 		CalcMatrix();
+		if (!m_isDraw) {
+			m_objectRender->RemoveInstance(m_instanceNo);
+		}
 	}
 	else
 	{
@@ -118,13 +106,17 @@ void Object::Move()
 void Object::Hit()
 {
 	Vector3 pos = m_sphere->GetPosition();
-	//pos.y -= 40.0f;
 	Vector3 diff = pos - m_position;
-	if (diff.Length() <= m_sphere->GetRadius())
-	{
-		Involution();
-		m_objectState = m_enObject_Involution;
-		m_sphere->AddVolume(m_objData.m_volume*100.0f);
+	if (diff.Length() <= m_sphere->GetRadius()){
+		if (m_objData.m_involutionScale <= m_sphere->GetRadius()){
+			Involution();
+			m_objectState = m_enObject_Involution;
+			m_sphere->AddVolume(m_objData.m_volume);
+			GameManager::GetInstance().
+		}
+		else {
+			m_sphere->IsReflective(true);
+		}
 	}
 }
 

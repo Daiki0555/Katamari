@@ -4,6 +4,8 @@
 #include "Player/Sphere.h"
 #include "GameUI/ModelUI.h"	
 #include "GameCamera.h"
+#include "Game.h"
+#include "Object/Object.h"
 namespace
 {
 	const Vector3 RAIN_POSITION = { 0.0f,550.0f,0.0f };
@@ -25,6 +27,7 @@ bool GameClear::Start()
 	m_sphere = FindGO<Sphere>("sphere");
 	m_modelUI = FindGO<ModelUI>("modelUI");
 	m_gameCamera = FindGO<GameCamera>("gameCamera");
+	m_game = FindGO<Game>("game");
 
 	//“ø‰æ‘œ‚Ì‰Šú‰»
 	m_rainbowRender.Init("Assets/sprite/ClearUI/niji.DDS", 1920, 1080);
@@ -76,6 +79,9 @@ void GameClear::ScaleChange()
 		//ƒvƒŒƒCƒ„[‚Æ‰ò‚Ì•`‰æ‚ðŽ~‚ß‚é
 		m_player->IsDraw(false);
 		m_sphere->IsDraw(false);
+		for (auto object : m_game->GetObjectList()) {
+			object->IsDraw(false);
+		}
 		m_gameCamera->SetEndCameraFoward(g_camera3D->GetForward());
 	}
 

@@ -2,15 +2,21 @@
 class GameManager : public Noncopyable
 {
 public:
-	/// <summary>
-	/// ゲーム状態の列挙型
-	/// </summary>
-	enum EnGameState
+	enum EnGameSceneState
 	{
-		m_enState_Title,				//タイトル	
-		m_enState_Game,					//ゲームシーン
-		m_enState_Result				//リザルト
+		m_enGameState_Title,			//タイトル
+		m_enGameState_GameStart,		//ゲームスタート時
+		m_enGameState_DuringGamePlay,	//ゲーム中
+		m_enGameState_TimeUp,			//時間切れ
+		m_enGameState_GameFade,			//ゲームフェード
+		m_enGameState_GameClear,		//ゲームクリア
+		m_enGameState_GameOver,			//ゲームオーバー
+		m_enGameState_GameBuck,			//他のメニューに戻る
+		m_enGameState_GameEnd,			//ゲーム終了
+		m_enGameState_Result
 	};
+
+	
 
 	~GameManager();
 
@@ -32,6 +38,7 @@ public:
 		}
 
 		m_instance = new GameManager;
+		m_instance->Start();
 	}
 
 	/// <summary>
@@ -57,14 +64,36 @@ public:
 	}
 
 	/// <summary>
+	/// ゲームステートの設定
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void SetGameSceneState(const EnGameSceneState state)
+	{
+		m_gameSceneState = state;
+	}
+
+	/// <summary>
+	/// ゲームステートの取得
+	/// </summary>
+	/// <returns></returns>
+	const EnGameSceneState GetGameSceneState()const
+	{
+		return m_gameSceneState;
+	}
+
+	/// <summary>
 	/// BGMを鳴らす。
 	/// </summary>
 	/// <param name="num">鳴らしたい音の番号</param>
 	void SetBGM(const int num);
 
 private:
+	
 private:
-	static GameManager* m_instance;						//インスタンス
-	SoundSource* m_bgm = nullptr;						//BGM
+	
+	EnGameSceneState		m_gameSceneState = m_enGameState_Title;			//ゲームシーンステート
+	static GameManager*		m_instance;										//インスタンス
+	SoundSource*			m_bgm = nullptr;								//BGM
 };
 

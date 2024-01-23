@@ -3,6 +3,7 @@ class Player;
 class Sphere;
 class ModelUI;
 class GameCamera;
+class Game;
 class GameClear:public IGameObject
 {
 public:
@@ -41,7 +42,7 @@ private:
 	Sphere* m_sphere = nullptr;
 	ModelUI* m_modelUI = nullptr;
 	GameCamera* m_gameCamera = nullptr;
-
+	Game* m_game = nullptr;
 
 	SpriteRender m_rainbowRender;
 	SpriteRender m_kingRender;

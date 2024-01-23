@@ -7,8 +7,8 @@ namespace nsK2EngineLow {
 
 		//近景用のシャドウマップ
 		m_shadowMaps[0].Create(
-			4096,
-			4096,
+			2048,
+			2048,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -18,8 +18,8 @@ namespace nsK2EngineLow {
 
 		//中景用のシャドウマップ
 		m_shadowMaps[1].Create(
-			2048,
-			2048,
+			1024,
+			1024,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -29,8 +29,8 @@ namespace nsK2EngineLow {
 
 		//遠景用のシャドウマップ
 		m_shadowMaps[2].Create(
-			1024,
-			1024,
+			512,
+			512,
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
@@ -63,8 +63,6 @@ namespace nsK2EngineLow {
 					m_cascadeShadowMapMatrix.GetLightViewProjectionCropMatrix(shadowMapNo)
 				);
 			}
-			//描画が終わったらクリア
-			//m_modelsArray.clear();
 
 			 // 書き込み完了待ち
 			rc.WaitUntilFinishDrawingToRenderTarget(shadowMap);

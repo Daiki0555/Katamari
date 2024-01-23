@@ -263,8 +263,6 @@ namespace nsK2EngineLow
 		m_postEffect.OnRender(rc, m_mainRenderTarget);
 
 		Render2D(rc);
-		
-
 
 		CopyMainRenderTargetToFrameBuffer(rc);
 		// 登録されている描画オブジェクトをクリア

@@ -9,10 +9,14 @@ namespace
 {
 	const Vector3 CAMERA_POS = { 0.0f,0.0f,-70.0f };
 	const Vector3 TARGET_UP = { 0.0f, 30.0f, 0.0f };
+	const Vector3 CAMERA_POS_ADD = { 0.0f,0.0f,-10.0f };
+	const Vector3 TARGET_UP_ADD = { 0.0f, 0.5f, 0.0f };
 	const float	CAMERA_ROTSPEED = 0.4f;
 	const float CAMERA_BOTH_ROTSPEED = 0.8f;
 	const float CAMERA_ROT_DEGREE = 87.0f;
 	const float CAMERA_ROT_DEGREE2 = 95.0f;
+	const float RADIUS_INCREMENT = 2.0f;												//閾値を上げる量
+	const int	CAMERA_UP_MAX_FREQUENCY = 20.0f;										//カメラの大きさを上げる回数		
 }
 GameCamera::~GameCamera()
 {
@@ -27,9 +31,9 @@ bool GameCamera::Start()
 	m_stick = FindGO<Stick>("stick");
 	m_game = FindGO<Game>("game");
 	m_gameClear = FindGO<GameClear>("gameClear");
-
-
 	m_initialCameraPos = CAMERA_POS;
+	m_targetUp = TARGET_UP;
+	m_thresholdCameraUp = m_sphere->GetRadius() + RADIUS_INCREMENT;
 	g_camera3D->SetNear(0.5f);
 	g_camera3D->SetFar(7000.0f);
 	return true;
@@ -37,7 +41,8 @@ bool GameCamera::Start()
 
 void GameCamera::Update()
 {
-	if (m_game->GetGameSceneState() == Game::m_enGameState_DuringGamePlay) {
+	GameCameraState();
+	if (GameManager::GetInstance()->GetGameSceneState()==GameManager::m_enGameState_DuringGamePlay) {
 		if (!m_isTurningCamera) {
 			Rotation();
 		}
@@ -99,7 +104,7 @@ void GameCamera::Rotation()
 
 	//注視点のY座標を上げる
 	m_target = m_sphere->GetPosition();
-	m_target += TARGET_UP;
+	m_target += m_targetUp;
 	m_toCameraPos = m_target + m_initialCameraPos;
 }
 
@@ -127,7 +132,7 @@ void GameCamera::InvertCamera()
 
 		//注視点のY座標を上げる
 		m_target = m_sphere->GetPosition();
-		m_target += TARGET_UP;
+		m_target += m_targetUp;
 		m_toCameraPos = m_target + m_initialCameraPos;
 		
 		if (m_turnTimer >= 1.0f) {
@@ -140,10 +145,32 @@ void GameCamera::InvertCamera()
 
 void GameCamera::EndCamera()
 {
+	GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_GameEnd);
 	m_toCameraPos -= m_endCameraFront;
 	m_toCameraPos.y += 0.3f;
 	m_endTime -= g_gameTime->GetFrameDeltaTime();
-	if (m_endTime <= 0.0f) {
-		m_game->SetGameSceneState(Game::m_enGameState_GameEnd);
+}
+
+void GameCamera::GameCameraState()
+{
+	//閾値より大きくなったら
+	if (m_sphere->GetRadius() >= m_thresholdCameraUp&&
+		!m_isTargetLevelUp) {
+		m_isTargetLevelUp = true;
+	}
+	//ターゲトを加算できるようにする
+	if (m_cameraUpFrequency<= CAMERA_UP_MAX_FREQUENCY&&
+		m_isTargetLevelUp) {
+		//座標を変更する
+		Vector3 front=g_camera3D->GetForward();
+		m_initialCameraPos -= front;
+		m_targetUp += TARGET_UP_ADD;
+		m_cameraUpFrequency++;
+	}
+	if(m_cameraUpFrequency> CAMERA_UP_MAX_FREQUENCY) {
+		//閾値より大きくなるごとに加算させる
+		m_thresholdCameraUp += RADIUS_INCREMENT;
+		m_cameraUpFrequency = 0;
+		m_isTargetLevelUp = false;
 	}
 }

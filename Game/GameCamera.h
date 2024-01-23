@@ -1,4 +1,5 @@
 #pragma once
+#include "GameManager.h"
 class Sphere;
 class Stick;
 class Player;
@@ -36,25 +37,34 @@ private:
 	/// 終わり時のカメラの処理
 	/// </summary>
 	void EndCamera();
+
+	/// <summary>
+	/// ゲームカメラの遷移
+	/// </summary>
+	void GameCameraState();
+
 private:
-	Sphere*				m_sphere=nullptr;
-	//Player* m_sphere = nullptr;
-	Stick*				m_stick = nullptr;
-	Game*				m_game = nullptr;
-	GameClear*			m_gameClear = nullptr;
+	Sphere*						m_sphere=nullptr;
+	Stick*						m_stick = nullptr;
+	Game*						m_game = nullptr;
+	GameClear*					m_gameClear = nullptr;
 
 
-	Quaternion			m_rotation = Quaternion::Identity;
-	Vector3				m_target;								//注視点
-	Vector3				m_toCameraPos;							//注視点から視点に向かうベクトル
-	Vector3				m_initialCameraPos;
-	Vector3				m_axis = Vector3::Zero;
-	Vector3				m_endCameraFront = Vector3::Zero;
+	Quaternion					m_rotation = Quaternion::Identity;
+	Vector3						m_target;								//注視点
+	Vector3						m_targetUp;								//注視点から上げる量
+	Vector3						m_toCameraPos;							//注視点から視点に向かうベクトル
+	Vector3						m_initialCameraPos;
+	Vector3						m_axis = Vector3::Zero;
+	Vector3						m_endCameraFront = Vector3::Zero;
 
+	float						m_turnTimer = 0.0f;						//カメラの回転時間
+	float						m_degree = 0.0f;
+	float						m_endTime = 2.0f;
+	float						m_thresholdCameraUp = 0;				//カメラのレベルを上げる閾値
+	bool						m_isTurningCamera = false;				//カメラを回転させているどうか
+	bool						m_isTargetLevelUp = false;				//ターゲットを加算させるかどうか
 
-	float				m_turnTimer = 0.0f;						//カメラの回転時間
-	float				m_degree = 0.0f;
-	float				m_endTime = 2.0f;
-	bool				m_isTurningCamera = false;				//カメラを回転させているどうか
+	int							m_cameraUpFrequency = 0;				//カメラを座標を変える回数
 };
 
