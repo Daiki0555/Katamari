@@ -9,10 +9,10 @@ namespace
 	const Vector3	OUTLINE_POS_MAX = { -671.5f, -280.0f, 0.0f };	//輪郭画像の最大座標
 	const Vector3	OUTLINE_POS_MIN = { -950.0f, -280.0f, 0.0f };	//輪郭画像の最小座標
 	//フォント
-	const Vector3 FONT_POSITION = { -800.0f,-400.0f,0.0f };
-	const float FONT_SCALE = 2.0f;
+	const Vector3	FONT_POSITION = { -800.0f,-400.0f,0.0f };
+	const float		FONT_SCALE = 2.0f;
 
-	const float DRAW_TIME = 2.0f;									//描画時間
+	const float		DRAW_TIME = 2.0f;									//描画時間
 
 	const Vector3	MODEL_POSITION = { 10860.0f ,-60.0f,0.0f };
 }

@@ -1,4 +1,9 @@
 #pragma once
+namespace 
+{
+	const int SPRITE_NUMBER = 2;
+}
+
 #include "GameManager.h"
 class Player;
 class Sphere;
@@ -51,14 +56,17 @@ private:
 
 private:
 	PhysicsStaticObject m_physicsObj;
-	ModelRender m_startRender;
-	ModelRender m_tileRender;
-	Player* m_player = nullptr;
-	Sphere* m_sphere = nullptr;
-	Fade* m_fade = nullptr;																
-	Vector3 m_position = Vector3::Zero;
-	Vector3 m_scale = Vector3::Zero;
-	Quaternion m_rotation = Quaternion::Identity;
+	ModelRender			m_startRender;
+	ModelRender			m_tileRender;
+	SpriteRender		m_stickSprite[SPRITE_NUMBER];									    //ステックイラスト二つ
+	SpriteRender		m_titleSprite;														//タイトルスプライト
+	SpriteRender		m_fontSprite;														//文字用のスプライト	
+	Player*				m_player = nullptr;
+	Sphere*				m_sphere = nullptr;
+	Fade*				m_fade = nullptr;																
+	Vector3				m_position = Vector3::Zero;
+	Vector3				m_scale = Vector3::Zero;
+	Quaternion			m_rotation = Quaternion::Identity;
 	Matrix				m_matInCore;														//塊（コア）を含む行列
 	Matrix				m_objectWorldMatrix;												//巻き込み後のオブジェクトのワールド行列
 	bool				m_isWaitFadeOut = false;											//フェード中かどうか											

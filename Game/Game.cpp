@@ -25,12 +25,44 @@ Game::Game()
 }
 Game::~Game()
 {
-
+	//ゲームクリアの削除
+	DeleteGO(m_gameClear);
+	//モデルUIの削除
+	DeleteGO(FindGO<ModelUI>("modelUI"));
+	//タイマーUIの削除
+	DeleteGO(m_timerUI);
+	//オブジェクトUIの削除
+	DeleteGO(FindGO<ObjectUI>("objectUI"));
+	//フラワーUIの削除
+	DeleteGO(m_flowerUI);
+	//オブジェクトの削除
+	for (auto object:m_objctList) {
+		if (object->GetObjectState() == Object::m_enObject_NotInvolution) {
+			object->IsDraw(false);
+		}
+	}
+	//ゲームカメラの削除
+	DeleteGO(FindGO<GameCamera>("gameCamera"));
+	//プレイヤーを削除
+	DeleteGO(m_player);
+	//スティックを削除
+	DeleteGO(FindGO<Stick>("stick"));
+	//背景の削除
+	DeleteGO(FindGO<BackGround>("backGround"));
+	//コライダーの削除
+	DeleteGO(FindGO<StageCollider>("stageCollider"));
+	//スカイキューブの削除
+	DeleteGO(FindGO<SkyCube>("skycube"));
+	//リストのクリア
+	m_objctList.clear();
+	m_objectRenderList.clear();
+	
 }
 bool Game::Start()
 {
 	//リストのクリア
 	m_objctList.clear();
+	m_objectRenderList.clear();
 
 	NewGO<Stick>(0,"stick");
 	InitLevel();
@@ -45,7 +77,7 @@ bool Game::Start()
 	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
 	skyCube->SetLuminance(1.0f);
 	skyCube->SetType((EnSkyCubeType)enSkyCubeType_Day);
-	skyCube->SetScale(500.0f);
+	skyCube->SetScale(600.0f);
 	skyCube->Update();
 
 	
@@ -54,12 +86,6 @@ bool Game::Start()
 	//フェードイン処理
 	m_fade = FindGO<Fade>("fade");
 	m_fade->StartFadeIn();
-	//BGMの設定
-	//SoundSource* m_bgm = NewGO<SoundSource>(0);
-	//m_bgm->Init(10);
-	//m_bgm->SetVolume(0.0f);
-	//m_bgm->Play(true);
-	
 	return true;
 }
 
@@ -86,6 +112,7 @@ void Game::InitLevel()
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"stage")) {
+			//ステージモデルの作成
 			BackGround* backGround = NewGO<BackGround>(0, "backGround");
 			backGround->SetPosition(objdata.position);
 			backGround->SetScale(objdata.scale);
@@ -93,11 +120,14 @@ void Game::InitLevel()
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"o")) {
+			//オブジェトの作成
+			//オブジェトデータのリストを持ってくる
 			for (auto objectData : ObjectData::GetInstance()->GetObjectData())
 			{
 				//wchar_t型に変換した後
 				//レベルと名前が一致するかを求める
 				std::wstring wchar(objectData.m_name.begin(), objectData.m_name.end());
+				//リストの名前とレベル側の名前が
 				if (objdata.ForwardMatchName(wchar.c_str()))
 				{
 					Object* object = NewGO<Object>(0, "object");
@@ -120,6 +150,7 @@ void Game::InitLevel()
 			return true;
 		}
 		else if (objdata.ForwardMatchName(L"Collider")) {
+			//別の当たり判定を作成する
 			StageCollider* stageCollider = NewGO<StageCollider>(0,"stageCollider");
 			stageCollider->SetPosition(objdata.position);
 			stageCollider->SetScale(objdata.scale);
@@ -128,26 +159,35 @@ void Game::InitLevel()
 		}
 		
 		});
+	//オブジェトデータのリストを持ってくる
 	for (auto objectData : ObjectData::GetInstance()->GetObjectData()) {
 		int numObject = 0;
+		//オブジェトの数だけ回す
 		for (int i = 0; i < m_objctList.size(); i++) {
+			//データとオブジェクトリストの名前が一緒なら
 			if (m_objctList[i]->GetObjectName() == objectData.m_name) {
+				//インスタンシングの最大数を上げる
 				numObject++;
 			}
 		}
+		//インスタンシング描画用のレンダーを作成する
 		ObjectRender* objectRender = NewGO<ObjectRender>(0, objectData.m_name.c_str());
 		objectRender->SetObjectData(objectData);
+		//インスタンシングの数を渡す
 		objectRender->SetMaxObject(numObject);
+		m_objectRenderList.emplace_back(objectRender);
 	}
 }
 
 
 void Game::Update()
 {
-	if (!m_fade->IsFade()&&
-		!m_isStartBGM) {
-		GameManager::GetInstance()->SetBGM(10);
-		m_isStartBGM = true;
+	if (!m_fade->IsFade()){
+		if (!m_isStartBGM) {
+			GameManager::GetInstance()->SetBGM(10);
+			m_isStartBGM = true;
+		}
+		m_gameTime += g_gameTime->GetFrameDeltaTime();
 	}
 
 	//時間がなくなった時に
@@ -171,6 +211,7 @@ void Game::Update()
 				m_fade->StartFadeOut();
 				m_fade->IsGameStart(false);
 				m_isWaitFadeOut = true;
+				GameManager::GetInstance()->GetResultStruct().SetSphereScale(m_sphere->GetRadius());
 			}
 			else {
 
@@ -178,14 +219,33 @@ void Game::Update()
 		}
 	}
 
+	int sphereRadius = m_sphere->GetRadius();
+	if (sphereRadius >= GameManager::GetInstance()->GetGameDataStruct().GetTargetSize()&&
+		!m_isClear) {
+		GameManager::GetInstance()->GetResultStruct().SetClearTime(m_gameTime);
+		m_isClear = true;
+	}
 
+	
+	
 	
 }
 
 void Game::ClearProcessing()
 {
-	if (!m_fade->IsFade()) {
-		NewGO<Result>(0, "result");
+	m_volumeBGM -= g_gameTime->GetFrameDeltaTime();
+	m_volumeBGM = max(m_volumeBGM, 0.0f);
+	GameManager::GetInstance()->GetBGM()->SetVolume(m_volumeBGM);
+	if (m_volumeBGM <= 0.0f) {
+		m_isStopBGM = true;
+	}
+	if (!m_fade->IsFade()&&
+		m_isStopBGM) {
+
+		Result* result = NewGO<Result>(0, "result");
+		//リストを渡す
+		result->SetObjectList(m_objctList);
+		result->SetObjectRenderList(m_objectRenderList);
 		DeleteGO(this);
 	}
 }

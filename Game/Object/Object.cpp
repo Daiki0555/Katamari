@@ -22,11 +22,7 @@ bool Object::Start()
 
 	m_sphere = FindGO<Sphere>("sphere");
 	m_objectUI = FindGO<ObjectUI>("objectUI");
-	m_flowerUI = FindGO<FlowerUI>("flowerUI");
-	/// <summary>
-	/// キーを元に取得する
-	/// </summary>
-	/// <returns></returns>
+	// キーを元に取得する
 	m_objectRender = FindGO<ObjectRender>(m_objData.m_name.c_str());
 	
 	
@@ -78,9 +74,7 @@ void Object::Update()
 	if (m_objectState != m_enObject_NotInvolution)
 	{
 		CalcMatrix();
-		if (!m_isDraw) {
-			m_objectRender->RemoveInstance(m_instanceNo);
-		}
+		
 	}
 	else
 	{
@@ -95,7 +89,9 @@ void Object::Update()
 
 	}
 
-	
+	if (!m_isDraw) {
+		m_objectRender->RemoveInstance(m_instanceNo);
+	}
 }
 
 void Object::Move()
@@ -112,6 +108,7 @@ void Object::Hit()
 			Involution();
 			m_objectState = m_enObject_Involution;
 			m_sphere->AddVolume(m_objData.m_volume);
+			GameManager::GetInstance()->GetResultStruct().AddObjectCount();
 		}
 		else {
 			m_sphere->IsReflective(true);
@@ -121,7 +118,6 @@ void Object::Hit()
 
 void Object::Involution()
 {
-
 	//塊（コア）の逆行列を求める
 	Matrix inverseMatrix;
 	inverseMatrix.Inverse(m_sphere->GetSphereModel().GetModel().GetWorldMatrix());
@@ -145,13 +141,13 @@ void Object::Involution()
 	SoundSource* se = NewGO<SoundSource>(0);
 	se->Init(0);
 	se->Play(false);
-	se->SetVolume(1.0f);
+	se->SetVolume(0.5f);
 	//もし０番以外が指定されているなら
 	if (m_objData.m_soundNumber!= 0) {
 		SoundSource* se2 = NewGO<SoundSource>(0);
 		se2->Init(m_objData.m_soundNumber);
 		se2->Play(false);
-		se2->SetVolume(1.0f);
+		se2->SetVolume(0.5f);
 	}
 }
 

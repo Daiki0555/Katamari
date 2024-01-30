@@ -11,7 +11,6 @@ namespace
 	const Vector3 CLOCK_POSITION = { 750.0f,350.0f,0.0f };
 	const Vector3 CLOCK_SCALE = { 1.0f,1.0f,1.0f };
 	const Vector2 CLOCK_PIVOT = { 0.5f,0.5f };
-	const float GAME_TIME = 5.0f;
 	//タイムフォント用
 	const Vector3 TIME_FONT_POSITION = { 500.0f,500.0f,0.0f };
 }
@@ -25,10 +24,12 @@ bool TimerUI::Start()
 	//ゲーム取得
 	m_game = FindGO<Game>("game");
 
+	m_startTime = GameManager::GetInstance()->GetGameDataStruct().GetTimeLimit();
+
 	//タイマーの初期化
-	m_timer = GAME_TIME * 60.0f;
+	m_timer = m_startTime * 60.0f;
 	//制限時間から円形ゲージの角度を決定する
-	m_degree = 360.0f / GAME_TIME;
+	m_degree = 360.0f / m_startTime;
 	RenderingEngine::GetInstance()->GetSpriteCB().m_degree = (m_degree *3.14) / 180.0f;
 	
 	//矢印のスプライトを初期化
@@ -80,7 +81,13 @@ void TimerUI::Rotation()
 	m_timer -= g_gameTime->GetFrameDeltaTime();
 	m_timer = max(m_timer, -1.0f);
 	m_intTime = m_timer/60.0f+1;
-	m_rot = m_timer / (GAME_TIME * 60.0f) * 360.0f;
+	if (!m_isProcessing) {
+		m_rot = m_timer / (m_startTime * 60.0f) * 360.0f;
+	}
+	else {
+		m_rot = 0.0f;
+	}
+	
 	m_rotation.SetRotationDegZ(m_rot);
 	
 	m_arrowRender.SetRotation(m_rotation);

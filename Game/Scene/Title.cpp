@@ -6,8 +6,16 @@
 #include "GameCamera.h"
 #include "Fade.h"
 #include "Game.h"
-namespace {
-	const Vector3 START_POSITION = { 0.0f,0.0f,0.0f };
+namespace 
+{
+	
+	const Vector3 RIGTH_STICK_SPRITE_POS = {-20.0f,-300.0f,0.0f};
+	const Vector3 LEFT_STICK_SPRITE_POS = { -140.0f,-300.0f,0.0f };
+	const Vector3 TITLE_SPRITE_POS = { 0.0f,350.0f,0.0f };
+	const Vector3 SPRITE_SCALE = { 0.3f,0.3f,0.3f };
+	const Vector3 FONT_SPRITE_POS = { 200.0f,-300.0f,0.0f };
+	const Vector3 FONT_SCALE = { 0.2f,0.2f,0.2f };
+	const float	  SPRITE_ALPHA = 0.8f;						//画像のα値
 }
 Title::~Title()
 {
@@ -19,11 +27,41 @@ Title::~Title()
 
 bool Title::Start()
 {
-	GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_Title);
-	NewGO<Stick>(0, "stick");
+	//フェードイン
 	m_fade = FindGO<Fade>("fade");
 	m_fade->StartFadeIn();
+	GameManager::GetInstance()->SetGameSceneState(GameManager::m_enGameState_Title);
+	NewGO<Stick>(0, "stick");
 	InitLevel();
+
+	m_stickSprite[0].SetPosition(RIGTH_STICK_SPRITE_POS);
+	m_stickSprite[1].SetPosition(LEFT_STICK_SPRITE_POS);
+	//スプライトの初期化
+	for (int i = 0; i < SPRITE_NUMBER; i++) {
+		m_stickSprite[i].Init("Assets/sprite/Title/stick.DDS", 1920, 1080);
+		m_stickSprite[i].SetMulColor(Vector4{ 1.0f,1.0f,1.0f,SPRITE_ALPHA });
+		m_stickSprite[i].SetScale(SPRITE_SCALE);
+		m_stickSprite[i].Update();
+	}
+
+	//タイトルスプライトの初期化
+	m_titleSprite.Init("Assets/sprite/Title/katamari.DDS", 1920, 1080);
+	m_titleSprite.SetPosition(TITLE_SPRITE_POS);
+	m_titleSprite.Update();
+
+	//フォントスプライトの初期化
+	m_fontSprite.Init("Assets/sprite/Title/titleStart.DDS", 1920, 1080);
+	m_fontSprite.SetPosition(FONT_SPRITE_POS);
+	m_fontSprite.SetScale(FONT_SCALE);
+	m_fontSprite.Update();
+
+	//スカイキューブの作成
+	SkyCube* skyCube = NewGO<SkyCube>(0, "skycube");
+	skyCube->SetLuminance(1.0f);
+	skyCube->SetType((EnSkyCubeType)enSkyCubeType_Day);
+	skyCube->SetScale(600.0f);
+	skyCube->Update();
+
 	
 	return true;
 }
@@ -114,8 +152,8 @@ void Title::Hit()
 	Vector3 pos = m_sphere->GetPosition();
 	Vector3 diff = pos - m_position;
 	float hoge = diff.Length();
-	//if (diff.Length() <= m_sphere->GetRadius())
-	if(g_pad[0]->IsTrigger(enButtonA))
+	if (diff.Length() <= m_sphere->GetRadius())
+	//if(g_pad[0]->IsTrigger(enButtonA))
 	{
 		Involution();
 		m_fade->StartFadeOut();
@@ -160,4 +198,9 @@ void Title::Render(RenderContext& rc)
 {
 	m_startRender.Draw(rc);
 	m_tileRender.Draw(rc);
+	for (int i = 0; i < SPRITE_NUMBER; i++) {
+		m_stickSprite[i].Draw(rc);
+	}
+	m_titleSprite.Draw(rc);
+	m_fontSprite.Draw(rc);
 }

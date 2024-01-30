@@ -9,6 +9,7 @@ class TimerUI;
 class GameClear;
 class Fade;
 class Result;
+class ObjectRender;
 class Game :public IGameObject
 {
 public:
@@ -98,10 +99,15 @@ private:
 	TimerUI*							m_timerUI = nullptr;
 	GameClear*							m_gameClear = nullptr;
 	Fade*								m_fade = nullptr;
-	Result* m_result = nullptr;
+	Result*								m_result = nullptr;
+	float								m_gameTime = 0.0f;								//ゲーム内経過時間
+	float								m_volumeBGM = 0.5f;								//BGMのボリューム
+	bool								m_isClear = false;
 	bool								m_isGameClearable = false;						//クリア可能かどうか
 	bool								m_isStartBGM = false;							//BGMが始まったかどうか
+	bool								m_isStopBGM = false;
 	bool								m_isWaitFadeOut = false;						//フェード中かどうか								
 	std::vector<Object*>				m_objctList;
+	std::vector<ObjectRender*>			m_objectRenderList;
 };
 

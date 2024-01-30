@@ -16,7 +16,108 @@ public:
 		m_enGameState_Result
 	};
 
-	
+	//リザルト用の構造体
+	struct ResultStruct
+	{
+	public:
+		/// <summary>
+		/// オブジェクトの数加算させる
+		/// </summary>
+		void AddObjectCount()
+		{
+			m_objectCount++;
+		}
+
+		/// <summary>
+		/// オブジェクトの数の取得
+		/// </summary>
+		/// <returns></returns>
+		const int GetObjectCount()const
+		{
+			return m_objectCount;
+		}
+
+		/// <summary>
+		/// 塊の大きさを設定
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <returns></returns>
+		const void SetSphereScale(const float scale)
+		{
+			m_sphereScale = scale;
+		}
+
+		/// <summary>
+		/// 塊の大きさの取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetSphereScale() const
+		{
+			return m_sphereScale;
+		}
+
+
+		/// <summary>
+		/// 目標達成時間の設定
+		/// </summary>
+		/// <param name="time"></param>
+		/// <returns></returns>
+		const void SetClearTime(const float time)
+		{
+			m_clearTime = time;
+		}
+
+		/// <summary>
+		/// 目標達成時間の取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetClearTime()const
+		{
+			return m_clearTime;
+		}
+
+		/// <summary>
+		/// リザルトを初期化
+		/// </summary>
+		void ResultReset()
+		{
+			m_sphereScale = 0.0f;
+			m_clearTime = 0.0f;
+			m_objectCount = 0;
+		}
+		
+	private:
+		float					m_sphereScale = 0.0f;		//塊の大きさ
+		float					m_clearTime = 0.0f;			//目標達成時間
+		int						m_objectCount = 0;			//オブジェクトの数
+	};
+
+	//ゲームの情報用の構造体
+	struct GameDataStruct
+	{
+	public:
+		/// <summary>
+		/// 目標の大きさを取得
+		/// </summary>
+		/// <returns></returns>
+		const int GetTargetSize()const
+		{
+			return TARGET_SIZE;
+		}
+
+		/// <summary>
+		/// 制限時間を取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetTimeLimit()const
+		{
+			return TIME_LIMIT;
+		}
+
+	private:
+		const int		TARGET_SIZE = 10;					//目標サイズ
+		const float		TIME_LIMIT = 0.10f;					//タイムリミット(分)
+	};
 
 	~GameManager();
 
@@ -26,6 +127,8 @@ public:
 	/// 更新処理
 	/// </summary>
 	void Update();
+
+	
 
 	/// <summary>
 	/// インスタンスの生成。
@@ -83,15 +186,43 @@ public:
 	}
 
 	/// <summary>
+	/// BGM情報の取得
+	/// </summary>
+	/// <returns></returns>
+	SoundSource* GetBGM()
+	{
+		return m_bgm;
+	}
+
+	/// <summary>
 	/// BGMを鳴らす。
 	/// </summary>
 	/// <param name="num">鳴らしたい音の番号</param>
 	void SetBGM(const int num);
 
+	/// <summary>
+	/// リザルト用の構造体の取得
+	/// </summary>
+	/// <returns></returns>
+	ResultStruct& GetResultStruct()
+	{
+		return m_resultStruct;
+	}
+
+	/// <summary>
+	/// ゲームデータ用の構造体の取得
+	/// </summary>
+	/// <returns></returns>
+	GameDataStruct& GetGameDataStruct()
+	{
+		return m_gameDataStruct;
+	}
+
 private:
 	
 private:
-	
+	ResultStruct			m_resultStruct;
+	GameDataStruct			m_gameDataStruct;
 	EnGameSceneState		m_gameSceneState = m_enGameState_Title;			//ゲームシーンステート
 	static GameManager*		m_instance;										//インスタンス
 	SoundSource*			m_bgm = nullptr;								//BGM

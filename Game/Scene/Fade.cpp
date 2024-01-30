@@ -76,6 +76,7 @@ void Fade::FontUpdate()
 				SoundSource* se = NewGO<SoundSource>(0);
 				se->Init(8);
 				se->Play(false);
+				se->SetVolume(0.5f);
 			}
 			m_startSpriteNumber++;
 			m_startSpriteNumber = min(m_startSpriteNumber, START_NUMBER - 1);

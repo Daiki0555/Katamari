@@ -7,7 +7,9 @@
 namespace 
 {
 	//タイトル
-	const float		MODEL_UPPOS_RADIUS = 3.0f;							//モデルの半径と座標	
+	const float		MODEL_UPPOS_RADIUS = 3.0f;							//モデルの半径と座標
+	const float		ALWAYS_TITLE_SPEED = 30.0f;							//歩き時の乗算量
+
 	const float		SPEED_DOWN = 0.99f;									//速度減速率
 	const float		STANDARDSIZE = 40.0f;								//基準の塊の直径
 	const float		ALWAYS_SPEED = 2.5f;								//歩き時の乗算量
@@ -100,13 +102,19 @@ void Sphere::Update()
 			g_gameTime->GetFrameDeltaTime()
 		);
 
+		
 		m_sphereRender.SetRotation(m_rotation);
 		m_sphereRender.SetPosition(Vector3{ m_position.x,m_position.y + MODEL_UPPOS_RADIUS,m_position.z });
 		m_sphereRender.Update();
 
+		//前の座標を記憶する
+		m_beforePosition = m_position;
+
 		if (m_title->GetIsHit()) {
 			m_title->CalcMatrix();
 		}
+
+		
 	}
 	else if (GameManager::GetInstance()->GetGameSceneState()==GameManager::m_enGameState_DuringGamePlay) {
 		DashCount();
@@ -148,11 +156,16 @@ void Sphere::Update()
 
 void Sphere::TitleMove()
 {
-	//カメラの前方向と、右方向の取得
+	//カメラの前方向
 	Vector3 cameraFoward = g_camera3D->GetForward();
 	if (m_isTitleMove) {
-		m_moveSpeed += cameraFoward * ALWAYS_SPEED * g_gameTime->GetFrameDeltaTime();
+		m_moveSpeed += cameraFoward * ALWAYS_TITLE_SPEED * g_gameTime->GetFrameDeltaTime();
 		m_moveSpeed.z *= SPEED_DOWN;
+		m_moveSpeedMultiply = ALWAYS_TITLE_SPEED * (MODEL_UPPOS_RADIUS / m_radius);
+		//回転をさせる
+		Quaternion rot;
+		rot.SetRotationDegX(ALWAYS_SPEED);
+		m_rotation.Multiply(rot);
 	}
 	Vector3 Rstick = m_stick->GetRStickValue();
 	Vector3 Lstick = m_stick->GetLStickValue();
@@ -383,7 +396,7 @@ void Sphere::Brake()
 			SoundSource* se = NewGO<SoundSource>(0);
 			se->Init(6);
 			se->Play(false);
-			se->SetVolume(1.0f);
+			se->SetVolume(0.5f);
 		}
 	}
 	else {

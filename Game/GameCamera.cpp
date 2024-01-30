@@ -27,15 +27,13 @@ bool GameCamera::Start()
 {
 	//î•ñ‚Ìæ“¾
 	m_sphere = FindGO<Sphere>("sphere");
-	//m_sphere = FindGO<Player>("player");
 	m_stick = FindGO<Stick>("stick");
 	m_game = FindGO<Game>("game");
 	m_gameClear = FindGO<GameClear>("gameClear");
 	m_initialCameraPos = CAMERA_POS;
 	m_targetUp = TARGET_UP;
 	m_thresholdCameraUp = m_sphere->GetRadius() + RADIUS_INCREMENT;
-	g_camera3D->SetNear(0.5f);
-	g_camera3D->SetFar(7000.0f);
+	
 	return true;
 }
 
