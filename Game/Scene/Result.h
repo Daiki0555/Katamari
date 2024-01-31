@@ -1,33 +1,84 @@
 #pragma once
+#include "GameManager.h"
 class Fade;
+class Sphere;
+class Object;
+class ObjectRender;
 class Result :public IGameObject
 {
 public:
-	//リザルト用の構造体
-	struct ResultStruct
-	{
-		float	m_sphereScale = 0.0f;		//塊の大きさ
-		float	m_clearTime = 0.0f;			//目標達成時間
-		int		m_objectCount = 0;			//オブジェクトの数
-	};
-
 	~Result();
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
 
 	/// <summary>
-	/// リザルト用の構造体の取得
+	/// オブジェトリストの設定
 	/// </summary>
+	/// <param name="state"></param>
 	/// <returns></returns>
-	const ResultStruct& GetResultStruct() const {
-		return m_resultStruct;
+	const void SetObjectList(const std::vector<Object*> list)
+	{
+		m_objctList = list;
 	}
-private:
+
+	/// <summary>
+	/// オブジェトレンダーリストの設定
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	const void SetObjectRenderList(const std::vector<ObjectRender*> list)
+	{
+		m_objectRenderList = list;
+	}
 
 private:
-	ResultStruct			m_resultStruct;									//リザルト用の構造体
-	Fade*					m_fade = nullptr;
-	SpriteRender			m_backRender;
+	/// <summary>
+	/// リザルトの種類
+	/// </summary>
+	enum EnResult
+	{
+		m_enResult_Scale,						//大きさ
+		m_enResult_ClearTime,					//目標達成時間
+		m_enResult_ObjectNum,					//オブジェクトの数
+		m_enResult_Num							//リザルトの数
+	};
+
+	/// <summary>
+	/// フラッシュの更新処理
+	/// </summary>
+	void flashUpdate();
+
+	/// <summary>
+	/// スフィアの塊
+	/// </summary>
+	void SphereUpdate();
+private:
+	Fade*								m_fade = nullptr;
+	Sphere*								m_sphere = nullptr;
+	SoundSource* 						m_dramSE = nullptr;													//ドラムSE
+	
+	FontRender							m_textRender[m_enResult_Num];
+	FontRender							m_resultRender[m_enResult_Num];
+	FontRender							m_starNameFont;														//星の名前用のフォント
+	
+	SpriteRender						m_flashRender;
+	ModelRender							m_starRender;														//スターモデル
+	ModelRender							m_earthRender;														//地球モデル
+	
+	Vector3								m_spherePos = Vector3::Zero;
+	float								m_sphereTime = 0.0f;
+	float								m_DirectionStartTime = 0.0f;										//演出を始める時間
+	float								m_alpha = 1.0f;
+	int									m_fontNumber = 1;
+	bool								m_isFontDraw = true;												//フォントを描画するかどうか
+	bool								m_isFlash = false;													//光らせるかどうか
+	bool								m_isDirectionEnd = false;											//演出が終わったかどうか
+	bool								m_isWaitFadeOut = false;											//フェード中かどうか
+	bool								m_isStartBGM = false;												//BGMが始まったかどうか
+	bool								m_isDramSE = false;							
+	
+	std::vector<Object*>				m_objctList;
+	std::vector<ObjectRender*>			m_objectRenderList;
 };
 

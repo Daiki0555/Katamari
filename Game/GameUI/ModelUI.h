@@ -36,15 +36,15 @@ private:
 		m_enAnimationClip_Run,				//走りアニメーション
 		m_enAnimationClip_Num,				//アニメーションの数
 	};
-	AnimationClip m_animationClips[m_enAnimationClip_Num];
+	AnimationClip	m_animationClips[m_enAnimationClip_Num];
 
-	Player* m_player=nullptr;
-	ModelRender m_modelUI;
-	ModelRender m_earthRender;
-	Vector3 m_position = Vector3::Zero;
-	Vector3 m_scale = Vector3::One;
-	Quaternion m_rotation = Quaternion::Identity;
+	Player*			m_player=nullptr;
+	ModelRender		m_modelUI;										//モデルUI用のモデル
+	ModelRender		m_earthRender;									//地球モデル
+	Vector3			m_position = Vector3::Zero;
+	Vector3			m_scale = Vector3::One;
+	Quaternion		m_rotation = Quaternion::Identity;
 
-	bool m_isDraw = true;
+	bool			m_isDraw = true;
 };
 

@@ -28,6 +28,7 @@ bool ModelUI::Start()
 	m_animationClips[m_enAnimationClip_Run].SetLoopFlag(true);
 
 	//プレイヤーの設定
+	//別のワイプで描画するようにする
 	m_modelUI.InitDeferredRendering(
 		"Assets/modelData/player/unityChan.tkm",
 		m_animationClips,

@@ -77,11 +77,10 @@ void GameClear::ScaleChange()
 		m_scale.y == MAX_SIZE) {
 		m_isScaleDown = true;
 		//プレイヤーと塊の描画を止める
+		//巻き込まれたオブジェクトはインスタンシング描画しているので座標を下げて消えたように見せる
+		m_sphere->GetSphereModel().SetPosition(Vector3{ 0.0f,-1000.0f,0.0f });
+		m_sphere->GetSphereModel().Update();
 		m_player->IsDraw(false);
-		m_sphere->IsDraw(false);
-		for (auto object : m_game->GetObjectList()) {
-			object->IsDraw(false);
-		}
 		m_gameCamera->SetEndCameraFoward(g_camera3D->GetForward());
 	}
 

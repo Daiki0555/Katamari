@@ -137,6 +137,15 @@ public:
 		m_isDraw = state;
 	}
 
+	/// <summary>
+	/// 描画するかどうかの取得
+	/// </summary>
+	/// <returns></returns>
+	const bool GetIsDraw()const
+	{
+		return m_isDraw;
+	}
+
 private:
 
 	/// <summary>
@@ -164,29 +173,26 @@ private:
 	CollisionObject		m_collisionObject;
 	PhysicsStaticObject m_physicsObj;
 	
-	StructObjectData	m_objData;											//オブジェクトのデータ
+	StructObjectData	m_objData;															//オブジェクトのデータ
 	
-	Sphere*				m_sphere;
-	FlowerUI*			m_flowerUI;
-
-	ObjectUI*			m_objectUI;
-	
+	Sphere*				m_sphere = nullptr;
+	ObjectUI*			m_objectUI = nullptr;
 	ObjectRender*		m_objectRender=nullptr;
 
 	Vector3				m_position = Vector3::Zero;
 	Vector3				m_scale = Vector3::Zero;
 	
-	Quaternion			m_rotation = Quaternion::Identity;
+	Quaternion			m_rotation = Quaternion::Identity;									
 
 	Matrix				m_matInCore;														//塊（コア）を含む行列
 	Matrix				m_objectWorldMatrix;												//巻き込み後のオブジェクトのワールド行列
 	
-	EnObjectState		m_objectState = m_enObject_NotInvolution;
-	EnMoveState			m_moveState = m_enMove_No;
+	EnObjectState		m_objectState = m_enObject_NotInvolution;							//オブジェトの状態
+	EnMoveState			m_moveState = m_enMove_No;											//ムーブステート
 
-	IMovePtr			m_objectMove;
+	IMovePtr			m_objectMove;														//オブジェトムーブ
 	int					m_instanceNo = 0;													// インスタンス番号。
 
-	bool				m_isDraw = true;
+	bool				m_isDraw = true;													//描画するかどうか
 };
 

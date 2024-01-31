@@ -6,9 +6,9 @@ namespace {
 	//イラストの共通の値
 	const Vector3 UI_POSITION = { -800.0f,450.0f,0.0f };
 	const Vector2 UI_PIVOT = { 0.5f,0.5f };
-	const float UI_MAX_SCALE = 1.1f;							//UIの拡大率の最大
-	const float UI_MIN_SCALE = 1.0f;							//UIの縮小率の最小
-	const float COMMON_SCALE_MAX = 1.7f;						//外部からスケールを変更するときの最大値
+	const float   UI_MAX_SCALE = 1.1f;							//UIの拡大率の最大
+	const float   UI_MIN_SCALE = 1.0f;							//UIの縮小率の最小
+	const float	  COMMON_SCALE_MAX = 1.7f;						//外部からスケールを変更するときの最大値
 
 	
 	//イラストの個別の値
@@ -24,20 +24,18 @@ namespace {
 	//スケールのテキスト
 	const Vector3 TEXT_POSITION = { -890.0f,470.0f,0.0f };
 	const Vector3 TEXT_COLOR = { 1.0f,1.0f,1.0f };
-	const float TEXT_SCALE = 1.0f;
+	const float   TEXT_SCALE = 1.0f;
 
 	//リングイラスト
 	const Vector3 RING_POSITION = { -790.0f,450.0f,0.0f };
 	const Vector3 RING_SCALE ={0.6f,0.6f,1.0f};
-	const float RING_ROT = 15.0f;
+	const float   RING_ROT = 15.0f;
 
 	//目標テキストの設定
 	const Vector4 OBJECTIVE_SHADOW = { 1.0f,0.0f,0.0f,1.0f };
 	const Vector3 OBJECTIVE_POSITION = { -770.0f,320.0f,0.0f };
 	const Vector3 OBJECTIVE_COLOR = { 1.0f,1.0f,1.0f };
-	const float OBJECTIVE_SCALE = 1.0f;
-	const int OBJECTIVE = 20;
-
+	const float   OBJECTIVE_SCALE = 1.0f;
 }
 FlowerUI::~FlowerUI()
 {
@@ -95,8 +93,9 @@ bool FlowerUI::Start()
 
 	//目標用の設定をする
 	wchar_t objectiveText[255];
-	int objective= OBJECTIVE;
-	swprintf_s(objectiveText, L"%dcm", objective);
+	//目標の大きさをゲームマネージャーから持ってくる
+	m_tagetScale = GameManager::GetInstance()->GetGameDataStruct().GetTargetSize();
+	swprintf_s(objectiveText, L"%dcm", m_tagetScale);
 	m_objectiveRender.SetText(objectiveText);
 	m_objectiveRender.SetPosition(OBJECTIVE_POSITION);
 	m_objectiveRender.SetColor(OBJECTIVE_COLOR);
@@ -157,23 +156,25 @@ void FlowerUI::Rotation()
 void FlowerUI::Font()
 {
 	float value = m_sphere->GetRadius();
+
 	//cmとmmに分解
 	int cm = static_cast<int>(value);
 	int mm = static_cast<int>((value - cm) * 10);
 	wchar_t scaleText[255];
 	swprintf_s(scaleText, L"%dcm %dmm",cm,mm);
 	m_fontRender.SetText(scaleText);
+
 }
 
 void FlowerUI::CommonMagnification()
 {
 	float scale = m_sphere->GetRadius();
 	//半径が最大値を超えないようにする
-	scale = min(scale, OBJECTIVE);
+	scale = min(scale, m_tagetScale);
 	//半径に合わせて拡大率を変える
-	m_commonScale = UI_MIN_SCALE +(COMMON_SCALE_MAX- UI_MIN_SCALE)*((m_sphere->GetRadius()-m_initialRadius)/(OBJECTIVE- m_initialRadius));
+	m_commonScale = UI_MIN_SCALE +(COMMON_SCALE_MAX- UI_MIN_SCALE)*((m_sphere->GetRadius()-m_initialRadius)/(m_tagetScale - m_initialRadius));
 	m_commonScale = min(m_commonScale, COMMON_SCALE_MAX);
-	if (scale == OBJECTIVE) {
+	if (scale == m_tagetScale) {
 		m_game->SetClearState(true);
 	}
 }

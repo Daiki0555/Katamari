@@ -31,8 +31,16 @@ bool GameManager::Start()
 	g_soundEngine->ResistWaveFileBank(7, "Assets/sound/SE/player/dash.wav");
 	//会話音
 	g_soundEngine->ResistWaveFileBank(8, "Assets/sound/SE/fadefont.wav");
+	//リザルトSE
+	g_soundEngine->ResistWaveFileBank(9, "Assets/sound/SE/fanfare.wav");
 	//BGM
 	g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM1.wav");
+	//リザルトBGM
+	g_soundEngine->ResistWaveFileBank(11, "Assets/sound/SE/dram.wav");
+	//ドラムロール
+	g_soundEngine->ResistWaveFileBank(12, "Assets/sound/BGM/space1.wav");
+	//タイトルBGM
+	g_soundEngine->ResistWaveFileBank(13, "Assets/sound/BGM/titleBGM.wav");
 	return true;
 
 }
@@ -46,6 +54,6 @@ void GameManager::SetBGM(const int num)
 		m_bgm = NewGO<SoundSource>(0);
 	}
 	m_bgm->Init(num);
-	m_bgm->SetVolume(0.5f);
+	m_bgm->SetVolume(0.3f);
 	m_bgm->Play(true);
 }
