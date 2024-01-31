@@ -56,11 +56,16 @@ private:
 private:
 	Fade*								m_fade = nullptr;
 	Sphere*								m_sphere = nullptr;
+	SoundSource* 						m_dramSE = nullptr;													//ドラムSE
+	
 	FontRender							m_textRender[m_enResult_Num];
 	FontRender							m_resultRender[m_enResult_Num];
+	FontRender							m_starNameFont;														//星の名前用のフォント
+	
 	SpriteRender						m_flashRender;
 	ModelRender							m_starRender;														//スターモデル
 	ModelRender							m_earthRender;														//地球モデル
+	
 	Vector3								m_spherePos = Vector3::Zero;
 	float								m_sphereTime = 0.0f;
 	float								m_DirectionStartTime = 0.0f;										//演出を始める時間
@@ -71,6 +76,8 @@ private:
 	bool								m_isDirectionEnd = false;											//演出が終わったかどうか
 	bool								m_isWaitFadeOut = false;											//フェード中かどうか
 	bool								m_isStartBGM = false;												//BGMが始まったかどうか
+	bool								m_isDramSE = false;							
+	
 	std::vector<Object*>				m_objctList;
 	std::vector<ObjectRender*>			m_objectRenderList;
 };

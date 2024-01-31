@@ -129,14 +129,21 @@ void Title::InitLevel()
 			);
 			
 		}
-		
 		});
 }
 
 void Title::Update()
 {
+	if (!m_fade->IsFade()) {
+		if (!m_isStartBGM) {
+			GameManager::GetInstance()->SetBGM(13);
+			m_isStartBGM = true;
+		}
+	}
+
 	if (m_isWaitFadeOut) {
 		if (!m_fade->IsFade()) {
+			GameManager::GetInstance()->GetBGM()->Stop();
 			NewGO<Game>(0, "game");
 			DeleteGO(this);
 			
@@ -152,10 +159,12 @@ void Title::Hit()
 	Vector3 pos = m_sphere->GetPosition();
 	Vector3 diff = pos - m_position;
 	float hoge = diff.Length();
+	//塊とプレイヤーモデルの距離が塊の半径以下なら
 	if (diff.Length() <= m_sphere->GetRadius())
-	//if(g_pad[0]->IsTrigger(enButtonA))
 	{
+		//巻き込み処理
 		Involution();
+		//フェード処理
 		m_fade->StartFadeOut();
 		m_isWaitFadeOut = true;
 		m_fade->IsGameStart(true);

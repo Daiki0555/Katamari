@@ -25,13 +25,18 @@ namespace
 	//テキストの共通の値
 	const Vector3 TEXT_COLOR = { 0.0f,0.0f,1.0f };				//テキストレンダー用のカラー
 	const float   TEXT_SCALE = 1.0f;
-
 	const Vector3 CAMERA_POS = { 0.0f,0.0f,-60.0f };			//カメラのポジション
-	const float   ADD_SPHERE_POS = 500.0f;						//スフィアを座標を加算させる量
-	const float	  SPHERE_UPDATE_TIME = 3.0f;
+	const float   ADD_SPHERE_POS = 400.0f;						//スフィアを座標を加算させる量
+	const float	  SPHERE_UPDATE_TIME = 4.0f;
 
 	//スターモデル
 	const Vector3 STAR_SCALE = { 1.0f,1.0f,1.0f };
+
+	//星の名前用の値
+	const Vector3 STAR_FONT_POS = { -200.0f,-200.0f,0.0f };
+	const float	  STAR_FONT_SCALE = 2.0f;
+
+	const Vector3 RESULT_CLEAR_FONT_POS2 = { -200.0f,-300.0f,0.0f };
 
 	//地球モデル
 	const Vector3 EARTH_POS = {0.0f,-60.0f,0.0f};
@@ -126,6 +131,15 @@ bool Result::Start()
 	m_textRender[m_enResult_ObjectNum].SetColor(TEXT_COLOR);
 	m_textRender[m_enResult_ObjectNum].SetScale(TEXT_SCALE);
 
+	//星の名前を設定
+	wchar_t starText[255];
+	swprintf_s(starText, L"カタマリ星");
+	m_starNameFont.SetText(starText);
+	m_starNameFont.SetPosition(STAR_FONT_POS);
+	m_starNameFont.SetScale(STAR_FONT_SCALE);
+	m_starNameFont.SetColor(Vector3::One);
+
+
 	//フラッシュ用のスプライトを初期化
 	m_flashRender.Init("Assets/sprite/Result/white.DDS", 1920, 1080);
 	m_flashRender.SetMulColor(Vector4{ 1.0f,1.0f,1.0f,0.0f });
@@ -183,11 +197,22 @@ void Result::Update()
 
 	//フェードが終わったら
 	if (!m_fade->IsFade()) {
-		if (g_pad[0]->IsTrigger(enButtonA)) {
+		//演出を始める
+		if (g_pad[0]->IsTrigger(enButtonA)&&
+			!m_isDramSE) {
+			GameManager::GetInstance()->GetBGM()->Stop();
+			//巻き込まれSEの再生　	
+			m_dramSE = NewGO<SoundSource>(0);
+			m_dramSE->Init(11);
+			m_dramSE->Play(false);
+			m_dramSE->SetVolume(0.3f);
+			m_isDramSE = true;
 			m_isFontDraw = false;
+			//大きさのフォントは別で使うので座標と大きさを再設定
+			m_resultRender[m_enResult_Scale].SetPosition(RESULT_CLEAR_FONT_POS2);
 		}
 		if (!m_isStartBGM) {
-			GameManager::GetInstance()->SetBGM(11);
+			GameManager::GetInstance()->SetBGM(12);
 			m_isStartBGM = true;
 		}
 	}
@@ -213,11 +238,13 @@ void Result::Update()
 
 void Result::SphereUpdate()
 {
-	m_sphereTime += g_gameTime->GetFrameDeltaTime();
-	if (m_sphereTime <SPHERE_UPDATE_TIME) {
+	
+	if (m_sphereTime < SPHERE_UPDATE_TIME) {
+		m_sphereTime += g_gameTime->GetFrameDeltaTime();
 		m_spherePos.y += ADD_SPHERE_POS * g_gameTime->GetFrameDeltaTime();
 	}
 	else {
+		m_dramSE->Stop();
 		//オブジェクトの削除
 		for (auto object : m_objctList) {
 			if (object->GetObjectState() == Object::m_enObject_Involution) {
@@ -236,6 +263,7 @@ void Result::flashUpdate()
 {		
 	m_flashRender.SetMulColor(Vector4{ 1.0f,1.0f,1.0f,m_alpha });
 	m_flashRender.Update();
+	//少しの間白いイラスト出し続けるようにする
 	m_DirectionStartTime += g_gameTime->GetFrameDeltaTime();
 	if (m_DirectionStartTime < DIRECTION_START_TIME) {
 		return;
@@ -260,6 +288,8 @@ void Result::flashUpdate()
 void Result::Render(RenderContext& rc)
 {
 	if (m_isFlash) {
+		m_starNameFont.Draw(rc);
+		m_resultRender[m_enResult_Scale].Draw(rc);
 		m_flashRender.Draw(rc);
 		m_starRender.Draw(rc);
 		return;

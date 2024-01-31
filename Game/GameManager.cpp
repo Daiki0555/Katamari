@@ -36,7 +36,11 @@ bool GameManager::Start()
 	//BGM
 	g_soundEngine->ResistWaveFileBank(10, "Assets/sound/BGM/BGM1.wav");
 	//リザルトBGM
-	g_soundEngine->ResistWaveFileBank(11, "Assets/sound/BGM/space1.wav");
+	g_soundEngine->ResistWaveFileBank(11, "Assets/sound/SE/dram.wav");
+	//ドラムロール
+	g_soundEngine->ResistWaveFileBank(12, "Assets/sound/BGM/space1.wav");
+	//タイトルBGM
+	g_soundEngine->ResistWaveFileBank(13, "Assets/sound/BGM/titleBGM.wav");
 	return true;
 
 }

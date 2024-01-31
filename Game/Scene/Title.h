@@ -70,5 +70,6 @@ private:
 	Matrix				m_matInCore;														//塊（コア）を含む行列
 	Matrix				m_objectWorldMatrix;												//巻き込み後のオブジェクトのワールド行列
 	bool				m_isWaitFadeOut = false;											//フェード中かどうか											
+	bool				m_isStartBGM = false;												//BGMが始まったかどうか
 };
 
