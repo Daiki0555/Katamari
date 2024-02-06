@@ -119,7 +119,7 @@ void Game::InitLevel()
 			backGround->SetRotation(objdata.rotation);
 			return true;
 		}
-		else if (objdata.ForwardMatchName(L"o")) {
+		else if (objdata.ForwardMatchName(L"o")) {	
 			//オブジェトの作成
 			//オブジェトデータのリストを持ってくる
 			for (auto objectData : ObjectData::GetInstance()->GetObjectData())
@@ -131,11 +131,10 @@ void Game::InitLevel()
 				if (objdata.ForwardMatchName(wchar.c_str()))
 				{
 					Object* object = NewGO<Object>(0, "object");
-
 					object->SetPosition(objdata.position);
 					object->SetRotation(objdata.rotation);
 					object->SetScale(objdata.scale);
-		
+					
 					//名前から移動方法を求める
 					StructMoveState moveState = SerchMove(objdata.name);
 					object->InitMove(moveState.m_state, moveState.m_move, moveState.m_range);

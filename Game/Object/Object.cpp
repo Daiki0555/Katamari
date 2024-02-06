@@ -43,20 +43,27 @@ void Object::InitMove(
 	const float speed,
 	const float range)
 {
+	//移動ステート
+	//ステートごとの移動を生成して渡す
 	switch (state)
 	{
+		//左右移動
 	case m_enMove_LR:
 		m_objectMove = std::make_unique<MoveFB>();
 		break;
+		//前後移動
 	case m_enMove_FB:
 		m_objectMove = std::make_unique<MoveLR>();
 		break;
+		//上下移動
 	case m_enMove_UD:
 		m_objectMove = std::make_unique<MoveUD>();
 		break;
+		//ランダム移動
 	case m_enMove_Rand:
 		m_objectMove = std::make_unique<MoveRand>();
 		break;
+		//何もしない
 	case m_enMove_No:
 		m_objectMove = std::make_unique<MoveNo>();
 		break;
@@ -71,6 +78,7 @@ void Object::InitMove(
 
 void Object::Update()
 {
+	//オブジェトが巻き込まれているか
 	if (m_objectState != m_enObject_NotInvolution)
 	{
 		CalcMatrix();
@@ -103,7 +111,10 @@ void Object::Hit()
 {
 	Vector3 pos = m_sphere->GetPosition();
 	Vector3 diff = pos - m_position;
+	//塊とオブジェトの座標の差分の長さが
+	//塊の半径以下なら
 	if (diff.Length() <= m_sphere->GetRadius()){
+		//オブジェトの巻き込まれるサイズが半径以下なら
 		if (m_objData.m_involutionScale <= m_sphere->GetRadius()){
 			Involution();
 			m_objectState = m_enObject_Involution;
@@ -123,7 +134,7 @@ void Object::Involution()
 	inverseMatrix.Inverse(m_sphere->GetSphereModel().GetModel().GetWorldMatrix());
 
 	//オブジェクトのワールド行列とプレイヤーの逆行列を乗算して、
-	//プレイヤーを基準としたオブジェクトのローカル行列を求める
+	//塊を基準としたオブジェクトのローカル行列を求める
 	//3dsMaxと軸を合わせるためのバイアス。
 	Matrix mBias, mWorld;
 	mBias.MakeRotationX(Math::PI * -0.5f);
@@ -133,6 +144,7 @@ void Object::Involution()
 	mRot.Multiply(mBias, mRot);
 	mScale.MakeScaling(m_scale);
 	mWorld =  mScale * mRot * mTrans;
+	
 	//塊（コア）を含むオブジェクトのワールド行列と塊の逆行列を計算する
 	m_matInCore.Multiply(mWorld, inverseMatrix);
 	m_objectUI->InitWipeModelUI(m_objData);
