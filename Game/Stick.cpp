@@ -39,10 +39,6 @@ void Stick::StickState()
 
 	}
 	
-
-
-
-
 	//右スティックの入力がありかつ
 	else if (m_Rstick.LengthSq() >= ENTER_STICK) {
 		//左ステックの入力が無いなら

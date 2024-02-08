@@ -25,7 +25,7 @@ namespace
 	//テキストの共通の値
 	const Vector3 TEXT_COLOR = { 0.0f,0.0f,1.0f };				//テキストレンダー用のカラー
 	const float   TEXT_SCALE = 1.0f;
-	const Vector3 CAMERA_POS = { 0.0f,0.0f,-60.0f };			//カメラのポジション
+	const Vector3 CAMERA_POS = { 0.0f,0.0f,-100.0f };			//カメラのポジション
 	const float   ADD_SPHERE_POS = 400.0f;						//スフィアを座標を加算させる量
 	const float	  SPHERE_UPDATE_TIME = 4.0f;
 
