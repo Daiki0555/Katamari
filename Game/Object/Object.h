@@ -119,7 +119,7 @@ public:
 	}
 
 	/// <summary>
-	/// インスタン番号を設定
+	/// インスタンスの番号を設定
 	/// </summary>
 	/// <param name="instanceNo"></param>
 	void SetInstanceNo(int instanceNo)
@@ -191,7 +191,7 @@ private:
 	EnMoveState			m_moveState = m_enMove_No;											//ムーブステート
 
 	IMovePtr			m_objectMove;														//オブジェトムーブ
-	int					m_instanceNo = 0;													// インスタンス番号。
+	int					m_instanceNo = 0;													//インスタンスの番号。
 
 	bool				m_isDraw = true;													//描画するかどうか
 };

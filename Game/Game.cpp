@@ -140,7 +140,7 @@ void Game::InitLevel()
 					object->InitMove(moveState.m_state, moveState.m_move, moveState.m_range);
 					object->SetObjectData(objectData);
 
-					// インスタンス番号を付ける
+					// インスタンスの番号を付ける
 					object->SetInstanceNo(instanceCount[objectData.m_name]);
 					instanceCount[objectData.m_name]++; // インスタンス番号を更新
 					m_objctList.emplace_back(object);
@@ -165,14 +165,14 @@ void Game::InitLevel()
 		for (int i = 0; i < m_objctList.size(); i++) {
 			//データとオブジェクトリストの名前が一緒なら
 			if (m_objctList[i]->GetObjectName() == objectData.m_name) {
-				//インスタンシングの最大数を上げる
+				//インスタスの最大数を上げる
 				numObject++;
 			}
 		}
 		//インスタンシング描画用のレンダーを作成する
 		ObjectRender* objectRender = NewGO<ObjectRender>(0, objectData.m_name.c_str());
 		objectRender->SetObjectData(objectData);
-		//インスタンシングの数を渡す
+		//インスタスの最大数を渡す
 		objectRender->SetMaxObject(numObject);
 		m_objectRenderList.emplace_back(objectRender);
 	}

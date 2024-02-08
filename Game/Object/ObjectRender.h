@@ -66,7 +66,7 @@ public:
 private:
 private:
 	StructObjectData m_objData;
-	ModelRender	m_modelRender;	// モデルレンダラー。
-	int			m_maxObject = 0;	// 星の数
+	ModelRender	m_modelRender;		// モデルレンダラー。
+	int			m_maxObject = 0;	// モデルの数
 };
 
