@@ -49,10 +49,10 @@ namespace nsK2EngineLow {
 		}
 
 		/// <summary>
-		/// ワイプ処理呼ばれる処理
+		/// UI用モデルが呼ばれる処理
 		/// </summary>
 		/// <param name="rc"></param>
-		virtual void OnWipeModelRender(RenderContext& rc, Camera& camera)
+		virtual void OnUIModelRender(RenderContext& rc, Camera& camera)
 		{
 
 		}

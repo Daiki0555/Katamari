@@ -141,7 +141,7 @@ namespace nsK2EngineLow {
 
 		if (isWipeModel) {
 			//ワイプ用モデルの初期化
-			m_wipeModel.Init(modelInitData);
+			m_uiModel.Init(modelInitData);
 		}
 	}
 
@@ -203,7 +203,7 @@ namespace nsK2EngineLow {
 
 		if (isWipeModel) {
 			//ワイプ用モデルの初期化
-			m_wipeModel.Init(modelInitData);
+			m_uiModel.Init(modelInitData);
 		}
 	}
 
@@ -405,8 +405,8 @@ namespace nsK2EngineLow {
 			m_toonModel.SetWorldMatrix(matrix);;
 		}
 
-		if (m_wipeModel.IsInited()) {
-			m_wipeModel.SetWorldMatrix(matrix);;
+		if (m_uiModel.IsInited()) {
+			m_uiModel.SetWorldMatrix(matrix);;
 		}
 
 		for (auto& models : m_shadowModels) {
@@ -437,8 +437,8 @@ namespace nsK2EngineLow {
 			m_toonModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		}
 
-		if (m_wipeModel.IsInited()) {
-			m_wipeModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		if (m_uiModel.IsInited()) {
+			m_uiModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 		}
 
 		for (auto& models : m_shadowModels) {

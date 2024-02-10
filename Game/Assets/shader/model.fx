@@ -119,7 +119,6 @@ SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
 float4 CalcOutline(SPSIn psIn)
 {
 	float4 albedoColor = g_albedo.Sample(g_sampler, psIn.uv);
-
 	//近傍8テクセルの深度値を計算して、エッジを抽出する
 	// 正規化スクリーン座標系からUV座標系に変換する
     float2 uv = psIn.posInProj.xy * float2( 0.5f, -0.5f) + 0.5f;

@@ -153,9 +153,9 @@ namespace nsK2EngineLow
 		void InitZPrepassRenderTarget();
 
 		/// <summary>
-		/// ビューポートの初期化
+		/// UIカメラの初期化
 		/// </summary>
-		void InitViewPort();
+		void InitUICamera();
 
 		/// <summary>
 		/// シャドウマップに描画

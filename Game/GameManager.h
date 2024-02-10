@@ -115,8 +115,8 @@ public:
 		}
 
 	private:
-		const int		TARGET_SIZE = 20;					//目標サイズ
-		const float		TIME_LIMIT = 5.0f;					//タイムリミット(分)
+		const int		TARGET_SIZE = 18;					//目標サイズ
+		const float		TIME_LIMIT = 3.0f;					//タイムリミット(分)
 	};
 
 	~GameManager();

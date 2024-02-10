@@ -22,7 +22,7 @@ namespace nsK2EngineLow{
 			EnModelUpAxis enModelUpAxis=enModelUpAxisZ,
 			const bool isShadow=false,
 			const bool isShadowReceiver=false,
-			const bool isWipeModel=false
+			const bool isUIModel=false
 			);
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace nsK2EngineLow{
 			const bool isShadow = false,
 			const bool isShadowReceiver = false,
 			const bool isOutline = false,
-			const bool isWipeModel =false,
+			const bool isUIModel =false,
 			int maxInstance=1
 		);
 
@@ -265,13 +265,13 @@ namespace nsK2EngineLow{
 		}
 
 		/// <summary>
-		/// ワイプ処理から呼ばれる
+		/// UIモデル処理から呼ばれる
 		/// </summary>
 		/// <param name="rc"></param>
-		void OnWipeModelRender(RenderContext& rc, Camera& camera) override
+		void OnUIModelRender(RenderContext& rc, Camera& camera) override
 		{
-			if (m_wipeModel.IsInited()) {
-				m_wipeModel.Draw(rc, camera, 1);
+			if (m_uiModel.IsInited()) {
+				m_uiModel.Draw(rc, camera, 1);
 			}
 		}
 
@@ -420,7 +420,7 @@ namespace nsK2EngineLow{
 		Model			m_toonModel;
 		Model			m_zprepassModel;
 		Model			m_shadowModels[NUM_SHADOW_MAP];						//影があるモデル
-		Model			m_wipeModel;
+		Model			m_uiModel;
 
 		Skeleton		m_skeleton;							
 

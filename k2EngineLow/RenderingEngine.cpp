@@ -35,7 +35,7 @@ namespace nsK2EngineLow
 
 		Init2DRenderTarget();
 
-		InitViewPort();
+		InitUICamera();
 
 		m_postEffect.Init(m_mainRenderTarget);
 	}
@@ -220,24 +220,8 @@ namespace nsK2EngineLow
 		m_mainSprite.Init(spriteInitData);
 	}
 
-	void RenderingEngine::InitViewPort()
+	void RenderingEngine::InitUICamera()
 	{
-		//通常画面の描画
-		m_viewPorts[0].Width = FRAME_BUFFER_W;		//画面の横サイズ
-		m_viewPorts[0].Height = FRAME_BUFFER_H;   //画面の縦サイズ
-		m_viewPorts[0].TopLeftX = 0;   //画面左上のx座標
-		m_viewPorts[0].TopLeftY = 0;   //画面左上のy座標
-		m_viewPorts[0].MinDepth = 0.0f;   //深度値の最小値
-		m_viewPorts[0].MaxDepth = 1.0f;   //深度値の最大値
-
-		//ワイプ画面の描画。
-		m_viewPorts[1].Width = 960 / 4 + 3;   //画面の横サイズ
-		m_viewPorts[1].Height = 540 / 4 + 3;   //画面の縦サイズ
-		m_viewPorts[1].TopLeftX = 8.0;   //画面左上のx座標
-		m_viewPorts[1].TopLeftY = 662.0;   //画面左上のy座標
-		m_viewPorts[1].MinDepth = 0.0f;   //深度値の最小値
-		m_viewPorts[1].MaxDepth = 0.5f;   //深度値の最大値
-		
 		//ワイプカメラを初期化
 		m_wipeCamera.SetPosition(WIPE_CAMERA_POSITION);
 		m_wipeCamera.SetTarget(WIPE_CAMERA_TARGET);
@@ -359,9 +343,6 @@ namespace nsK2EngineLow
 			m_mainRenderTarget.GetRTVCpuDescriptorHandle(),
 			m_gBuffer[enGBuffer_AlbedoDepth].GetDSVCpuDescriptorHandle()
 		);
-
-		//ビューポートを設定。
-		rc.SetViewportAndScissor(m_viewPorts[0]);
 		for (auto& forwardObj : m_renderObjects) {
 			forwardObj->OnForwardRender(rc);
 		}
@@ -371,16 +352,8 @@ namespace nsK2EngineLow
 			toonObj->OnToonRender(rc);
 		}
 
-
-		EndGPUEvent();
-
-		BeginGPUEvent("WipeRender");
-		//ビューポートを設定。
-		rc.SetViewport(m_viewPorts[1]);
-
-
 		for (auto& wipeModel : m_renderObjects) {
-			wipeModel->OnWipeModelRender(rc, m_wipeCamera);
+			wipeModel->OnUIModelRender(rc, m_wipeCamera);
 		}
 		// メインレンダリングターゲットへの書き込み終了待ち
 		rc.WaitUntilFinishDrawingToRenderTarget(m_mainRenderTarget);
