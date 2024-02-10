@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E5%A1%8A%E9%AD%82"><strong>塊魂</strong></h1>
+<p><img src="portfolio/title.png" alt="alt text">
+<br></p>
+<h1 id="%E7%9B%AE%E6%AC%A1"><strong>目次</strong></h1>
+<ul>
+<li><a href="#%E5%A1%8A%E9%AD%82"><strong>塊魂</strong></a></li>
+<li><a href="#%E7%9B%AE%E6%AC%A1"><strong>目次</strong></a></li>
+<li><a href="#%E8%87%AA%E5%B7%B1%E7%B4%B9%E4%BB%8B"><strong>自己紹介</strong></a></li>
+<li><a href="#%E3%82%B2%E3%83%BC%E3%83%A0%E6%A6%82%E8%A6%81"><strong>ゲーム概要</strong></a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><strong>操作方法</strong></a></li>
+<li><a href="#%E5%88%B6%E4%BD%9C%E7%90%86%E7%94%B1"><strong>制作理由</strong></a></li>
+<li><a href="#%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AE%E3%81%93%E3%81%A0%E3%82%8F%E3%82%8A"><strong>ゲームのこだわり</strong></a>
+<ul>
+<li><a href="#1%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%E7%94%BB%E9%9D%A2"><strong>1.タイトル画面</strong></a></li>
+<li><a href="#2%E3%82%B2%E3%83%BC%E3%83%A0%E4%B8%AD%E3%82%AB%E3%83%A1%E3%83%A9%E3%81%AE%E5%8B%95%E3%81%8D"><strong>2.ゲーム中カメラの動き</strong></a></li>
+<li><a href="#3%E3%82%B2%E3%83%BC%E3%83%A0%E5%86%85%E3%81%AE%E6%93%8D%E4%BD%9C"><strong>3.ゲーム内の操作</strong></a></li>
+<li><a href="#4%E5%B7%BB%E3%81%8D%E8%BE%BC%E3%82%81%E3%81%AA%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88"><strong>4.巻き込めないオブジェクト</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E3%82%B2%E3%83%BC%E3%83%A0%E9%96%A2%E4%BF%82%E3%81%AE%E6%8A%80%E8%A1%93%E7%B4%B9%E4%BB%8B"><strong>ゲーム関係の技術紹介</strong></a>
+<ul>
+<li><a href="#1%E5%B7%BB%E3%81%8D%E8%BE%BC%E3%81%BF%E5%87%A6%E7%90%86"><strong>1.巻き込み処理</strong></a>
+<ul>
+<li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></a></li>
+<li><a href="#%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95"><strong>実装方法</strong></a></li>
+<li><a href="#a%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A8%E5%A1%8A%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%81%A6%E5%A1%8A%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%81%AE%E9%80%86%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>a.オブジェクトと塊のワールド行列を求めて、塊のワールド行列の逆行列を求める</strong></a></li>
+<li><a href="#b%E5%A1%8A%E3%82%92%E5%9F%BA%E6%BA%96%E3%81%A8%E3%81%97%E3%81%9F%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E5%BA%A7%E6%A8%99%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>b.塊を基準としたオブジェクトのローカル座標を求める</strong></a></li>
+<li><a href="#c%E6%9C%80%E7%B5%82%E7%9A%84%E3%81%AA%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>c.最終的なオブジェクトのワールド行列を求める</strong></a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></a></li>
+</ul>
+</li>
+<li><a href="#2%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%83%88%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E7%AE%A1%E7%90%86%E3%81%A8%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E7%94%9F%E6%88%90"><strong>2.オブジェトデータの管理とオブジェクトの生成</strong></a>
+<ul>
+<li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F-1"><strong>作成動機</strong></a></li>
+<li><a href="#%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95-1"><strong>実装方法</strong></a></li>
+<li><a href="#a%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E4%BD%9C%E6%88%90"><strong>a.エクセルの作成</strong></a></li>
+<li><a href="#b%E3%83%AC%E3%83%99%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E4%BD%9C%E6%88%90"><strong>b.レベルデータの作成</strong></a></li>
+<li><a href="#c%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%A4%9C%E7%B4%A2"><strong>c.モデルの検索</strong></a></li>
+<li><a href="#d%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E7%A7%BB%E5%8B%95"><strong>d.モデルの移動</strong></a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-1"><strong>まとめ</strong></a></li>
+</ul>
+</li>
+<li><a href="#3%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E6%8F%8F%E7%94%BB"><strong>3.インスタンシング描画</strong></a>
+<ul>
+<li><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E6%8F%8F%E7%94%BB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>インスタンシング描画について</strong></a></li>
+<li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F-2"><strong>作成動機</strong></a></li>
+<li><a href="#%E4%BD%9C%E6%88%90%E6%96%B9%E6%B3%95"><strong>作成方法</strong></a></li>
+<li><a href="#a%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E7%95%AA%E5%8F%B7%E3%81%AE%E8%A8%AD%E5%AE%9A"><strong>a.インスタンシング番号の設定</strong></a></li>
+<li><a href="#b%E6%8F%8F%E7%94%BB%E7%94%A8%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E4%BD%9C%E6%88%90"><strong>b.描画用クラスの作成</strong></a></li>
+<li><a href="#%EF%BD%83%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC%E5%81%B4%E3%81%AB%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E6%B8%A1%E3%81%99"><strong>ｃ.シェーダー側にデータを渡す</strong></a></li>
+<li><a href="#d%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC%E5%81%B4%E3%81%AE%E5%87%A6%E7%90%86"><strong>d.シェーダー側の処理</strong></a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-2"><strong>まとめ</strong></a></li>
+</ul>
+</li>
+<li><a href="#4%E3%83%93%E3%83%A5%E3%83%BC%E3%83%9D%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90"><strong>4.ビューポートの作成</strong></a></li>
+<li><a href="#5%E8%BC%AA%E9%83%AD%E7%B7%9A%E3%81%AE%E6%8F%8F%E7%94%BB"><strong>5.輪郭線の描画</strong></a></li>
+<li><a href="#6%E3%83%88%E3%82%A5%E3%83%BC%E3%83%B3%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC"><strong>6.トゥーンシェーダー</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E4%BF%82"><strong>グラフィック関係</strong></a>
+<ul>
+<li><a href="#1%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0"><strong>1.ディファードレンダリング</strong></a></li>
+<li><a href="#2%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>2.フォワードとディファードレンダリングの併用</strong></a></li>
+<li><a href="#3pbr"><strong>3.PBR</strong></a></li>
+<li><a href="#4%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6"><strong>4.カスケードシャドウ</strong></a></li>
+<li><a href="#5%E5%B7%9D%E7%80%AC%E5%BC%8F%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A0"><strong>5.川瀬式ブルーム</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-3"><strong>まとめ</strong></a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></a></li>
+</ul>
+<h1 id="%E8%87%AA%E5%B7%B1%E7%B4%B9%E4%BB%8B"><strong>自己紹介</strong></h1>
+<p><strong>所属：河原電子ビジネス専門学校ゲームクリエイター科</strong>
+<br></p>
+<p><strong>名前：伊藤　大起</strong>
+<br></p>
+<p><strong>趣味：弓道(3年)、料理</strong>
+<br></p>
+<h1 id="%E3%82%B2%E3%83%BC%E3%83%A0%E6%A6%82%E8%A6%81"><strong>ゲーム概要</strong></h1>
+<p><strong>1.制作期間</strong>
+<br>
+ <strong>2023年～</strong>
+<br></p>
+<p><strong>2.制作人数</strong>
+<br>
+ <strong>1人</strong>
+<br></p>
+<p><strong>3.ジャンル</strong>
+<br>
+ <strong>アクション</strong>
+<br></p>
+<p><strong>4.プレイ人数</strong>
+<br>
+ <strong>1人</strong>
+<br></p>
+<p><strong>5.対応ハード</strong>
+<cr>
+ <strong>windows11</strong>
+<br></p>
+<p><strong>6.制作環境</strong>
+<br>
+ <strong>a.エンジン</strong>
+<br>
+  <strong>学校内製エンジン(DX12)</strong>
+<br></p>
+<p> <strong>b.使用ツール</strong>
+<br>
+  <strong>Visual Studio 2022</strong>
+<br>
+  <strong>Visual Studio Code</strong>
+<br>
+  <strong>3ds Max 2023</strong>
+<br>
+  <strong>Adobe Photoshop 2022</strong>
+<br>
+  <strong>Excel</strong>
+<br>
+  <strong>RenderDoc</strong>
+<br>
+  <strong>fork</strong>
+<br>
+  <strong>Github</strong>
+<br>
+  <strong>Notion</strong>
+<br></p>
+<p> <strong>c.使用言語</strong>
+<br>
+  <strong>C++</strong>
+<br>
+  <strong>HLSL</strong>
+<br></p>
+<h1 id="%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><strong>操作方法</strong></h1>
+<p><img src="portfolio/setu.png" alt="alt text">
+<br></p>
+<h1 id="%E5%88%B6%E4%BD%9C%E7%90%86%E7%94%B1"><strong>制作理由</strong></h1>
+<p> <strong>自分がこのゲームを作ろうと思ったのがきっかけとして、今まで自分がプレイしてきたゲームは敵を武器を使って倒すというゲームが多く、物を巻き込み塊を大きくしていくという、独自の世界観にひかれていきました。</strong>
+<br></p>
+<p> <strong>最初のうちは巻き込まないものがあり、それにはじき返されたり、追いかけまわされるなど最初のうちは爽快感はありませんでしたが、物を巻き込み塊が大きくなり今まで追いかけられていた物を巻き込めるようになると、敵を武器を使って倒した時のような爽快感があり、その爽快感が後半は何度も押し寄せるので自分はこのゲームにとても関心を持ちました。</strong>
+<br></p>
+<p> <strong>ゲーム制作の勉強をしていく内にこのゲームは様々な技術をしようしていることを知り、このゲームを再現することで、今まで挑戦してこなかった技術に触れあうことが可能なので、自身のスキルアップにつながると思いこのゲームを製作しようと思いました。</strong>
+<br></p>
+<h1 id="%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AE%E3%81%93%E3%81%A0%E3%82%8F%E3%82%8A"><strong>ゲームのこだわり</strong></h1>
+<h2 id="1%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%E7%94%BB%E9%9D%A2"><strong>1.タイトル画面</strong></h2>
+<p><strong>・AボタンでスタートではなくSTARTを巻き込むことで始めることが出来る。</strong>
+<br>
+<img src="portfolio/title.gif" alt="alt text">
+<br></p>
+<h2 id="2%E3%82%B2%E3%83%BC%E3%83%A0%E4%B8%AD%E3%82%AB%E3%83%A1%E3%83%A9%E3%81%AE%E5%8B%95%E3%81%8D"><strong>2.ゲーム中カメラの動き</strong></h2>
+<p><strong>・塊が大きくなるにつれて画面に入らなくなるので、一定の大きさの時に後退している</strong>
+<br>
+<img src="portfolio/camera.gif" alt="alt text">
+<br>
+<strong>・カメラを後退させるときに滑らかに動かすことで、違和感が無い様にしている</strong>
+<br>
+<img src="portfolio/camera.png" alt="alt text"></p>
+<h2 id="3%E3%82%B2%E3%83%BC%E3%83%A0%E5%86%85%E3%81%AE%E6%93%8D%E4%BD%9C"><strong>3.ゲーム内の操作</strong></h2>
+<p><img src="portfolio/move-1.gif" alt="alt text">
+<br>
+<strong>・操作性をよくするため急周りの際に、速度がある場合、カメラの動きに合わせた動きしている。</strong>
+<br>
+<img src="portfolio/move.png" alt="alt text"></p>
+<h2 id="4%E5%B7%BB%E3%81%8D%E8%BE%BC%E3%82%81%E3%81%AA%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88"><strong>4.巻き込めないオブジェクト</strong></h2>
+<p><img src="portfolio/reflect.gif" alt="alt text">
+<br>
+<strong>・巻き込めないオブジェクトにぶつかった時に反射している</strong>
+<br>
+<img src="portfolio/reflect.png" alt="alt text"></p>
+<h1 id="%E3%82%B2%E3%83%BC%E3%83%A0%E9%96%A2%E4%BF%82%E3%81%AE%E6%8A%80%E8%A1%93%E7%B4%B9%E4%BB%8B"><strong>ゲーム関係の技術紹介</strong></h1>
+<h2 id="1%E5%B7%BB%E3%81%8D%E8%BE%BC%E3%81%BF%E5%87%A6%E7%90%86"><strong>1.巻き込み処理</strong></h2>
+<p><img src="portfolio/makikomi-1.gif" alt="alt text"></p>
+<h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
+<p><strong>・塊魂を再現する際に最も興味を持った処理だから。</strong>
+<br>
+<strong>・行列に対する勉強の良い機会だと思った。</strong></p>
+<h3 id="%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95"><strong>実装方法</strong></h3>
+<h3 id="a%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A8%E5%A1%8A%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%81%A6%E5%A1%8A%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%81%AE%E9%80%86%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>a.オブジェクトと塊のワールド行列を求めて、塊のワールド行列の逆行列を求める</strong></h3>
+<p><img src="portfolio/makikomi_1-1.png" alt="alt text">
+<strong>・ワールド行列を求める方法</strong>
+<br>
+<img src="portfolio/world.png" alt="alt text"></p>
+<h3 id="b%E5%A1%8A%E3%82%92%E5%9F%BA%E6%BA%96%E3%81%A8%E3%81%97%E3%81%9F%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E5%BA%A7%E6%A8%99%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>b.塊を基準としたオブジェクトのローカル座標を求める</strong></h3>
+<p><strong>・逆行列を乗算することでワールド行列からローカル行列への変換を行える</strong>
+<br>
+<img src="portfolio/makikomi_2-1.png" alt="alt text"></p>
+<h3 id="c%E6%9C%80%E7%B5%82%E7%9A%84%E3%81%AA%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>c.最終的なオブジェクトのワールド行列を求める</strong></h3>
+<p><img src="portfolio/makikomi_3-1.png" alt="alt text"></p>
+<h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・逆行列やローカル行列の勉強になった。</strong>
+<br>
+<strong>・今後のゲーム制作を行う際に行列を生かした難しい処理を実装していきたい。</strong>
+<br></p>
+<h2 id="2%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%83%88%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E7%AE%A1%E7%90%86%E3%81%A8%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E7%94%9F%E6%88%90"><strong>2.オブジェトデータの管理とオブジェクトの生成</strong></h2>
+<p><img src="portfolio/leveltitle.png" alt="alt text"></p>
+<h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
+<p><strong>・エクセルを使用したデータ管理に挑戦するため。</strong>
+<br>
+<strong>・文字列を使用してモデルの動きや速度を決めるため。</strong></p>
+<h3 id="%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95"><strong>実装方法</strong></h3>
+<h3 id="a%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E4%BD%9C%E6%88%90"><strong>a.エクセルの作成</strong></h3>
+<p><img src="portfolio/excel.png" alt="alt text">
+<br>
+<strong>・保存形式を気を付ける必要がある</strong>
+<img src="portfolio/excel2.png" alt="alt text">
+<br>
+<strong>・モデルデータの構造体に渡す</strong>
+<img src="portfolio/excel3-1.png" alt="alt text">
+<br></p>
+<h3 id="b%E3%83%AC%E3%83%99%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E4%BD%9C%E6%88%90"><strong>b.レベルデータの作成</strong></h3>
+<p><img src="portfolio/level.png" alt="alt text">
+<br>
+<strong>・レベルデータの名前で移動速度と移動方法を決めている。</strong>
+<br>
+<strong>・これにより細かい数値を決めやすくなる。</strong></p>
+<h3 id="c%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%A4%9C%E7%B4%A2"><strong>c.モデルの検索</strong></h3>
+<p><img src="portfolio/level2.png" alt="alt text">
+<br></p>
+<h3 id="d%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E7%A7%BB%E5%8B%95"><strong>d.モデルの移動</strong></h3>
+<p><strong>・モデルの移動はレベルデータを元に生成する</strong>
+<br>
+<img src="portfolio/level3.png" alt="alt text">
+<br>
+<strong>・モデルの生成はインスタンシング描画にも関係している</strong></p>
+<h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・エクセルデータを保存した時に日本語が文字化けするなど問題が発生していた。</strong>
+<br>
+<strong>・文字コードを勉強する過程で、変数変換の勉強になった。</strong>
+<br>
+<strong>・今後もエクセルなどを使用したデータ管理を有効活用して行きたい。</strong>
+<br></p>
+<h2 id="3%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E6%8F%8F%E7%94%BB"><strong>3.インスタンシング描画</strong></h2>
+<p><img src="inatatitle.png" alt="alt text"></p>
+<h3 id="%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E6%8F%8F%E7%94%BB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>インスタンシング描画について</strong></h3>
+<p> <strong>通常のドローコールと違い一つ一つモデルを描画するのではなく、「同じモデルを大量に描画する際のドローコールを一度だけにできる」というテクニックです。</strong></p>
+<h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
+<p><strong>・通常のドローコールではfpsが10以下しか出なかったので、その問題を解決するため。</strong></p>
+<h3 id="%E4%BD%9C%E6%88%90%E6%96%B9%E6%B3%95"><strong>作成方法</strong></h3>
+<h3 id="a%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B7%E3%83%B3%E3%82%B0%E7%95%AA%E5%8F%B7%E3%81%AE%E8%A8%AD%E5%AE%9A"><strong>a.インスタンシング番号の設定</strong></h3>
+<p><img src="insta.png" alt="alt text">
+<br>
+<strong>・mapを使用した種類ごとの管理プログラム</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">// インスタンスの番号を付ける</span>
+object-&gt;SetInstanceNo(instanceCount[objectData.m_name]);
+instanceCount[objectData.m_name]++; <span class="hljs-comment">// インスタンス番号を更新</span>
+m_objctList.emplace_back(object);
+</div></code></pre>
+<h3 id="b%E6%8F%8F%E7%94%BB%E7%94%A8%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E4%BD%9C%E6%88%90"><strong>b.描画用クラスの作成</strong></h3>
+<p><strong>・通常描画との違い</strong>
+<br>
+<img src="insta2.png" alt="alt text">
+<br>
+<strong>・レンダークラスの作成プログラム</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">//オブジェトデータのリストを持ってくる</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> objectData : ObjectData::GetInstance()-&gt;GetObjectData()) {
+	<span class="hljs-keyword">int</span> numObject = <span class="hljs-number">0</span>;
+	<span class="hljs-comment">//オブジェトの数だけ回す</span>
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m_objctList.<span class="hljs-built_in">size</span>(); i++) {
+		<span class="hljs-comment">//データとオブジェクトリストの名前が一緒なら</span>
+		<span class="hljs-keyword">if</span> (m_objctList[i]-&gt;GetObjectName() == objectData.m_name) {
+			<span class="hljs-comment">//インスタスの最大数を上げる</span>
+			numObject++;
+		}
+	}
+<span class="hljs-comment">//インスタンシング描画用のレンダーを作成する</span>
+ObjectRender* objectRender = NewGO&lt;ObjectRender&gt;(<span class="hljs-number">0</span>, objectData.m_name.c_str());
+objectRender-&gt;SetObjectData(objectData);
+<span class="hljs-comment">//インスタスの最大数を渡す</span>
+objectRender-&gt;SetMaxObject(numObject);
+}
+</div></code></pre>
+<h3 id="%EF%BD%83%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC%E5%81%B4%E3%81%AB%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E6%B8%A1%E3%81%99"><strong>ｃ.シェーダー側にデータを渡す</strong></h3>
+<p><strong>・シェーダー側に渡すためにバッファを確保する</strong>
+<br>
+<img src="insta3.png" alt="alt text">
+<br></p>
+<pre class="hljs"><code><div><span class="hljs-comment">//インスタンシング描画を行う場合は、拡張SRVにインスタンシング描画用のデータを設定する。</span>
+			shadowModelInitData.m_expandShaderResoruceView[<span class="hljs-number">0</span>] = &amp;m_worldMatrixArraySB;
+			shadowModelInitData.m_vsEntryPointFunc = <span class="hljs-string">"VSMainInstancing"</span>;
+</div></code></pre>
+<h3 id="d%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC%E5%81%B4%E3%81%AE%E5%87%A6%E7%90%86"><strong>d.シェーダー側の処理</strong></h3>
+<p><strong>・現在処理しているインスタンスの番号を持ってこれるようにしている</strong>
+<br>
+<img src="insta4-1.png" alt="alt text">
+<br></p>
+<pre class="hljs"><code><div><span class="hljs-comment">/// &lt;summary&gt;</span>
+<span class="hljs-comment">/// スキンなしメッシュ用の頂点シェーダーのエントリー関数(インスタンシング描画用)。</span>
+<span class="hljs-comment">/// &lt;/summary&gt;</span>
+<span class="hljs-function">SPSIn <span class="hljs-title">VSMainInstancing</span><span class="hljs-params">(SVSIn vsIn,uint instanceID : SV_InstanceID)</span>
+</span>{
+	<span class="hljs-keyword">return</span> VSMainCore(vsIn,g_worldMatrixArray[instanceID]);
+}
+</div></code></pre>
+<p><strong>・これによりモデルを出力することでインスタンシング描画の完成</strong>
+<br></p>
+<h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・ゲームをプレイする際に問題ない速度で動くようになった</strong>
+<br>
+<strong>・今後同じのモデルを複数生成する際にfpsが落ちないように実装していきたい。</strong></p>
+<h2 id="4%E3%83%93%E3%83%A5%E3%83%BC%E3%83%9D%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90"><strong>4.ビューポートの作成</strong></h2>
+<h2 id="5%E8%BC%AA%E9%83%AD%E7%B7%9A%E3%81%AE%E6%8F%8F%E7%94%BB"><strong>5.輪郭線の描画</strong></h2>
+<h2 id="6%E3%83%88%E3%82%A5%E3%83%BC%E3%83%B3%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC"><strong>6.トゥーンシェーダー</strong></h2>
+<br>
+<h1 id="%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E4%BF%82"><strong>グラフィック関係</strong></h1>
+<h2 id="1%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0"><strong>1.ディファードレンダリング</strong></h2>
+<h2 id="2%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>2.フォワードとディファードレンダリングの併用</strong></h2>
+<h2 id="3pbr"><strong>3.PBR</strong></h2>
+<h2 id="4%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6"><strong>4.カスケードシャドウ</strong></h2>
+<h2 id="5%E5%B7%9D%E7%80%AC%E5%BC%8F%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A0"><strong>5.川瀬式ブルーム</strong></h2>
+<br>
+<h1 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h1>
+<br>
+<h1 id="%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></h1>
+
+</body>
+</html>
