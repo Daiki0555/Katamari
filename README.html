@@ -422,6 +422,7 @@ code {
 <li><a href="#4ui%E7%94%A8%E3%81%AE%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%8F%8F%E7%94%BB"><strong>4.UI用のモデルの描画</strong></a>
 <ul>
 <li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F-3"><strong>作成動機</strong></a></li>
+<li><a href="#ui%E7%94%A8%E3%81%AE%E3%82%AB%E3%83%A1%E3%83%A9%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E5%90%8C%E3%81%98%E3%83%AC%E3%83%B3%E3%83%80%E3%83%BC%E3%82%BF%E3%83%BC%E3%82%B2%E3%83%83%E3%83%88%E3%81%AB%E3%81%99%E3%82%8B"><strong>UI用のカメラを作成し、同じレンダーターゲットにする</strong></a></li>
 <li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-3"><strong>まとめ</strong></a></li>
 </ul>
 </li>
@@ -445,18 +446,31 @@ code {
 <li><a href="#7%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6"><strong>7.カスケードシャドウ</strong></a>
 <ul>
 <li><a href="#%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>カスケードシャドウについて</strong></a></li>
-<li><a href="#%E8%A4%87%E6%95%B0%E6%9E%9A%E3%81%AE%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%83%9E%E3%83%83%E3%83%97%E3%81%AE%E4%BD%9C%E6%88%90"><strong>複数枚のシャドウマップの作成</strong></a></li>
 <li><a href="#%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95-4"><strong>実装方法</strong></a></li>
+<li><a href="#a%E5%88%86%E5%89%B2%E3%82%A8%E3%83%AA%E3%82%A2%E3%81%AE%E5%AE%9A%E7%BE%A9"><strong>a.分割エリアの定義</strong></a></li>
+<li><a href="#b%E5%88%86%E5%89%B2%E3%82%A8%E3%83%AA%E3%82%A2%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AB%E3%83%A9%E3%82%A4%E3%83%88%E3%83%93%E3%83%A5%E3%83%BC%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>b.分割エリアを描画するためにライトビュープロジェクション行列を求める</strong></a></li>
+<li><a href="#c3%E6%9E%9A%E3%81%AE%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%83%9E%E3%83%83%E3%83%97%E3%82%92%E7%94%9F%E6%88%90%E3%81%97%E3%81%A6%E5%BD%B1%E3%82%92%E8%90%BD%E3%81%A8%E3%81%99"><strong>c.3枚のシャドウマップを生成して影を落とす</strong></a></li>
 <li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-6"><strong>まとめ</strong></a></li>
 </ul>
 </li>
-<li><a href="#8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0"><strong>8.ディファードレンダリング</strong></a></li>
-<li><a href="#9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワードとディファードレンダリングの併用</strong></a></li>
-<li><a href="#10pbr"><strong>10.PBR</strong></a></li>
-<li><a href="#11%E5%B7%9D%E7%80%AC%E5%BC%8F%E3%83%96%E3%83%AB%E3%83%BC%E3%83%A0"><strong>11.川瀬式ブルーム</strong></a></li>
+<li><a href="#8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"><strong>8.ディファードライティング</strong></a>
+<ul>
+<li><a href="#%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードライティングについて</strong></a></li>
+<li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F-6"><strong>作成動機</strong></a></li>
+<li><a href="#ag-buffer%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><strong>a.G-Bufferを作成する</strong></a></li>
+<li><a href="#b%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E8%A8%88%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86"><strong>b.ライティングの計算を行う</strong></a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-7"><strong>まとめ</strong></a></li>
+<li><a href="#9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワードとディファードの併用</strong></a></li>
+<li><a href="#%E4%BD%B5%E7%94%A8%E7%90%86%E7%94%B1"><strong>併用理由</strong></a></li>
 </ul>
 </li>
-<li><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></a>
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83%E6%9B%B8"><strong>参考書</strong></a></li>
+</ul>
+</li>
 </ul>
 <h1 id="%E8%87%AA%E5%B7%B1%E7%B4%B9%E4%BB%8B"><strong>自己紹介</strong></h1>
 <p><strong>所属：河原電子ビジネス専門学校ゲームクリエイター科</strong>
@@ -689,11 +703,11 @@ objectRender-&gt;SetMaxObject(numObject);
 <br>
 <strong>・今後同じのモデルを複数生成する際にfpsが落ちないように実装していきたい。</strong></p>
 <h2 id="4ui%E7%94%A8%E3%81%AE%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%8F%8F%E7%94%BB"><strong>4.UI用のモデルの描画</strong></h2>
-<p><img src="UI.png" alt="alt text"></p>
+<p><img src="portfolio/UI.png" alt="alt text"></p>
 <h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
 <p><strong>・UIを作成する際にメインカメラ影響を受けないようにするため</strong></p>
 <h3 id="ui%E7%94%A8%E3%81%AE%E3%82%AB%E3%83%A1%E3%83%A9%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E5%90%8C%E3%81%98%E3%83%AC%E3%83%B3%E3%83%80%E3%83%BC%E3%82%BF%E3%83%BC%E3%82%B2%E3%83%83%E3%83%88%E3%81%AB%E3%81%99%E3%82%8B"><strong>UI用のカメラを作成し、同じレンダーターゲットにする</strong></h3>
-<p><img src="kamera.png" alt="alt text"></p>
+<p><img src="portfolio/kamera.png" alt="alt text"></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
 <p><strong>・ゲーム内に影響されないので違和感のないUI用のモデルが描画出来た。</strong></p>
 <h2 id="5%E8%BC%AA%E9%83%AD%E7%B7%9A%E3%81%AE%E6%8F%8F%E7%94%BB"><strong>5.輪郭線の描画</strong></h2>
@@ -723,10 +737,84 @@ objectRender-&gt;SetMaxObject(numObject);
 <p><img src="portfolio/cascade.png" alt="alt text"></p>
 <h3 id="%E3%82%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>カスケードシャドウについて</strong></h3>
 <p><strong>・複数枚のシャドウマップを利用することで影の品質を向上さる処理</strong></p>
-<h3 id="%E8%A4%87%E6%95%B0%E6%9E%9A%E3%81%AE%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%83%9E%E3%83%83%E3%83%97%E3%81%AE%E4%BD%9C%E6%88%90"><strong>複数枚のシャドウマップの作成</strong></h3>
 <h3 id="%E5%AE%9F%E8%A3%85%E6%96%B9%E6%B3%95"><strong>実装方法</strong></h3>
+<h3 id="a%E5%88%86%E5%89%B2%E3%82%A8%E3%83%AA%E3%82%A2%E3%81%AE%E5%AE%9A%E7%BE%A9"><strong>a.分割エリアの定義</strong></h3>
+<p><strong>・カメラから見て近、中、遠距離にエリアを分割する</strong>
+<br>
+<img src="portfolio/cascade1-1.png" alt="alt text">
+<br></p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 8頂点を求める</span>
+Vector3 vertex[<span class="hljs-number">8</span>];
+<span class="hljs-comment">// 近平面の右上の頂点</span>
+vertex[<span class="hljs-number">0</span>] += nearPos + cameraUp * nearY + cameraRight * nearX;
+<span class="hljs-comment">// 近平面の左上の頂点</span>
+vertex[<span class="hljs-number">1</span>] += nearPos + cameraUp * nearY + cameraRight * -nearX;
+<span class="hljs-comment">// 近平面の右下の頂点</span>
+vertex[<span class="hljs-number">2</span>] += nearPos + cameraUp * -nearY + cameraRight * nearX;
+<span class="hljs-comment">// 近平面の左下の頂点</span>
+vertex[<span class="hljs-number">3</span>] += nearPos + cameraUp * -nearY + cameraRight * -nearX;
+<span class="hljs-comment">// 遠平面の右上の頂点</span>
+vertex[<span class="hljs-number">4</span>] += farPos + cameraUp * farY + cameraRight * farX;
+<span class="hljs-comment">// 遠平面の左上の頂点</span>
+vertex[<span class="hljs-number">5</span>] += farPos + cameraUp * farY + cameraRight * -farX;
+<span class="hljs-comment">// 遠平面の右下の頂点</span>
+vertex[<span class="hljs-number">6</span>] += farPos + cameraUp * -farY + cameraRight * farX;
+<span class="hljs-comment">// 遠平面の左下の頂点</span>
+vertex[<span class="hljs-number">7</span>] += farPos + cameraUp * -farY + cameraRight * -farX;
+<span class="hljs-comment">// 8頂点をライトビュープロジェクション空間に変換して、8頂点の最大値、最小値を求める</span>
+Vector3 vMax, vMin;
+vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+vMin = { FLT_MAX,  FLT_MAX,  FLT_MAX };
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; v : vertex){
+    lvpcMatrix.Apply(v);
+    vMax.Max(v);
+    vMin.Min(v);
+  }
+</div></code></pre>
+<h3 id="b%E5%88%86%E5%89%B2%E3%82%A8%E3%83%AA%E3%82%A2%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AB%E3%83%A9%E3%82%A4%E3%83%88%E3%83%93%E3%83%A5%E3%83%BC%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>b.分割エリアを描画するためにライトビュープロジェクション行列を求める</strong></h3>
+<p><img src="portfolio/cascade3.png" alt="alt text">
+<strong>・クロップ行列を求める</strong><br>
+<img src="portfolio/cascade4.png" alt="alt text"></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">float</span> xScale = <span class="hljs-number">2.0f</span> / (vMax.x - vMin.x);
+<span class="hljs-keyword">float</span> yScale = <span class="hljs-number">2.0f</span> / (vMax.y - vMin.y);
+<span class="hljs-keyword">float</span> xOffset = (vMax.x + vMin.x) * <span class="hljs-number">-0.5f</span> * xScale;
+<span class="hljs-keyword">float</span> yOffset = (vMax.y + vMin.y) * <span class="hljs-number">-0.5f</span> * yScale;
+Matrix clopMatrix;
+clopMatrix.m[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = xScale;
+clopMatrix.m[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = yScale;
+clopMatrix.m[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>] = xOffset;
+clopMatrix.m[<span class="hljs-number">3</span>][<span class="hljs-number">1</span>] = yOffset;
+</div></code></pre>
+<br>
+<h3 id="c3%E6%9E%9A%E3%81%AE%E3%82%B7%E3%83%A3%E3%83%89%E3%82%A6%E3%83%9E%E3%83%83%E3%83%97%E3%82%92%E7%94%9F%E6%88%90%E3%81%97%E3%81%A6%E5%BD%B1%E3%82%92%E8%90%BD%E3%81%A8%E3%81%99"><strong>c.3枚のシャドウマップを生成して影を落とす</strong></h3>
+<p><strong>・エリアごとにシャドウマップを生成する</strong>
+<br></p>
+<p><img src="portfolio/cascade2.png" alt="alt text">
+<br>
+<strong>・これにより影を落とすことが出来る</strong></p>
+<h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・ゲームの都合上遠くまで落とす必要がありジャギーが発生したのでそれを解決することが出来た。</strong></p>
+<h2 id="8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"><strong>8.ディファードライティング</strong></h2>
+<h3 id="%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードライティングについて</strong></h3>
+<p><strong>・ポリゴンをレンダリングをするときはライティングの計算を行わずに、そのあとに行うという処理</strong></p>
+<h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
+<p><strong>・PBRとトゥーンシェーダーを行う関係上フォワードレンダリングだけでは計算量が多くなってしまう</strong><br>
+<strong>・ディファードライティングを作成することでフォワードレンダリングでの計算量を減らすのが目的</strong></p>
+<h3 id="ag-buffer%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><strong>a.G-Bufferを作成する</strong></h3>
+<p><strong>・4つのテクスチャを作成する</strong>
+<img src="portfolio/deffred.png" alt="alt text"></p>
+<h3 id="b%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E8%A8%88%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86"><strong>b.ライティングの計算を行う</strong></h3>
+<p><strong>・G-Bufferの情報を渡す</strong><br>
+<strong>・背景をディファードライティングで描画している</strong><br>
+<img src="portfolio/deffred2.png" alt="alt text"></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
 <br>
+<h3 id="9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワードとディファードの併用</strong></h3>
+<h3 id="%E4%BD%B5%E7%94%A8%E7%90%86%E7%94%B1"><strong>併用理由</strong></h3>
+<p><strong>・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため</strong>
+<strong>・プレイヤー</strong>
+<img src="portfolio/deffred3.png" alt="alt text">
+<strong>・壁床</strong></p>
 <h1 id="%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></h1>
 <h3 id="%E5%8F%82%E8%80%83%E6%9B%B8"><strong>参考書</strong></h3>
 <p><strong>HLSLシェーダーの魔導書</strong></p>

@@ -56,9 +56,19 @@
     - [**まとめ**](#まとめ-5)
   - [**7.カスケードシャドウ**](#7カスケードシャドウ)
     - [**カスケードシャドウについて**](#カスケードシャドウについて)
-    - [**複数枚のシャドウマップの作成**](#複数枚のシャドウマップの作成)
     - [**実装方法**](#実装方法-4)
+    - [**a.分割エリアの定義**](#a分割エリアの定義)
+    - [**b.分割エリアを描画するためにライトビュープロジェクション行列を求める**](#b分割エリアを描画するためにライトビュープロジェクション行列を求める)
+    - [**c.3枚のシャドウマップを生成して影を落とす**](#c3枚のシャドウマップを生成して影を落とす)
     - [**まとめ**](#まとめ-6)
+  - [**8.ディファードライティング**](#8ディファードライティング)
+    - [**ディファードライティングについて**](#ディファードライティングについて)
+    - [**作成動機**](#作成動機-6)
+    - [**a.G-Bufferを作成する**](#ag-bufferを作成する)
+    - [**b.ライティングの計算を行う**](#bライティングの計算を行う)
+    - [**まとめ**](#まとめ-7)
+    - [**9.フォワードとディファードの併用**](#9フォワードとディファードの併用)
+    - [**併用理由**](#併用理由)
 - [**参考資料**](#参考資料)
     - [**参考書**](#参考書)
 
@@ -325,11 +335,11 @@ SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
 **・今後同じのモデルを複数生成する際にfpsが落ちないように実装していきたい。**
 
 ## **4.UI用のモデルの描画**
-![alt text](UI.png)
+![alt text](portfolio/UI.png)
 ### **作成動機**
 **・UIを作成する際にメインカメラ影響を受けないようにするため**
 ### **UI用のカメラを作成し、同じレンダーターゲットにする**
-![alt text](kamera.png)
+![alt text](portfolio/kamera.png)
 ### **まとめ**
 **・ゲーム内に影響されないので違和感のないUI用のモデルが描画出来た。**
 
@@ -364,12 +374,94 @@ SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
 ![alt text](portfolio/cascade.png)
 ### **カスケードシャドウについて**
 **・複数枚のシャドウマップを利用することで影の品質を向上さる処理**
-### **複数枚のシャドウマップの作成**
-
 ### **実装方法**
+### **a.分割エリアの定義**
+**・カメラから見て近、中、遠距離にエリアを分割する**
+<br>
+![alt text](portfolio/cascade1-1.png)
+<br>
+```h
+// 8頂点を求める
+Vector3 vertex[8];
+// 近平面の右上の頂点
+vertex[0] += nearPos + cameraUp * nearY + cameraRight * nearX;
+// 近平面の左上の頂点
+vertex[1] += nearPos + cameraUp * nearY + cameraRight * -nearX;
+// 近平面の右下の頂点
+vertex[2] += nearPos + cameraUp * -nearY + cameraRight * nearX;
+// 近平面の左下の頂点
+vertex[3] += nearPos + cameraUp * -nearY + cameraRight * -nearX;
+// 遠平面の右上の頂点
+vertex[4] += farPos + cameraUp * farY + cameraRight * farX;
+// 遠平面の左上の頂点
+vertex[5] += farPos + cameraUp * farY + cameraRight * -farX;
+// 遠平面の右下の頂点
+vertex[6] += farPos + cameraUp * -farY + cameraRight * farX;
+// 遠平面の左下の頂点
+vertex[7] += farPos + cameraUp * -farY + cameraRight * -farX;
+// 8頂点をライトビュープロジェクション空間に変換して、8頂点の最大値、最小値を求める
+Vector3 vMax, vMin;
+vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+vMin = { FLT_MAX,  FLT_MAX,  FLT_MAX };
+for (auto& v : vertex){
+    lvpcMatrix.Apply(v);
+    vMax.Max(v);
+    vMin.Min(v);
+  }
+```
+### **b.分割エリアを描画するためにライトビュープロジェクション行列を求める**
+![alt text](portfolio/cascade3.png)
+**・クロップ行列を求める**<br>
+![alt text](portfolio/cascade4.png)
+```h
+float xScale = 2.0f / (vMax.x - vMin.x);
+float yScale = 2.0f / (vMax.y - vMin.y);
+float xOffset = (vMax.x + vMin.x) * -0.5f * xScale;
+float yOffset = (vMax.y + vMin.y) * -0.5f * yScale;
+Matrix clopMatrix;
+clopMatrix.m[0][0] = xScale;
+clopMatrix.m[1][1] = yScale;
+clopMatrix.m[3][0] = xOffset;
+clopMatrix.m[3][1] = yOffset;
+```
+
+<br>
+
+### **c.3枚のシャドウマップを生成して影を落とす**
+**・エリアごとにシャドウマップを生成する**
+<br>
+
+![alt text](portfolio/cascade2.png)
+<br>
+**・これにより影を落とすことが出来る**
 
 ### **まとめ**
+**・ゲームの都合上遠くまで落とす必要がありジャギーが発生したのでそれを解決することが出来た。**
+
+## **8.ディファードライティング**
+### **ディファードライティングについて**
+**・ポリゴンをレンダリングをするときはライティングの計算を行わずに、そのあとに行うという処理**
+### **作成動機**
+**・PBRとトゥーンシェーダーを行う関係上フォワードレンダリングだけでは計算量が多くなってしまう**<br>
+**・ディファードライティングを作成することでフォワードレンダリングでの計算量を減らすのが目的**
+### **a.G-Bufferを作成する**
+**・4つのテクスチャを作成する**
+![alt text](portfolio/deffred.png)
+### **b.ライティングの計算を行う**
+**・G-Bufferの情報を渡す**<br>
+**・背景をディファードライティングで描画している**<br>
+![alt text](portfolio/deffred2.png)
+### **まとめ**
 <br>
+
+### **9.フォワードとディファードの併用**
+### **併用理由**
+**・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため**
+**・プレイヤー**
+![alt text](portfolio/deffred3.png)
+**・壁床**
+
+
 
 # **参考資料**
 ### **参考書**

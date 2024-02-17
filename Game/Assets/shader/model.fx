@@ -326,9 +326,6 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 	//リムライトによるライティングを計算する
 	float limLight=CalcLim(dirLig.ligDirection,normal,psIn.worldPos);
 
-	//ポイントライトによるライティングを計算する
-	float3 pointLight=CalcLigFromPointLight(psIn,normal,specMap); 
-
 	//最終的な反射光にリムライトの反射光を合算する
 	float3 limColor=limLight*dirLig.ligColor;
 
@@ -338,7 +335,6 @@ float4 PSMainCore( SPSIn psIn ,uniform bool isShadow) : SV_Target0
 		+ specuDirection
 		+ dirLig.ambient
 		+ limColor
-		+ pointLight;
 		;
 	albedoColor.xyz*=lig;
 

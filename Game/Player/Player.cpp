@@ -34,8 +34,9 @@ bool Player::Start()
 		enModelUpAxisY,
 		true,
 		false,
-		true
+		false
 	);
+
 	m_playerRender.SetPosition(m_position);
 	m_playerRender.SetScale(m_scale);
 	m_playerRender.SetRotation(m_rotation);

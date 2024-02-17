@@ -45,7 +45,7 @@ struct SPSOut
 };
 
 //モデルのテクスチャ
-Texture2D<float4>g_texture : register(t0);
+Texture2D<float4>g_texture : register(t0);          //アルベドカラー
 Texture2D<float4> g_normal : register(t1);      //法線マップ
 Texture2D<float4> g_metalSmooth : register(t2);     //金属度と滑らかさマップ
 StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
