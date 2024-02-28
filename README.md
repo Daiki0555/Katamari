@@ -1,5 +1,6 @@
 # **塊魂**
 ![alt text](portfolio/title.png)
+動画リンク:https://www.youtube.com/watch?v=RzwWIAPEENg
 <br>
 
 # **目次**
@@ -69,6 +70,7 @@
     - [**まとめ**](#まとめ-7)
     - [**9.フォワード、ディファードレンダリングの併用**](#9フォワードディファードレンダリングの併用)
     - [**併用理由**](#併用理由)
+    - [**まとめ**](#まとめ-8)
 - [**参考資料**](#参考資料)
     - [**参考書**](#参考書)
 
@@ -211,7 +213,7 @@
 <br>
 ![alt text](portfolio/makikomi_2-1.png)
 ### **c.最終的なオブジェクトのワールド行列を求める**
-![alt text](portfolio/makikomi_3-1.png)
+![alt text](portfolio/makikomi_3.png)
 ### **まとめ**
 **・逆行列やローカル行列の勉強になった。**
 <br>
@@ -352,7 +354,7 @@ SPSIn VSMainInstancing(SVSIn vsIn,uint instanceID : SV_InstanceID)
 ### **a.モデルの深度値をテクスチャに書き込む**
 ![alt text](portfolio/outline.png)
 ### **b.深度テクスチャと近傍８テクセルの深度値を差を調べる**
-![alt text](portfolio/outline２-1.png)
+![alt text](portfolio/outline２.png)
 ![alt text](portfolio/outline3.png)
 ### **まとめ**
 **・プレイヤーがわかりやすくなりプレイに支障が出にくくなった**
@@ -458,9 +460,14 @@ clopMatrix.m[3][1] = yOffset;
 
 ### **9.フォワード、ディファードレンダリングの併用**
 ### **併用理由**
-**・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため**
-**・プレイヤー**
-![alt text](portfolio/deffred3.png)
+**・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため**<br>
+**・プレイヤーはアニメ調に（フォワードレンダリング）**<br>
+![alt text](portfolio/deffred3.png)<br>
+**・床と壁はPBRでリアリティに（ディファードレンダリング）**<br>
+![alt text](portfolio/deffred4-1.png)
+### **まとめ**
+**・併用することで世界観をきれいに見せることが出来た**
+
 
 # **参考資料**
 ### **参考書**

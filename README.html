@@ -367,6 +367,7 @@ code {
   </script>
 <h1 id="%E5%A1%8A%E9%AD%82"><strong>塊魂</strong></h1>
 <p><img src="portfolio/title.png" alt="alt text">
+動画リンク:https://www.youtube.com/watch?v=RzwWIAPEENg
 <br></p>
 <h1 id="%E7%9B%AE%E6%AC%A1"><strong>目次</strong></h1>
 <ul>
@@ -453,15 +454,16 @@ code {
 <li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-6"><strong>まとめ</strong></a></li>
 </ul>
 </li>
-<li><a href="#8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"><strong>8.ディファードライティング</strong></a>
+<li><a href="#8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0"><strong>8.ディファードレンダリング</strong></a>
 <ul>
-<li><a href="#%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードライティングについて</strong></a></li>
+<li><a href="#%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードレンダリングについて</strong></a></li>
 <li><a href="#%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F-6"><strong>作成動機</strong></a></li>
 <li><a href="#ag-buffer%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><strong>a.G-Bufferを作成する</strong></a></li>
 <li><a href="#b%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E8%A8%88%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86"><strong>b.ライティングの計算を行う</strong></a></li>
 <li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-7"><strong>まとめ</strong></a></li>
-<li><a href="#9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワードとディファードの併用</strong></a></li>
+<li><a href="#9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワード、ディファードレンダリングの併用</strong></a></li>
 <li><a href="#%E4%BD%B5%E7%94%A8%E7%90%86%E7%94%B1"><strong>併用理由</strong></a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81-8"><strong>まとめ</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -588,7 +590,7 @@ code {
 <br>
 <img src="portfolio/makikomi_2-1.png" alt="alt text"></p>
 <h3 id="c%E6%9C%80%E7%B5%82%E7%9A%84%E3%81%AA%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E8%A1%8C%E5%88%97%E3%82%92%E6%B1%82%E3%82%81%E3%82%8B"><strong>c.最終的なオブジェクトのワールド行列を求める</strong></h3>
-<p><img src="portfolio/makikomi_3-1.png" alt="alt text"></p>
+<p><img src="portfolio/makikomi_3.png" alt="alt text"></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
 <p><strong>・逆行列やローカル行列の勉強になった。</strong>
 <br>
@@ -718,7 +720,7 @@ objectRender-&gt;SetMaxObject(numObject);
 <h3 id="a%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%B7%B1%E5%BA%A6%E5%80%A4%E3%82%92%E3%83%86%E3%82%AF%E3%82%B9%E3%83%81%E3%83%A3%E3%81%AB%E6%9B%B8%E3%81%8D%E8%BE%BC%E3%82%80"><strong>a.モデルの深度値をテクスチャに書き込む</strong></h3>
 <p><img src="portfolio/outline.png" alt="alt text"></p>
 <h3 id="b%E6%B7%B1%E5%BA%A6%E3%83%86%E3%82%AF%E3%82%B9%E3%83%81%E3%83%A3%E3%81%A8%E8%BF%91%E5%82%8D%EF%BC%98%E3%83%86%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E6%B7%B1%E5%BA%A6%E5%80%A4%E3%82%92%E5%B7%AE%E3%82%92%E8%AA%BF%E3%81%B9%E3%82%8B"><strong>b.深度テクスチャと近傍８テクセルの深度値を差を調べる</strong></h3>
-<p><img src="portfolio/outline２-1.png" alt="alt text">
+<p><img src="portfolio/outline２.png" alt="alt text">
 <img src="portfolio/outline3.png" alt="alt text"></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
 <p><strong>・プレイヤーがわかりやすくなりプレイに支障が出にくくなった</strong></p>
@@ -794,27 +796,31 @@ clopMatrix.m[<span class="hljs-number">3</span>][<span class="hljs-number">1</sp
 <strong>・これにより影を落とすことが出来る</strong></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
 <p><strong>・ゲームの都合上遠くまで落とす必要がありジャギーが発生したのでそれを解決することが出来た。</strong></p>
-<h2 id="8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"><strong>8.ディファードライティング</strong></h2>
-<h3 id="%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードライティングについて</strong></h3>
+<h2 id="8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0"><strong>8.ディファードレンダリング</strong></h2>
+<h3 id="%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><strong>ディファードレンダリングについて</strong></h3>
 <p><strong>・ポリゴンをレンダリングをするときはライティングの計算を行わずに、そのあとに行うという処理</strong></p>
 <h3 id="%E4%BD%9C%E6%88%90%E5%8B%95%E6%A9%9F"><strong>作成動機</strong></h3>
-<p><strong>・PBRとトゥーンシェーダーを行う関係上フォワードレンダリングだけでは計算量が多くなってしまう</strong><br>
-<strong>・ディファードライティングを作成することでフォワードレンダリングでの計算量を減らすのが目的</strong></p>
+<p><strong>・PBRとセルシェーダーを行う関係上フォワードレンダリングだけでは計算量が多くなってしまう</strong><br>
+<strong>・ディファードレンダリングを作成することでフォワードレンダリングでの計算量を減らすのが目的</strong></p>
 <h3 id="ag-buffer%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><strong>a.G-Bufferを作成する</strong></h3>
 <p><strong>・4つのテクスチャを作成する</strong>
 <img src="portfolio/deffred.png" alt="alt text"></p>
 <h3 id="b%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E8%A8%88%E7%AE%97%E3%82%92%E8%A1%8C%E3%81%86"><strong>b.ライティングの計算を行う</strong></h3>
 <p><strong>・G-Bufferの情報を渡す</strong><br>
-<strong>・背景をディファードライティングで描画している</strong><br>
+<strong>・背景をディファードレンダリングをしている</strong><br>
 <img src="portfolio/deffred2.png" alt="alt text"></p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・大量のオブジェクトを作成するので重くなってしまう関係上、それを少しでも緩和することが出来て良かった</strong></p>
 <br>
-<h3 id="9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A8%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワードとディファードの併用</strong></h3>
+<h3 id="9%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%89%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%B5%E7%94%A8"><strong>9.フォワード、ディファードレンダリングの併用</strong></h3>
 <h3 id="%E4%BD%B5%E7%94%A8%E7%90%86%E7%94%B1"><strong>併用理由</strong></h3>
-<p><strong>・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため</strong>
-<strong>・プレイヤー</strong>
-<img src="portfolio/deffred3.png" alt="alt text">
-<strong>・壁床</strong></p>
+<p><strong>・プレイヤーはアニメ調に床や壁はPBRと使い分けをしたかったため</strong><br>
+<strong>・プレイヤーはアニメ調に（フォワードレンダリング）</strong><br>
+<img src="portfolio/deffred3.png" alt="alt text"><br>
+<strong>・床と壁はPBRでリアリティに（ディファードレンダリング）</strong><br>
+<img src="portfolio/deffred4-1.png" alt="alt text"></p>
+<h3 id="%E3%81%BE%E3%81%A8%E3%82%81"><strong>まとめ</strong></h3>
+<p><strong>・併用することで世界観をきれいに見せることが出来た</strong></p>
 <h1 id="%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><strong>参考資料</strong></h1>
 <h3 id="%E5%8F%82%E8%80%83%E6%9B%B8"><strong>参考書</strong></h3>
 <p><strong>HLSLシェーダーの魔導書</strong></p>

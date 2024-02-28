@@ -44,7 +44,7 @@ Debug::Debug()
 	m_skycube->Update();
 
 	g_camera3D->SetPosition({ 0.0f, 0.0f, 350.0f });
-	g_camera3D->SetTarget({ 0.0f, 100.0f, 0.0f });
+	g_camera3D->SetTarget({ 0.0f, 200.0f, 0.0f });
 	g_camera3D->SetFar(10000.0f);
 }
 
@@ -83,7 +83,7 @@ void Debug::Update()
 
 	m_modelRender.Update();
 	m_g_modelRender.Update();
-	g_camera3D->SetTarget(Vector3{ 100.0f,100.0f,0.0f });
+
 	g_camera3D->SetPosition(pos);
 }
 

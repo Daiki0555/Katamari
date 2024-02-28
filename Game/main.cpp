@@ -24,11 +24,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	RenderingEngine::GetInstance()->Init();
 
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
-	NewGO<Debug>(0, "debug");
+	//NewGO<Debug>(0, "debug");
 	//NewGO<Game>(0, "game");
 	
-	//NewGO<Title>(0, "title");
-	//NewGO<Fade>(1, "fade");
+	NewGO<Title>(0, "title");
+	NewGO<Fade>(1, "fade");
 
 	g_camera3D->SetNear(0.5f);
 	g_camera3D->SetFar(8000.0f);
