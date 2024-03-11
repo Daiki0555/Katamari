@@ -197,6 +197,7 @@ void Game::Update()
 			m_gameState = m_enGameState_GameClear;
 		}
 		else {
+			m_gameClear->IsClearStart(true);
 			m_gameState = m_enGameState_GameOver;
 		}
 	}
@@ -213,12 +214,15 @@ void Game::Update()
 				GameManager::GetInstance()->GetResultStruct().SetSphereScale(m_sphere->GetRadius());
 			}
 			else {
-
+				m_fade->StartFadeOut();
+				m_fade->IsGameStart(false);
+				m_isWaitFadeOut = true;
+				GameManager::GetInstance()->GetResultStruct().SetSphereScale(m_sphere->GetRadius());
 			}
 		}
 	}
 
-	int sphereRadius = m_sphere->GetRadius();
+	float sphereRadius = m_sphere->GetRadius();
 	if (sphereRadius >= GameManager::GetInstance()->GetGameDataStruct().GetTargetSize()&&
 		!m_isClear) {
 		GameManager::GetInstance()->GetResultStruct().SetClearTime(m_gameTime);

@@ -9,6 +9,7 @@
 #include "GameUI/ObjectUI.h"
 #include "GameUI/FlowerUI.h"
 #include "ObjectRender.h"
+
 namespace {
 	const float		HIT_OBJECT = 0.0f;					// 塊に当たる範囲
 }
@@ -149,6 +150,12 @@ void Object::Involution()
 	m_matInCore.Multiply(mWorld, inverseMatrix);
 	m_objectUI->InitWipeModelUI(m_objData);
 
+	//いびつオブジェクトかどうか
+	if (m_objData.m_isDistorted) {
+		//ガタガタ処理の初期化
+		m_lineSegment.Init(m_position);
+		m_lineSegment.SetSphere(m_sphere);
+	}
 	//巻き込まれSEの再生　
 	SoundSource* se = NewGO<SoundSource>(0);
 	se->Init(0);

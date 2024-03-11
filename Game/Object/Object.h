@@ -2,6 +2,7 @@
 #include "Move/IMove.h"
 #include "ObjectData.h"
 #include "GameManager.h"
+#include "LineSegment.h"
 class Sphere;
 class Game;
 class IMove;
@@ -174,7 +175,7 @@ private:
 	PhysicsStaticObject m_physicsObj;
 	
 	StructObjectData	m_objData;															//オブジェクトのデータ
-	
+	LineSegment			m_lineSegment;
 	Sphere*				m_sphere = nullptr;
 	ObjectUI*			m_objectUI = nullptr;
 	ObjectRender*		m_objectRender=nullptr;

@@ -9,6 +9,7 @@ struct StructObjectData
 	float m_volume;				//オブジェクトの体積
 	float m_involutionScale;	//巻き込まれる大きさ
 	int m_soundNumber;			//SEの番号
+	int m_isDistorted;			//いびつオブジェクトかどうか
 };
 
 class ObjectData

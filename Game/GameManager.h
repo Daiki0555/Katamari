@@ -115,7 +115,7 @@ public:
 		}
 
 	private:
-		const int		TARGET_SIZE = 18;					//目標サイズ
+		const int		TARGET_SIZE = 15;					//目標サイズ
 		const float		TIME_LIMIT = 3.0f;					//タイムリミット(分)
 	};
 
