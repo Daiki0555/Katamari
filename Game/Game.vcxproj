@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="Scene\Result.cpp" />
     <ClCompile Include="Scene\Fade.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -261,6 +262,7 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="LineSegment.h" />
     <ClInclude Include="Scene\Result.h" />
     <ClInclude Include="Scene\Fade.h" />
     <ClInclude Include="GameManager.h" />

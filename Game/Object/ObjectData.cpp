@@ -38,6 +38,10 @@ void ObjectData::Init()
 		//SEのナンバー
 		std::getline(stream, buf, ',');
 		objectData.m_soundNumber = std::stoi(buf);
+
+		//いびつオブジェクトかどうか
+		std::getline(stream, buf, ',');
+		objectData.m_isDistorted = std::stoi(buf);
 		objects.emplace_back(objectData);
 
 	}
